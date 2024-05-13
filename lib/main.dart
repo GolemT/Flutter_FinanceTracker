@@ -70,9 +70,6 @@ class _ScreenState extends State<Screen> {
         title: Text('Your App'),
       ),
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
       ),
     );
   }

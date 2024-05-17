@@ -1,37 +1,77 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-class BottomNavBar extends StatelessWidget {
-  final int selectedIndex;
-  final Function(int) onItemTapped;
+class NavBar extends StatelessWidget {
+  final int pageIndex;
+  final Function(int) onTap;
 
-  const BottomNavBar({
-    required this.selectedIndex,
-    required this.onItemTapped,
+  const NavBar({
+    super.key,
+    required this.pageIndex,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: selectedIndex,
-      onTap: onItemTapped,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+    return Container(
+      margin: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: Platform.isAndroid ? 16 : 0,
+      ),
+      child: BottomAppBar(
+        elevation: 0.0,
+        child: Container(
+          height: 60,
+          color: Colors.black,
+          child: Row(
+            children: [
+              navItem(
+                Icons.home,
+                pageIndex == 0,
+                'Home',
+                onTap: () => onTap(0),
+              ),
+              navItem(
+                Icons.bookmark,
+                pageIndex == 1,
+                'Tags',
+                onTap: () => onTap(1),
+              ),
+              const SizedBox(width: 80),
+              navItem(
+                Icons.analytics,
+                pageIndex == 3,
+                'Analytics',
+                onTap: () => onTap(3),
+              ),
+              navItem(
+                Icons.settings,
+                pageIndex == 4,
+                'Settings',
+                onTap: () => onTap(4),
+              ),
+            ],
+          ),
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.tag),
-          label: 'Tags',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.analytics),
-          label: 'Analytics',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
-        ),
-      ],
+      ),
     );
   }
+}
+
+Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
+  return Expanded(
+      child: InkWell(
+    onTap: onTap,
+    child: Column(
+      children: [
+      Icon(
+      icon,
+      color: selected ? Colors.purple : Colors.grey,
+    ),
+        Text(text, style: TextStyle(color: selected? Colors.purple : Colors.grey),)
+          ]
+    )
+  ));
 }

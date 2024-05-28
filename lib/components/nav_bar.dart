@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -14,13 +12,8 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        bottom: Platform.isAndroid ? 16 : 0,
-      ),
-      child: BottomAppBar(
+    return BottomAppBar(
+        padding: const EdgeInsets.all(0),
         elevation: 0.0,
         child: Container(
           height: 60,
@@ -55,23 +48,27 @@ class NavBar extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }
 
 Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
   return Expanded(
-      child: InkWell(
-    onTap: onTap,
-    child: Column(
-      children: [
-      Icon(
-      icon,
-      color: selected ? Colors.purple : Colors.grey,
+    child: InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: selected ? Colors.purple : Colors.grey,
+          ),
+          Text(
+            text,
+            style: TextStyle(color: selected ? Colors.purple : Colors.grey),
+          ),
+        ],
+      ),
     ),
-        Text(text, style: TextStyle(color: selected? Colors.purple : Colors.grey),)
-          ]
-    )
-  ));
+  );
 }

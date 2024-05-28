@@ -17,7 +17,7 @@ class NavBar extends StatelessWidget {
         elevation: 0.0,
         child: Container(
           height: 60,
-          color: Colors.black,
+          color: Color(int.parse('0xFF2E2E2E')),
           child: Row(
             children: [
               navItem(

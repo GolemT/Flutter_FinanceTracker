@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AddTagScreen extends StatelessWidget {
+  const AddTagScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Tag'),
+        title: const Text('Add Tag'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Add Tag Screen'),
       ),
     );

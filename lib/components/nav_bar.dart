@@ -21,26 +21,26 @@ class NavBar extends StatelessWidget {
           child: Row(
             children: [
               navItem(
-                Icons.home,
+                Icons.home_outlined,
                 pageIndex == 0,
                 'Home',
                 onTap: () => onTap(0),
               ),
               navItem(
-                Icons.bookmark,
+                Icons.sell_outlined,
                 pageIndex == 1,
                 'Tags',
                 onTap: () => onTap(1),
               ),
               const SizedBox(width: 80),
               navItem(
-                Icons.analytics,
+                Icons.analytics_outlined,
                 pageIndex == 3,
                 'Analytics',
                 onTap: () => onTap(3),
               ),
               navItem(
-                Icons.settings,
+                Icons.settings_outlined,
                 pageIndex == 4,
                 'Settings',
                 onTap: () => onTap(4),
@@ -61,11 +61,12 @@ Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
         children: [
           Icon(
             icon,
-            color: selected ? Colors.purple : Colors.grey,
+            color: selected ? Color(0xFF623CEA) : Color(0x66FAFAFA),
+            size: 30.0,
           ),
           Text(
             text,
-            style: TextStyle(color: selected ? Colors.purple : Colors.grey),
+            style: TextStyle(color: selected ? Color(0xFF623CEA) : Color(0x66FAFAFA)),
           ),
         ],
       ),

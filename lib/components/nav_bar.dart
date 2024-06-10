@@ -61,12 +61,12 @@ Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
         children: [
           Icon(
             icon,
-            color: selected ? Color(0xFF623CEA) : Color(0x66FAFAFA),
+            color: selected ? const Color(0xFF623CEA) : const Color(0x66FAFAFA),
             size: 30.0,
           ),
           Text(
             text,
-            style: TextStyle(color: selected ? Color(0xFF623CEA) : Color(0x66FAFAFA)),
+            style: TextStyle(color: selected ? const Color(0xFF623CEA) : const Color(0x66FAFAFA)),
           ),
         ],
       ),

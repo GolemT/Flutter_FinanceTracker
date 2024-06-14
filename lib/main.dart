@@ -1,3 +1,5 @@
+import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/assets/color_theme.dart';
 import 'package:finance_tracker/components/nav_model.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
@@ -32,26 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-
+      theme: NexusTheme.nexusTheme,
       home: const MainScreen(),
 
     );
@@ -118,13 +101,13 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton.large(
-        backgroundColor: Colors.blue,
+        backgroundColor: NexusColor.secondary,
         elevation: 0,
         shape: const CircleBorder(),
         onPressed: () {
-          final addTagsModelIndex = items.indexWhere((element) => element.page.runtimeType == AddTransactionScreen);
-          if (addTagsModelIndex != -1) {
-            // Navigate to AddTagScreen
+          final addTransactionModelIndex = items.indexWhere((element) => element.page.runtimeType == AddTransactionScreen);
+          if (addTransactionModelIndex != -1) {
+            // Navigate to AddTransactionScreen
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const AddTransactionScreen()),
@@ -133,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
         },
         child: const Icon(
           Icons.add,
-          color: Colors.black,
+          color: NexusColor.text,
         ),
       ),
       bottomNavigationBar: NavBar(

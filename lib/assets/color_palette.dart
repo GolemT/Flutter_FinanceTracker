@@ -2,7 +2,7 @@ import 'dart:ui';
 
 class NexusColor {
   static const bool isDark = true;
-  static const aczents = Color(0xFF623CEA);
+  static const accents = Color(0xFF623CEA);
   static const secondary = Color(0xFF3185FC);
   static const background = isDark ? Color(0xFF272727): Color(0xFFF0F0F0);
   static const text = isDark ? Color(0xFFFAFAFA): Color(0xFF070707);

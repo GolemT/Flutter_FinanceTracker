@@ -1,3 +1,4 @@
+import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -17,7 +18,7 @@ class NavBar extends StatelessWidget {
         elevation: 0.0,
         child: Container(
           height: 60,
-          color: Color(int.parse('0xFF303030')),
+          color: NexusColor.navigation,
           child: Row(
             children: [
               navItem(
@@ -61,12 +62,12 @@ Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
         children: [
           Icon(
             icon,
-            color: selected ? Color(0xFF623CEA) : Color(0x66FAFAFA),
+            color: selected ? NexusColor.accents : NexusColor.subText,
             size: 30.0,
           ),
           Text(
             text,
-            style: TextStyle(color: selected ? Color(0xFF623CEA) : Color(0x66FAFAFA)),
+            style: TextStyle(color: selected ? NexusColor.accents : NexusColor.subText),
           ),
         ],
       ),

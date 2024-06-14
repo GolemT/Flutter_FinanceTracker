@@ -1,5 +1,6 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/assets/color_theme.dart';
+import 'package:finance_tracker/components/nav_bar.dart';
 import 'package:finance_tracker/components/nav_model.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
@@ -10,13 +11,6 @@ import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-/*
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  testFileWrite();
-}
-*/
 
 void main() => runApp(
   MultiProvider(

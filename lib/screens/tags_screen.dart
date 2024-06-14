@@ -10,6 +10,8 @@ class TagsScreen extends StatefulWidget {
 }
 
 class _TagScreenState extends State<TagsScreen> {
+
+  //TODO: use real data instead of static test data
   final List<Map<String, String>> tags = [
     {'title': 'Groceries', 'description': 'dsjflkhsdjkfhslkdfhkdshgkd'},
     {'title': 'Utilities', 'description': 'djkshgflkghadkghfdjvnsdkn'},

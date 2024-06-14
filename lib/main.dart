@@ -1,14 +1,29 @@
+import 'package:finance_tracker/file_manager.dart';
+import 'package:finance_tracker/model/structure.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
+import 'package:finance_tracker/screens/maxs_test_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
+import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'components/nav_bar.dart';
-
+/*
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  testFileWrite();
 }
+*/
+
+void main() => runApp(
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => FileController()),
+    ],
+    child: MyApp(),
+  ),
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -37,10 +52,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      //Zu Testzwecken auf meine TestSeite umgestellt
+      //home: HomeScreen(),
+      home: TestScreen(),
     );
-  }
+  }  
+
 }
+
+
+
 
 class Screen extends StatefulWidget {
   @override
@@ -70,7 +91,6 @@ class _ScreenState extends State<Screen> {
         title: Text('Your App'),
       ),
       body: _pages[_selectedIndex],
-      ),
-    );
+      );
   }
 }

@@ -1,5 +1,3 @@
-import 'package:finance_tracker/file_manager.dart';
-import 'package:finance_tracker/model/structure.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:finance_tracker/screens/maxs_test_screen.dart';

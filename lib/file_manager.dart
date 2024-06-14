@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:finance_tracker/model/structure.dart';
+import 'package:finance_tracker/model/tag.dart';
+import 'package:finance_tracker/model/transaction.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
@@ -52,28 +53,26 @@ class FileManager {
     File fileTransaction = await getFileTransaction;
 
     List<dynamic> jsonListTransaction = [];
-    try{
+try {
+  if (await fileTransaction.exists()) {
+    String fileContentTransaction = await fileTransaction.readAsString();
+    jsonListTransaction = [];
 
-    if (await fileTransaction.exists()) {
-      String fileContentTransaction = await fileTransaction.readAsString();
-      if(fileContentTransaction.isNotEmpty){
-        dynamic currentJsonListTransaction = json.decode(fileContentTransaction);
+    if (fileContentTransaction.isNotEmpty) {
+      dynamic currentJsonListTransaction = json.decode(fileContentTransaction);
 
-        if (currentJsonListTransaction is List) {
-          jsonListTransaction = currentJsonListTransaction;
-        } else if (currentJsonListTransaction is Map) {
-          jsonListTransaction = [currentJsonListTransaction];
-        } else {
-
-          jsonListTransaction = []; //WTF WARUM MACH ICH DREIMAL DAS GLEICHE???
-        }
-      } else{
-        jsonListTransaction = [];
+      if (currentJsonListTransaction is List) {
+        jsonListTransaction = currentJsonListTransaction;
+      } else if (currentJsonListTransaction is Map) {
+        jsonListTransaction = [currentJsonListTransaction];
       }
     }
-    }catch(e){
-      jsonListTransaction = [];
-    }
+  } else {
+    jsonListTransaction = [];
+  }
+} catch (e) {
+  jsonListTransaction = [];
+}
     jsonListTransaction.add(newTransaction.toJson());
 
     await fileTransaction.writeAsString(json.encode(jsonListTransaction), flush: true);
@@ -119,6 +118,8 @@ class FileManager {
 
     if (await fileTag.exists()) {
       String fileContentTag = await fileTag.readAsString();
+      jsonListTag = [];
+
       if(fileContentTag.isNotEmpty){
         dynamic currentJsonListTag = json.decode(fileContentTag);
 
@@ -126,16 +127,13 @@ class FileManager {
           jsonListTag = currentJsonListTag;
         } else if (currentJsonListTag is Map) {
           jsonListTag = [currentJsonListTag];
-        } else {
-
-          jsonListTag = [];               //WTF WARUM MACH ICH DREIMAL DAS GLEICHE???
         }
       } else{
         jsonListTag = [];
       }
     }
     }catch(e){
-          jsonListTag = [];
+      jsonListTag = [];
     }
 
 

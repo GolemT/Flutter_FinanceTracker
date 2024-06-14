@@ -18,7 +18,7 @@ class NavBar extends StatelessWidget {
         elevation: 0.0,
         child: Container(
           height: 60,
-          color: NexusColor.background,
+          color: NexusColor.navigation,
           child: Row(
             children: [
               navItem(

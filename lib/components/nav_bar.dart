@@ -62,12 +62,12 @@ Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
         children: [
           Icon(
             icon,
-            color: selected ? NexusColor.aczents : NexusColor.subText,
+            color: selected ? NexusColor.accents : NexusColor.subText,
             size: 30.0,
           ),
           Text(
             text,
-            style: TextStyle(color: selected ? NexusColor.aczents : NexusColor.subText),
+            style: TextStyle(color: selected ? NexusColor.accents : NexusColor.subText),
           ),
         ],
       ),

@@ -119,7 +119,7 @@ class _TagScreenState extends State<TagsScreen> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         label: const Text('New Tag'),
         icon: const Icon(Icons.add),
-        backgroundColor: NexusColor.aczents,
+        backgroundColor: NexusColor.accents,
         onPressed: () {
           Navigator.push(
             context,

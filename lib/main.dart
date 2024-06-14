@@ -1,3 +1,5 @@
+import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/assets/color_theme.dart';
 import 'package:finance_tracker/components/nav_model.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
@@ -19,22 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFF272727),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Color(0xFFFFFFFF)),
-          bodyMedium: TextStyle(color: Color(0xFFFFFFFF)),
-          bodySmall: TextStyle(color: Color(0xFFFFFFFF)),
-          displayLarge: TextStyle(color: Color(0xFFFFFFFF)),
-          displayMedium: TextStyle(color: Color(0xFFFFFFFF)),
-          displaySmall: TextStyle(color: Color(0xFFFFFFFF)),
-          titleLarge: TextStyle(color: Color(0xFFFFFFFF)),
-          titleMedium: TextStyle(color: Color(0xFFFFFFFF)),
-          titleSmall: TextStyle(color: Color(0xFFFFFFFF)),
-        ),
-      ),
+      theme: NexusTheme.nexusTheme,
       home: const MainScreen(),
     );
   }
@@ -99,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton.large(
-        backgroundColor: Colors.blue,
+        backgroundColor: NexusColor.secondary,
         elevation: 0,
         shape: const CircleBorder(),
         onPressed: () {
@@ -114,7 +101,7 @@ class _MainScreenState extends State<MainScreen> {
         },
         child: const Icon(
           Icons.add,
-          color: Colors.black,
+          color: NexusColor.text,
         ),
       ),
       bottomNavigationBar: NavBar(

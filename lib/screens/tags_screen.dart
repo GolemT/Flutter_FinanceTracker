@@ -1,3 +1,4 @@
+import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/screens/add_tag_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class _TagScreenState extends State<TagsScreen> {
     {
       'title': 'Entertainment',
       'description':
-          'fdöybjndsökb iaugpnrehwgvrpvtiueiebrtbemhrawibghslegirwanötertwitbnörbösgnsrg rhgrehreg'
+          'fdöybjndsökb iaugpnrehwgvrpvtiueiebrtbemhrawibghslegirwanötertwitb'
     },
   ];
 
@@ -31,10 +32,10 @@ class _TagScreenState extends State<TagsScreen> {
           final tag = tags[index];
           return Container(
             decoration: const BoxDecoration(
-                color: Color(0xFF000000),
+                color: NexusColor.listBackground,
                 border: Border(
                     bottom: BorderSide(
-                        color: Color(0xFF272727),
+                        color: NexusColor.text,
                         style: BorderStyle.solid,
                         strokeAlign: BorderSide.strokeAlignInside))),
             child: ExpansionTile(
@@ -42,7 +43,7 @@ class _TagScreenState extends State<TagsScreen> {
                   style: Theme.of(context).textTheme.bodyMedium),
               children: <Widget>[
                 Container(
-                  color: Colors.grey[900],
+                  color: NexusColor.background,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -51,10 +52,7 @@ class _TagScreenState extends State<TagsScreen> {
                         TextField(
                           decoration: InputDecoration(
                             hintText: tag['title'],
-                            hintStyle: const TextStyle(color: Colors.white),
                             helperText: 'Name',
-                            helperStyle: const TextStyle(color: Colors.white),
-                            fillColor: Colors.grey,
                             filled: true,
                           ),
                         ), // Ende TextField 1
@@ -62,10 +60,7 @@ class _TagScreenState extends State<TagsScreen> {
                         TextField(
                           decoration: InputDecoration(
                             hintText: tag['description'],
-                            hintStyle: const TextStyle(color: Colors.white),
                             helperText: 'Description',
-                            helperStyle: const TextStyle(color: Colors.white),
-                            fillColor: Colors.grey,
                             filled: true,
                           ),
                         ), // Ende TextField 2
@@ -80,11 +75,11 @@ class _TagScreenState extends State<TagsScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 minimumSize: const Size(37, 37),
                                 maximumSize: const Size(37, 37),
-                                backgroundColor: Colors.red,
+                                backgroundColor: NexusColor.negative,
                               ), // Ende ElevatedButton.styleFrom
                               child: const Icon(
                                 Icons.delete,
-                                color: Colors.white,
+                                color: NexusColor.text,
                                 size: 20,
                               ),
                             ),
@@ -97,11 +92,11 @@ class _TagScreenState extends State<TagsScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 minimumSize: const Size(37, 37),
                                 maximumSize: const Size(37, 37),
-                                backgroundColor: Colors.green,
+                                backgroundColor: NexusColor.positive,
                               ), // Ende ElevatedButton.styleFrom
                               child: const Icon(
                                 Icons.check,
-                                color: Colors.white,
+                                color: NexusColor.text,
                                 size: 20,
                               ),
                             ),
@@ -122,6 +117,7 @@ class _TagScreenState extends State<TagsScreen> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         label: const Text('New Tag'),
         icon: const Icon(Icons.add),
+        backgroundColor: NexusColor.aczents,
         onPressed: () {
           Navigator.push(
             context,

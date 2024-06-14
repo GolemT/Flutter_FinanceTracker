@@ -2,15 +2,28 @@ import 'package:finance_tracker/components/nav_model.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
+import 'package:finance_tracker/screens/maxs_test_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
+import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'components/nav_bar.dart';
-
+/*
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  testFileWrite();
 }
+*/
+
+void main() => runApp(
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => FileController()),
+    ],
+    child: MyApp(),
+  ),
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -38,9 +51,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+
       home: const MainScreen(),
+
     );
-  }
+  }  
+
 }
 
 class MainScreen extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:finance_tracker/file_controller.dart'; // Wird später für das laden von den richtigen Daten benötigt
+// import 'package:finance_tracker/file_controller.dart'; // Wird später für das laden von den richtigen Daten benötigt
 
 //TODO: Read the data from the file
 

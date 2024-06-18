@@ -5,6 +5,7 @@ class NexusTheme {
   static ThemeData get nexusTheme{
     return ThemeData(
       scaffoldBackgroundColor: NexusColor.background,
+      primaryColor: NexusColor.secondary,
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: NexusColor.text),
         bodyMedium: TextStyle(color: NexusColor.text),

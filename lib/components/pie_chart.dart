@@ -29,10 +29,10 @@ class PieChartComponent extends StatefulWidget {
   PieChartComponent({super.key});
 
   @override
-  _PieChartComponentState createState() => _PieChartComponentState();
+  PieChartComponentState createState() => PieChartComponentState();
 }
 
-class _PieChartComponentState extends State<PieChartComponent> {
+class PieChartComponentState extends State<PieChartComponent> {
   Map<String, double> dataMap = {};
 
   @override

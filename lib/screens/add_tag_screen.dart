@@ -7,10 +7,10 @@ class AddTagScreen extends StatefulWidget {
   const AddTagScreen({super.key});
 
   @override
-  _AddTagScreenState createState() => _AddTagScreenState();
+  AddTagScreenState createState() => AddTagScreenState();
 }
 
-class _AddTagScreenState extends State<AddTagScreen> {
+class AddTagScreenState extends State<AddTagScreen> {
   String tagName = "";
   String tagDescription = "";
   Color errorMessageColor = Colors.transparent;
@@ -95,7 +95,7 @@ class _AddTagScreenState extends State<AddTagScreen> {
           await fileController.createTag(tagName, tagDescription);
           setState(() => errorMessageColor = Colors.transparent);
           Navigator.pop(context);
-          }
+        }
         },
       ),  
     );

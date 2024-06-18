@@ -10,10 +10,10 @@ class TagsScreen extends StatefulWidget {
   const TagsScreen({super.key});
 
   @override
-  _TagScreenState createState() => _TagScreenState();
+  TagScreenState createState() => TagScreenState();
 }
 
-class _TagScreenState extends State<TagsScreen> {
+class TagScreenState extends State<TagsScreen> {
   @override
   void initState() {
     super.initState();

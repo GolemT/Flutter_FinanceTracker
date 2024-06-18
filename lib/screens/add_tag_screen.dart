@@ -7,7 +7,8 @@ class AddTagScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Tag'),
+        title: Text('Add Tag', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color)),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: const Center(
         child: Text('Add Tag Screen'),

@@ -5,7 +5,7 @@ import 'package:finance_tracker/components/nav_model.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
-import 'package:finance_tracker/screens/maxs_test_screen.dart';
+// import 'package:finance_tracker/screens/maxs_test_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:finance_tracker/file_controller.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'FinanceTracker',
       theme: NexusTheme.nexusTheme,
       home: const MainScreen(),
 

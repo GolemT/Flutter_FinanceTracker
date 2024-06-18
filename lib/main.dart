@@ -17,7 +17,7 @@ void main() => runApp(
     providers: [
       ChangeNotifierProvider(create: (context) => FileController()),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ),
 );
 

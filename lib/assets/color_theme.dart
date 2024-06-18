@@ -1,8 +1,8 @@
-import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:flutter/material.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
 
 class NexusTheme {
-  static ThemeData get nexusTheme{
+  static ThemeData get nexusTheme {
     return ThemeData(
       scaffoldBackgroundColor: NexusColor.background,
       textTheme: const TextTheme(
@@ -15,10 +15,18 @@ class NexusTheme {
         titleLarge: TextStyle(color: NexusColor.text),
         titleMedium: TextStyle(color: NexusColor.text),
         titleSmall: TextStyle(color: NexusColor.text),
-
       ),
       inputDecorationTheme: const InputDecorationTheme(
         fillColor: NexusColor.inputs,
+        filled: true,
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: NexusColor.accents),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: NexusColor.divider),
+        ),
+        labelStyle: TextStyle(color: NexusColor.text),
         helperStyle: TextStyle(color: NexusColor.subText),
         hintStyle: TextStyle(color: NexusColor.text),
       ),

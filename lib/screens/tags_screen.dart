@@ -4,6 +4,8 @@ import 'package:finance_tracker/screens/add_tag_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// TODO: Add functionality to edit and delete buttons
+
 class TagsScreen extends StatefulWidget {
   const TagsScreen({super.key});
 
@@ -24,9 +26,6 @@ class _TagScreenState extends State<TagsScreen> {
     final fileController = context.watch<FileController>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tags'),
-      ),
       body: fileController.listTag.isEmpty
           ? Center(child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),))
           : ListView.builder(
@@ -42,7 +41,7 @@ class _TagScreenState extends State<TagsScreen> {
                               style: BorderStyle.solid,
                               strokeAlign: BorderSide.strokeAlignInside))),
                   child: ExpansionTile(
-                    title: Text(tag.tagName!,
+                    title: Text(tag.tagName,
                         style: Theme.of(context).textTheme.bodyMedium),
                     children: <Widget>[
                       Container(

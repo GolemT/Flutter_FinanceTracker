@@ -31,44 +31,73 @@ class _AddTagScreenState extends State<AddTagScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
+                Text(errorMessage, style: TextStyle(color: errorMessageColor)),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Tag Name'),
+                  decoration: const InputDecoration(
+                    labelText: 'Tag Name',
+                    fillColor: NexusColor.inputs,
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: NexusColor.accents),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: NexusColor.divider),
+                    ),
+                    labelStyle: TextStyle(color: NexusColor.text),
+                    helperStyle: TextStyle(color: NexusColor.subText),
+                    hintStyle: TextStyle(color: NexusColor.text),
+                  ),
                   onChanged: (value) => tagName = value,
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Tag Description'),
+                  decoration: const InputDecoration(
+                    labelText: 'Tag Description',
+                    fillColor: NexusColor.inputs,
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: NexusColor.accents),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: NexusColor.divider),
+                    ),
+                    labelStyle: TextStyle(color: NexusColor.text),
+                    helperStyle: TextStyle(color: NexusColor.subText),
+                    hintStyle: TextStyle(color: NexusColor.text),
+                  ),
                   onChanged: (value) => tagDescription = value,
                 ),
                 const SizedBox(height: 20),
-                TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith((states) => NexusColor.accents),
-                  ),
-                  onPressed: () async {
-                    if (tagName.isEmpty) {
-                      setState(() {
-                        errorMessage = "Name cannot be empty";
-                        errorMessageColor = Colors.red;
-                      });
-                    } else if (fileController.listTag.any((tag) => tag.tagName == tagName)) {
-                      setState(() {
-                        errorMessage = "Tag already exists";
-                        errorMessageColor = Colors.red;
-                      });
-                    } else {
-                      await fileController.createTag(tagName, tagDescription);
-                      setState(() => errorMessageColor = Colors.transparent);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text('Add Tag', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color)),
-                ),
-                Text(errorMessage, style: TextStyle(color: errorMessageColor)),
               ],
             ),
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        label: const Text('Create Tag'),
+        icon: const Icon(Icons.add),
+        backgroundColor: NexusColor.accents,
+        onPressed: () async {
+        if (tagName.isEmpty) {
+          setState(() {
+          errorMessage = "Name cannot be empty";
+          errorMessageColor = Colors.red;
+          });
+        } else if (fileController.listTag.any((tag) => tag.tagName == tagName)) {
+          setState(() {
+          errorMessage = "Tag already exists";
+          errorMessageColor = Colors.red;
+          });
+        } else {
+          await fileController.createTag(tagName, tagDescription);
+          setState(() => errorMessageColor = Colors.transparent);
+          Navigator.pop(context);
+          }
+        },
+      ),  
     );
   }
 }

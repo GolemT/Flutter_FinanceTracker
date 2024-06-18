@@ -2,26 +2,28 @@ import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-// import 'package:finance_tracker/file_controller.dart'; // Wird später für das laden von den richtigen Daten benötigt
+import 'package:finance_tracker/file_controller.dart';
 
-//TODO: Read the data from the file
+// Testing Data
+// [
+//     Transaction(
+//       "Car","2024-03-13",[2],4500.00,["Arbeit"]
+//     ),
+//     Transaction(
+//       "Baloons","2024-03-12",[0],-40.00,["Freizeit"]
+//     ),
+//     Transaction(
+//       "Health Insurance","2024-04-01",[3],-150.00,["Versicherung"]
+//     ),
+//     Transaction(
+//       "Online Course on Data Science","2024-04-15",[1],-200.00,["Bildung"]
+//       ),
+//   ];
+//   final List<Tag> tags = [Tag("Freizeit", "Freizeitausgabe"), Tag("Bildung", "Bildungsausgabe"), Tag("Arbeit", "Arbeitsausgabe"), Tag("Versicherung", "Versicherungsausgabe")];
 
 class MyChart extends StatefulWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-      "Car","2024-03-13",[2],4500.00,["Arbeit"]
-    ),
-    Transaction(
-      "Baloons","2024-03-12",[0],-40.00,["Freizeit"]
-    ),
-    Transaction(
-      "Health Insurance","2024-04-01",[3],-150.00,["Versicherung"]
-    ),
-    Transaction(
-      "Online Course on Data Science","2024-04-15",[1],-200.00,["Bildung"]
-      ),
-  ];
-  final List<Tag> tags = [Tag("Freizeit", "Freizeitausgabe"), Tag("Bildung", "Bildungsausgabe"), Tag("Arbeit", "Arbeitsausgabe"), Tag("Versicherung", "Versicherungsausgabe")];
+  final List<Transaction> transactions = FileController().listTransaction;
+  final List<Tag> tags = FileController().listTag;
   final ThemeData themeMode = ThemeData();
 
   MyChart({Key? key});

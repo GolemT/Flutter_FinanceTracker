@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:finance_tracker/model/transaction.dart';
-// import 'package:finance_tracker/file_controller.dart'; // Wird später für das Laden von den richtigen Daten benötigt
+import 'package:finance_tracker/file_controller.dart';
 
-// TODO: Read the data from the file
+// Testing Data
+
+// [
+//     Transaction(
+//       "Car", "2024-01-13", [2], 4500.00, ["Arbeit"],
+//     ),
+//     Transaction(
+//       "Baloons", "2024-02-15", [0], -40.00, ["Freizeit"],
+//     ),
+//     Transaction(
+//       "Health Insurance", "2024-03-01", [3], -150.00, ["Versicherung"],
+//     ),
+//     Transaction(
+//       "Online Course on Data Science", "2024-04-15", [1], -200.00, ["Bildung"],
+//     ),
+//     Transaction(
+//       "Car", "2024-05-13", [2], 4500.00, ["Arbeit"],
+//     ),
+//     Transaction(
+//       "Baloons", "2024-06-15", [0], -40.00, ["Freizeit"],
+//     ),
+//     Transaction(
+//       "Health Insurance", "2024-07-01", [3], -150.00, ["Versicherung"],
+//     ),
+//     Transaction(
+//       "Online Course on Data Science", "2024-08-15", [1], -200.00, ["Bildung"],
+//     )
+//   ];
+
 
 class LineChartComponent extends StatefulWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-      "Car", "2024-01-13", [2], 4500.00, ["Arbeit"],
-    ),
-    Transaction(
-      "Baloons", "2024-02-15", [0], -40.00, ["Freizeit"],
-    ),
-    Transaction(
-      "Health Insurance", "2024-03-01", [3], -150.00, ["Versicherung"],
-    ),
-    Transaction(
-      "Online Course on Data Science", "2024-04-15", [1], -200.00, ["Bildung"],
-    ),
-    Transaction(
-      "Car", "2024-05-13", [2], 4500.00, ["Arbeit"],
-    ),
-    Transaction(
-      "Baloons", "2024-06-15", [0], -40.00, ["Freizeit"],
-    ),
-    Transaction(
-      "Health Insurance", "2024-07-01", [3], -150.00, ["Versicherung"],
-    ),
-    Transaction(
-      "Online Course on Data Science", "2024-08-15", [1], -200.00, ["Bildung"],
-    )
-  ];
+  final List<Transaction> transactions = FileController().listTransaction;
 
   LineChartComponent({Key? key}) : super(key: key);
 

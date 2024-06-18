@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TestScreen extends StatelessWidget {
+  TestScreen({super.key});
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerAmount = TextEditingController();
   final TextEditingController controllerTag = TextEditingController();
@@ -13,12 +14,11 @@ class TestScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Tests, Enttäuschungen und Einhörner'),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Consumer<FileController>(
-              builder: (context, fileController, child) {
-                try{
+      body: Column(
+        children: [
+          Consumer<FileController>(
+            builder: (context, fileController, child) {
+              try {
                 return Text(
                   fileController.listTransaction[1].transactionName + " " + fileController.listTransaction[1].transactionAmount.toString() + " " + fileController.listTransaction[1].transactionTagName.toString()
                 );
@@ -118,10 +118,4 @@ class TestScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
-
-
-
-

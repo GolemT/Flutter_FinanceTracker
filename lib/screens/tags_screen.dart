@@ -72,9 +72,7 @@ class _TagScreenState extends State<TagsScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   ElevatedButton(
-                                    onPressed: () {
-                                      fileController.resetTag();
-                                    },
+                                    onPressed: () {},
                                     style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                       padding: const EdgeInsets.all(8.0),

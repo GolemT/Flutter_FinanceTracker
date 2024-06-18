@@ -21,18 +21,18 @@ import 'package:finance_tracker/file_controller.dart';
 //   ];
 //   final List<Tag> tags = [Tag("Freizeit", "Freizeitausgabe"), Tag("Bildung", "Bildungsausgabe"), Tag("Arbeit", "Arbeitsausgabe"), Tag("Versicherung", "Versicherungsausgabe")];
 
-class MyChart extends StatefulWidget {
+class PieChartComponent extends StatefulWidget {
   final List<Transaction> transactions = FileController().listTransaction;
   final List<Tag> tags = FileController().listTag;
   final ThemeData themeMode = ThemeData();
 
-  MyChart({Key? key});
+  PieChartComponent({super.key});
 
   @override
-  _MyChartState createState() => _MyChartState();
+  _PieChartComponentState createState() => _PieChartComponentState();
 }
 
-class _MyChartState extends State<MyChart> {
+class _PieChartComponentState extends State<PieChartComponent> {
   Map<String, double> dataMap = {};
 
   @override

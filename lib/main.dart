@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
         navKey: addTransactionNavKey,
       ),
       NavModel(
-        page: AnalyticsScreen(),
+        page: const AnalyticsScreen(),
         navKey: analyticsNavKey,
       ),
       NavModel(

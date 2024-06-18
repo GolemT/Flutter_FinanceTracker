@@ -4,7 +4,6 @@ import 'package:finance_tracker/model/transaction.dart';
 import 'package:finance_tracker/file_controller.dart';
 
 // Testing Data
-
 // [
 //     Transaction(
 //       "Car", "2024-01-13", [2], 4500.00, ["Arbeit"],
@@ -33,10 +32,11 @@ import 'package:finance_tracker/file_controller.dart';
 //   ];
 
 
+
 class LineChartComponent extends StatefulWidget {
   final List<Transaction> transactions = FileController().listTransaction;
 
-  LineChartComponent({Key? key}) : super(key: key);
+  LineChartComponent({super.key});
 
   @override
   _LineChartComponentState createState() => _LineChartComponentState();
@@ -83,7 +83,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
 
       xLabels = sumsByDate.map((item) => item['date'] as String).toList();
       minY = minSum < 0 ? minSum : 0;
-      maxY = maxSum;
+      maxY = maxSum + 1000;
     });
   }
 
@@ -94,7 +94,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: lineChartData.isEmpty
-            ? const CircularProgressIndicator()
+            ? const Text("No Data Available")
             : LineChart(
                 LineChartData(
                   minY: minY,

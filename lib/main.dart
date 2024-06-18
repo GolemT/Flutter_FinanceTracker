@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: NexusTheme.nexusTheme,
-      home: const MainScreen(),
+      home: TestScreen(),
 
     );
   }  

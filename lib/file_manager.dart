@@ -1,11 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
+
+  //TRANSACTIONS:
 
   //Reading of the mobile device path
     Future<String> get directoryPath async {
@@ -53,30 +57,96 @@ class FileManager {
     File fileTransaction = await getFileTransaction;
 
     List<dynamic> jsonListTransaction = [];
-try {
-  if (await fileTransaction.exists()) {
-    String fileContentTransaction = await fileTransaction.readAsString();
-    jsonListTransaction = [];
+    try {
+      if (await fileTransaction.exists()) {
+        String fileContentTransaction = await fileTransaction.readAsString();
+        jsonListTransaction = [];
 
-    if (fileContentTransaction.isNotEmpty) {
-      dynamic currentJsonListTransaction = json.decode(fileContentTransaction);
+        if (fileContentTransaction.isNotEmpty) {
+          dynamic currentJsonListTransaction = json.decode(fileContentTransaction);
 
-      if (currentJsonListTransaction is List) {
-        jsonListTransaction = currentJsonListTransaction;
-      } else if (currentJsonListTransaction is Map) {
-        jsonListTransaction = [currentJsonListTransaction];
+          if (currentJsonListTransaction is List) {
+            jsonListTransaction = currentJsonListTransaction;
+          } else if (currentJsonListTransaction is Map) {
+            jsonListTransaction = [currentJsonListTransaction];
+          }
+        }
+      } else {
+        jsonListTransaction = [];
       }
+    } catch (e) {
+      jsonListTransaction = [];
     }
-  } else {
-    jsonListTransaction = [];
-  }
-} catch (e) {
-  jsonListTransaction = [];
-}
     jsonListTransaction.add(newTransaction.toJson());
 
     await fileTransaction.writeAsString(json.encode(jsonListTransaction), flush: true);
   }
+
+  Future updateTransaction(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async{
+    final Transaction newTransaction = Transaction(transactionName, transactionDate, tag, transactionAmount, []); 
+    File fileTransaction = await getFileTransaction;
+
+    List<dynamic> jsonListTransaction = [];
+    try {
+      if (await fileTransaction.exists()) {
+        String fileContentTransaction = await fileTransaction.readAsString();
+        jsonListTransaction = [];
+
+        if (fileContentTransaction.isNotEmpty) {
+          dynamic currentJsonListTransaction = json.decode(fileContentTransaction);
+
+          if (currentJsonListTransaction is List) {
+            jsonListTransaction = currentJsonListTransaction;
+          } else if (currentJsonListTransaction is Map) {
+            jsonListTransaction = [currentJsonListTransaction];
+          }
+        }
+      } else {
+        jsonListTransaction = [];
+      }
+    } catch (e) {
+      jsonListTransaction = [];
+    }
+
+    jsonListTransaction[transactionIndex] = newTransaction.toJson();
+
+    await fileTransaction.writeAsString(json.encode(jsonListTransaction), flush: true);
+
+  }
+
+  Future deleteTransaction(transactionIndex) async{
+    File fileTransaction = await getFileTransaction;
+
+    List<dynamic> jsonListTransaction = [];
+    try {
+      if (await fileTransaction.exists()) {
+        String fileContentTransaction = await fileTransaction.readAsString();
+        jsonListTransaction = [];
+
+        if (fileContentTransaction.isNotEmpty) {
+          dynamic currentJsonListTransaction = json.decode(fileContentTransaction);
+
+          if (currentJsonListTransaction is List) {
+            jsonListTransaction = currentJsonListTransaction;
+          } else if (currentJsonListTransaction is Map) {
+            jsonListTransaction = [currentJsonListTransaction];
+          }
+        }
+      } else {
+        jsonListTransaction = [];
+      }
+    } catch (e) {
+      jsonListTransaction = [];
+    }
+    print(jsonListTransaction);
+    jsonListTransaction.removeAt(1);
+
+    print(jsonListTransaction);
+
+    await fileTransaction.writeAsString(json.encode(jsonListTransaction), flush: true);
+
+  }
+
 
   //Overwriting the transactino Json with empty String. Could call it nuclear fission
   Future resetFileTransaction()async{
@@ -84,6 +154,9 @@ try {
     await fileTransaction.writeAsString("", flush: true);
 
   }
+
+  //--------------------------------------------------------------- TAGS ---------------------------------------------------------------//
+
 
   //trying to read the tag data from the get file function and decodes them
    Future readTag() async{
@@ -103,8 +176,6 @@ try {
     
     return null;
   }
-
-
 
   //reading existing tag data and adding the new tag.
   //Ensure that existing and new tag are a List
@@ -149,5 +220,68 @@ try {
 
   }
 
+  Future updateTag(int tagIndex, String tagName, String tagDescription) async {
+    final Tag newTag = Tag(tagName, tagDescription);
+    File fileTag = await getFileTag;
+
+    List<dynamic> jsonListTag = [];
+    try{
+
+    if (await fileTag.exists()) {
+      String fileContentTag = await fileTag.readAsString();
+      jsonListTag = [];
+
+      if(fileContentTag.isNotEmpty){
+        dynamic currentJsonListTag = json.decode(fileContentTag);
+
+        if (currentJsonListTag is List) {
+          jsonListTag = currentJsonListTag;
+        } else if (currentJsonListTag is Map) {
+          jsonListTag = [currentJsonListTag];
+        }
+      } else{
+        jsonListTag = [];
+      }
+    }
+    }catch(e){
+      jsonListTag = [];
+    }
+
+
+    jsonListTag[tagIndex] = newTag;
+
+    await fileTag.writeAsString(json.encode(jsonListTag), flush: true);
+  }
+
+  Future deleteTag(int tagIndex) async {
+    File fileTag = await getFileTag;
+
+    List<dynamic> jsonListTag = [];
+    try{
+
+    if (await fileTag.exists()) {
+      String fileContentTag = await fileTag.readAsString();
+      jsonListTag = [];
+
+      if(fileContentTag.isNotEmpty){
+        dynamic currentJsonListTag = json.decode(fileContentTag);
+
+        if (currentJsonListTag is List) {
+          jsonListTag = currentJsonListTag;
+        } else if (currentJsonListTag is Map) {
+          jsonListTag = [currentJsonListTag];
+        }
+      } else{
+        jsonListTag = [];
+      }
+    }
+    }catch(e){
+      jsonListTag = [];
+    }
+
+
+    jsonListTag.removeAt(tagIndex);
+    await fileTag.writeAsString(json.encode(jsonListTag), flush: true);
+  }
 
 }

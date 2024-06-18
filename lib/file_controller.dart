@@ -23,7 +23,6 @@ class FileController extends ChangeNotifier {
     //If transactions exist and a transaction has taggs, add the Names of the Tag to the Transaction class
     if (jsonDataTransaction != null) {
       listTransaction = (jsonDataTransaction as List).map((item) => Transaction.fromJson(item as Map<String, dynamic>)).toList();
-      if (listTransaction[1].transactionTag !=  []){
         var i = 0;
         while(i < listTransaction.length){
           listTransaction[i].transactionTagName.clear();
@@ -37,7 +36,6 @@ class FileController extends ChangeNotifier {
             j++;
           }
           i++;
-        }
       }
       notifyListeners();
     }
@@ -50,6 +48,19 @@ class FileController extends ChangeNotifier {
     await readTag();
   }
 
+  updateTransaction(transactionIndex, transactionName, transactionDate, tag, transactionAmount) async{
+    await FileManager().updateTransaction(transactionIndex, transactionName, transactionDate, tag, transactionAmount);
+    await readTransaction();
+    await readTag();
+  }
+
+  deleteTransaction(transactionIndex) async{
+    await FileManager().deleteTransaction(transactionIndex);
+    await readTransaction();
+    await readTag();
+  }
+
+
   //nuke whole transaction JSON file
   resetTransaction() async{
     await FileManager().resetFileTransaction();
@@ -57,6 +68,10 @@ class FileController extends ChangeNotifier {
     await readTransaction();
     await readTag();
   }
+
+
+  //--------------------------------------------------------------- TAGS ---------------------------------------------------------------//
+
 
   //Reads and updates the list of tags from the JSON. Notifys listeners to update shown values.
   Future<void> readTag() async {
@@ -74,6 +89,17 @@ class FileController extends ChangeNotifier {
     await readTag();
     await readTransaction();
     }
+
+  updateTag(tagIndex, tagName, tagDescription) async{
+    tag = await FileManager().updateTag(tagIndex, tagName ,tagDescription);
+    await readTag();
+    await readTransaction();
+    }
+  deleteTag(tagIndex) async{
+    await FileManager().deleteTag(tagIndex);
+    await readTransaction();
+    await readTag();
+  }
 
   //nuke whole tag JSON file
   resetTag() async{

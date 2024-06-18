@@ -12,13 +12,14 @@ class TestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tests, Enttäuschungen und Einhörner'),
+        title: Text('Test'),
       ),
-      body: Column(
-        children: [
-          Consumer<FileController>(
-            builder: (context, fileController, child) {
-              try {
+      body: Container(
+        child: Column(
+          children: [
+            Consumer<FileController>(
+              builder: (context, fileController, child) {
+                try{
                 return Text(
                   fileController.listTransaction[1].transactionName + " " + fileController.listTransaction[1].transactionAmount.toString() + " " + fileController.listTransaction[1].transactionTagName.toString()
                 );
@@ -74,7 +75,7 @@ class TestScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                context.read<FileController>().createTag(controllerTag.text, "Desgribdschön");
+                context.read<FileController>().createTag(controllerTag.text, "Hier is oane suber dolle bschreibung");
               },
               child: Text('Speichern'),
             ),
@@ -83,31 +84,6 @@ class TestScreen extends StatelessWidget {
                 context.read<FileController>().resetTag();
               },
               child: Text('Reset Tag'),
-            ),
-            TextField(
-              controller: controllerName,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'N suber doller dag',
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<FileController>().updateTransaction(1, controllerName.text, "gestern", [0, 1], double.parse("55"));
-              },
-              child: Text('update Transaction'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<FileController>().deleteTransaction(1);
-              },
-              child: Text('delete Transaction'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<FileController>().deleteTag(1);
-              },
-              child: Text('delete Tag'),
             ),
             Image.asset(
               'assets/einhorn.jpg',
@@ -118,4 +94,10 @@ class TestScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
+
+
+
+

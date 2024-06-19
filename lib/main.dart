@@ -5,7 +5,7 @@ import 'package:finance_tracker/components/nav_model.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
-import 'package:finance_tracker/screens/maxs_test_screen.dart';
+//import 'package:finance_tracker/screens/maxs_test_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:finance_tracker/file_controller.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: NexusTheme.nexusTheme,
-      home: TestScreen(),
+      home: const MainScreen(),
 
     );
   }  

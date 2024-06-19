@@ -55,7 +55,6 @@ class FileManager {
     try {
       if (await fileTransaction.exists()) {
         String fileContentTransaction = await fileTransaction.readAsString();
-        jsonListTransaction = [];
 
         if (fileContentTransaction.isNotEmpty) {
           dynamic currentJsonListTransaction = json.decode(fileContentTransaction);
@@ -66,11 +65,9 @@ class FileManager {
             jsonListTransaction = [currentJsonListTransaction];
           }
         }
-      } else {
-        jsonListTransaction = [];
       }
     } catch (e) {
-      jsonListTransaction = [];
+      //loggin later?
     }
     return jsonListTransaction;
   }
@@ -152,7 +149,6 @@ class FileManager {
 
     if (await fileTag.exists()) {
       String fileContentTag = await fileTag.readAsString();
-      jsonListTag = [];
 
       if(fileContentTag.isNotEmpty){
         dynamic currentJsonListTag = json.decode(fileContentTag);
@@ -162,12 +158,10 @@ class FileManager {
         } else if (currentJsonListTag is Map) {
           jsonListTag = [currentJsonListTag];
         }
-      } else{
-        jsonListTag = [];
       }
     }
     }catch(e){
-      jsonListTag = [];
+      //loggin later?
     }
 
     return jsonListTag;
@@ -234,8 +228,6 @@ class FileManager {
         i++;
     }
     await fileTransaction.writeAsString(json.encode(listFormatedTransaction), flush: true);
-
-    print(listFormatedTransaction);
 
   }
 

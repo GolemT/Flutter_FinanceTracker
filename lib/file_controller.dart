@@ -13,8 +13,7 @@ class FileController extends ChangeNotifier {
 
   //Inital loading of the data and mapping tags to transactions  
   FileController() {
-    readTransaction();
-    readTag();
+    refreshTagsAndTransactions();
   }
 
   //Reads and updates the tansaction list from the JSON. Notifys listeners to update shown values.

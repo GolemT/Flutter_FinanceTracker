@@ -66,6 +66,25 @@ class TestScreen extends StatelessWidget {
               },
             ),
             TextField(
+              controller: controllerTag,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'N suber doller dag',
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<FileController>().createTag(controllerTag.text, "Desgribdschön");
+              },
+              child: Text('Speichern'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<FileController>().resetTag();
+              },
+              child: Text('Reset Tag'),
+            ),
+            TextField(
               controller: controllerName,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -76,19 +95,19 @@ class TestScreen extends StatelessWidget {
               onPressed: () {
                 context.read<FileController>().updateTransaction(1, controllerName.text, "gestern", [0, 1], double.parse("55"));
               },
-              child: Text('Speichern'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<FileController>().resetTag();
-              },
-              child: Text('Reset Tag'),
+              child: Text('update Transaction'),
             ),
             TextButton(
               onPressed: () {
                 context.read<FileController>().deleteTransaction(1);
               },
               child: Text('delete Transaction'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<FileController>().deleteTag(1);
+              },
+              child: Text('delete Tag'),
             ),
             Image.asset(
               'assets/einhorn.jpg',

@@ -3,7 +3,7 @@ class Transaction {
   final String transactionDate;
   final List<int> transactionTag;
   final double transactionAmount; 
-  final List<String> transactionTagName;  //Gets automaticlly filled with the tagName when the date got read. Input needed ist the Index of the Tag stored in the Tag JSON
+  List<String> transactionTagName;  //Gets automaticlly filled with the tagName when the date got read. Input needed ist the Index of the Tag stored in the Tag JSON
 
   Transaction(this.transactionName, this.transactionDate, this.transactionTag, this.transactionAmount, this.transactionTagName);
 

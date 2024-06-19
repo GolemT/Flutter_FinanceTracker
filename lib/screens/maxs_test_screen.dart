@@ -11,7 +11,7 @@ class TestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Test'),
+        title: Text('Tests, Enttäuschungen und Einhörner'),
       ),
       body: Container(
         child: Column(
@@ -74,7 +74,7 @@ class TestScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                context.read<FileController>().createTag(controllerTag.text, "Hier is oane suber dolle bschreibung");
+                context.read<FileController>().createTag(controllerTag.text, "Desgribdschön");
               },
               child: Text('Speichern'),
             ),
@@ -83,6 +83,31 @@ class TestScreen extends StatelessWidget {
                 context.read<FileController>().resetTag();
               },
               child: Text('Reset Tag'),
+            ),
+            TextField(
+              controller: controllerName,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'N suber doller dag',
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<FileController>().updateTransaction(1, controllerName.text, "gestern", [0, 1], double.parse("55"));
+              },
+              child: Text('update Transaction'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<FileController>().deleteTransaction(1);
+              },
+              child: Text('delete Transaction'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<FileController>().deleteTag(1);
+              },
+              child: Text('delete Tag'),
             ),
             Image.asset(
               'assets/einhorn.jpg',

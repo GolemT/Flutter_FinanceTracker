@@ -25,6 +25,7 @@ class AddTagScreenState extends State<AddTagScreen> {
       appBar: AppBar(
         title: Text('Add Tag', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color)),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        iconTheme: Theme.of(context).iconTheme,
       ),
       body: Center(
         child: Form(

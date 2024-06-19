@@ -1,5 +1,6 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/file_controller.dart';
+import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -94,7 +95,10 @@ class AddTagScreenState extends State<AddTagScreen> {
         } else {
           await fileController.createTag(tagName, tagDescription);
           setState(() => errorMessageColor = Colors.transparent);
-          Navigator.pop(context);
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TagsScreen()),
+          );
         }
         },
       ),  

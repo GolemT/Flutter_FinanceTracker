@@ -4,8 +4,6 @@ import 'package:finance_tracker/screens/add_tag_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// TODO: Add functionality to edit and delete buttons
-
 class TagsScreen extends StatefulWidget {
   const TagsScreen({super.key});
 
@@ -24,6 +22,8 @@ class TagScreenState extends State<TagsScreen> {
   @override
   Widget build(BuildContext context) {
     final fileController = context.watch<FileController>();
+    String tagName = "";
+    String tagDescription = "";
 
     return Scaffold(
       body: fileController.listTag.isEmpty
@@ -57,6 +57,7 @@ class TagScreenState extends State<TagsScreen> {
                                   helperText: 'Name',
                                   filled: true,
                                 ),
+                                onChanged: (value) => tagName = value,
                               ), // Ende TextField 1
                               const SizedBox(height: 8.0),
                               TextField(
@@ -65,13 +66,20 @@ class TagScreenState extends State<TagsScreen> {
                                   helperText: 'Description',
                                   filled: true,
                                 ),
+                                onChanged: (value) => tagDescription = value,
                               ), // Ende TextField 2
                               const SizedBox(height: 16.0),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      fileController.deleteTag(fileController.listTag.indexOf(tag));
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const TagsScreen()),
+                                      );
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                       padding: const EdgeInsets.all(8.0),
@@ -88,7 +96,22 @@ class TagScreenState extends State<TagsScreen> {
                                   const SizedBox(width: 240.0),
                                   // Ende ElevatedButton 1
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      if(tagName == tag.tagName && tagDescription == tag.tagDescription){
+                                        return;
+                                      }
+                                      if (tagName.isEmpty) {
+                                        tagName = tag.tagName;
+                                      }
+                                      if(tagDescription.isEmpty){
+                                        tagDescription = tag.tagDescription;
+                                      }
+                                      fileController.updateTag(fileController.listTag.indexOf(tag), tagName, tagDescription);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const TagsScreen()),
+                                      );
+                                    },
                                     style: ElevatedButton.styleFrom(
                                       shape: const CircleBorder(),
                                       padding: const EdgeInsets.all(8.0),

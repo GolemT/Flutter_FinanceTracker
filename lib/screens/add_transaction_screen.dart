@@ -1,7 +1,9 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/assets/size_palette.dart';
+import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
@@ -11,6 +13,13 @@ class AddTransactionScreen extends StatefulWidget {
 }
 
 class TransactionsState extends State<AddTransactionScreen> {
+
+  void initState() {
+    super.initState();
+    // Loading the tags initially when the screen is created
+    Future.microtask(() => context.read<FileController>().readTag());
+  }
+
   String itemName = "";
   DateTime? _selectedDate;
   String? _selectedTag;

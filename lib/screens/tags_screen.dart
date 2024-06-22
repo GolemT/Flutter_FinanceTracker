@@ -3,6 +3,7 @@ import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/screens/add_tag_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:finance_tracker/components/nav_screen.dart';
 
 class TagsScreen extends StatefulWidget {
   const TagsScreen({super.key});
@@ -25,10 +26,28 @@ class TagScreenState extends State<TagsScreen> {
     String tagName = "";
     String tagDescription = "";
 
-    return Scaffold(
-      body: fileController.listTag.isEmpty
+    return NavScreen(
+      pageIndex: 1,
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            Navigator.pushReplacementNamed(context, '/home');
+            break;
+          case 1:
+            Navigator.pushReplacementNamed(context, '/tags');
+            break;
+          case 3:
+            Navigator.pushReplacementNamed(context, '/analytics');
+            break;
+          case 4:
+            Navigator.pushReplacementNamed(context, '/settings');
+            break;
+        }
+      },
+      child: fileController.listTag.isEmpty
           ? Center(child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),))
-          : ListView.builder(
+          : Scaffold(
+            body: ListView.builder(
               itemCount: fileController.listTag.length,
               itemBuilder: (context, index) {
                 final tag = fileController.listTag[index];
@@ -57,7 +76,9 @@ class TagScreenState extends State<TagsScreen> {
                                   helperText: 'Name',
                                   filled: true,
                                 ),
-                                onChanged: (value) => tagName = value,
+                                onChanged: (value) => {
+                                  tagName = value,
+                                  },
                               ), // Ende TextField 1
                               const SizedBox(height: 8.0),
                               TextField(
@@ -66,7 +87,9 @@ class TagScreenState extends State<TagsScreen> {
                                   helperText: 'Description',
                                   filled: true,
                                 ),
-                                onChanged: (value) => tagDescription = value,
+                                onChanged: (value) => {
+                                  tagDescription = value,
+                                  },
                               ), // Ende TextField 2
                               const SizedBox(height: 16.0),
                               Row(
@@ -75,9 +98,9 @@ class TagScreenState extends State<TagsScreen> {
                                   ElevatedButton(
                                     onPressed: () {
                                       fileController.deleteTag(fileController.listTag.indexOf(tag));
-                                      Navigator.push(
+                                      Navigator.pushReplacementNamed(
                                         context,
-                                        MaterialPageRoute(builder: (context) => const TagsScreen()),
+                                        '/tags',
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -107,9 +130,9 @@ class TagScreenState extends State<TagsScreen> {
                                         tagDescription = tag.tagDescription;
                                       }
                                       fileController.updateTag(fileController.listTag.indexOf(tag), tagName, tagDescription);
-                                      Navigator.push(
+                                      Navigator.pushReplacementNamed(
                                         context,
-                                        MaterialPageRoute(builder: (context) => const TagsScreen()),
+                                        '/tags',
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -149,7 +172,8 @@ class TagScreenState extends State<TagsScreen> {
           );
           fileController.readTag(); // Update tags after returning from AddTagScreen
         },
-      ),
-    );
+        ),
+        )
+      );
   }
 }

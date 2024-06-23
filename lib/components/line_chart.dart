@@ -39,10 +39,10 @@ class LineChartComponent extends StatefulWidget {
   LineChartComponent({super.key});
 
   @override
-  _LineChartComponentState createState() => _LineChartComponentState();
+  LineChartComponentState createState() => LineChartComponentState();
 }
 
-class _LineChartComponentState extends State<LineChartComponent> {
+class LineChartComponentState extends State<LineChartComponent> {
   List<FlSpot> lineChartData = [];
   List<String> xLabels = [];
   double minY = 0;

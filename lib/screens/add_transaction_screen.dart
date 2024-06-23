@@ -3,6 +3,8 @@ import 'package:finance_tracker/assets/size_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
+//TODO Sorry das ich nicht mehr geschafft habe tut mir echt leid das an euch so viel abfällt...
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
 
@@ -11,18 +13,18 @@ class AddTransactionScreen extends StatefulWidget {
 }
 
 class TransactionsState extends State<AddTransactionScreen> {
-
-  String itemName = "";
-  DateTime? _selectedDate;
-  List<String> testList = ['Test1', 'Test2'];
-  String? _selectedTag;
-  double expanses = 0.00;
-  bool repeat = false;
-  final TextEditingController _dateController = TextEditingController();
+  String itemName = ""; // Input Feld für den Namen der Ausgbe
+  DateTime? _selectedDate; // Variable für das Datum der Ausgabe
+  List<String> testList = ['Test1', 'Test2']; // Testdaten für das Select Feld
+  String? _selectedTag; // speichert den ausgewählten Tag
+  double expanses = 0.00; // speichert die Ausgaben
+  bool repeat =
+      false; // variable für die checkbox (noch nicht implementiert sorry)
+  final TextEditingController _dateController =
+      TextEditingController(); // für den DatePicker
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Transaction'),
@@ -33,7 +35,7 @@ class TransactionsState extends State<AddTransactionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Erstes Input Feld
+              // Input Feld für Name
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Enter your name',
@@ -57,6 +59,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                   ),
                   readOnly: true,
                   onTap: () async {
+                    // Kalender zur Datumsauswahl
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
@@ -92,6 +95,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                           style: TextStyle(color: NexusColor.text),
                         ),
                       ),
+                      // viel Styling vielleicht kannst du das noch auslagern wäre zuckersüß mein Mäuschen
                       decoration: InputDecoration(
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 10.0),
@@ -105,6 +109,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                         color: NexusColor.text,
                         fontSize: 16.0,
                       ),
+                      // TODO: Backend einbinden
                       items: testList.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -115,10 +120,10 @@ class TransactionsState extends State<AddTransactionScreen> {
                               overflow: TextOverflow
                                   .ellipsis, // Textüberlauf behandeln
                             ),
-
                           ),
                         );
                       }).toList(),
+                      // speichert die ausgewählte Variable
                       onChanged: (newValue) {
                         setState(() {
                           _selectedTag = newValue;
@@ -126,6 +131,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                       },
                     ),
                   ),
+                  // Input Feld für die Ausgaben
                   const SizedBox(width: 16.0),
                   Expanded(
                     child: Column(
@@ -141,6 +147,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                                 RegExp(r'^\d+\.?\d*'),
                               ),
                             ],
+                            // Speichert die horrenden Summen
                             onChanged: (value) {
                               setState(() {
                                 expanses = double.tryParse(value) ?? 0.0;
@@ -148,6 +155,9 @@ class TransactionsState extends State<AddTransactionScreen> {
                             },
                           ),
                         ),
+
+                        // Repeat Checkbox
+                        // TODO: Checkbox hinzufügen und Textbox unbearbeitbar machen
                         const SizedBox(height: 16.0),
                         SizedBox(
                           width: NexusSize.inputWidth.smal,

@@ -31,6 +31,7 @@ class NexusTheme {
         ),
         labelStyle: TextStyle(color: NexusColor.text),
         filled: true,
+        filled: true,
         helperStyle: TextStyle(color: NexusColor.subText),
         hintStyle: TextStyle(color: NexusColor.text),
         border: OutlineInputBorder(),

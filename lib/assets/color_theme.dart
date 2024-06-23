@@ -30,18 +30,8 @@ class NexusTheme {
           borderSide: BorderSide(color: NexusColor.divider),
         ),
         labelStyle: TextStyle(color: NexusColor.text),
-        filled: true,
-        filled: true,
         helperStyle: TextStyle(color: NexusColor.subText),
         hintStyle: TextStyle(color: NexusColor.text),
-        border: OutlineInputBorder(),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: NexusColor.accents),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: NexusColor.divider),
-        ),
-        labelStyle: TextStyle(color: NexusColor.text),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: NexusColor.white,

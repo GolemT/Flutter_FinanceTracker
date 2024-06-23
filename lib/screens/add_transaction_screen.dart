@@ -1,9 +1,7 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/assets/size_palette.dart';
-import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
@@ -14,22 +12,17 @@ class AddTransactionScreen extends StatefulWidget {
 
 class TransactionsState extends State<AddTransactionScreen> {
 
-  void initState() {
-    super.initState();
-    // Loading the tags initially when the screen is created
-    Future.microtask(() => context.read<FileController>().readTag());
-  }
-
   String itemName = "";
   DateTime? _selectedDate;
+  List<String> testList = ['Test1', 'Test2'];
   String? _selectedTag;
-  final List<String> _tags = [];
   double expanses = 0.00;
   bool repeat = false;
   final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Transaction'),
@@ -112,7 +105,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                         color: NexusColor.text,
                         fontSize: 16.0,
                       ),
-                      items: _tags.map((String value) {
+                      items: testList.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: SizedBox(
@@ -122,6 +115,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                               overflow: TextOverflow
                                   .ellipsis, // Textüberlauf behandeln
                             ),
+
                           ),
                         );
                       }).toList(),

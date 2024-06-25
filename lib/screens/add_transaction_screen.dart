@@ -1,10 +1,13 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/assets/size_palette.dart';
+import 'package:finance_tracker/file_controller.dart';
+import 'package:finance_tracker/model/transaction.dart';
+import 'package:finance_tracker/model/tag.dart';
+import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
-
-//TODO Sorry das ich nicht mehr geschafft habe tut mir echt leid das an euch so viel abfällt...
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
 
@@ -13,170 +16,199 @@ class AddTransactionScreen extends StatefulWidget {
 }
 
 class TransactionsState extends State<AddTransactionScreen> {
-  String itemName = ""; // Input Feld für den Namen der Ausgbe
-  DateTime? _selectedDate; // Variable für das Datum der Ausgabe
-  List<String> testList = ['Test1', 'Test2']; // Testdaten für das Select Feld
-  String? _selectedTag; // speichert den ausgewählten Tag
-  double expanses = 0.00; // speichert die Ausgaben
-  bool repeat =
-      false; // variable für die checkbox (noch nicht implementiert sorry)
-  final TextEditingController _dateController =
-      TextEditingController(); // für den DatePicker
+  String transactionName = "";
+  DateTime selectedDate = DateTime.now();
+  List<Tag> tagList = [];
+  Tag? selectedTag;
+  double? amount;
+  bool repeat = false; // variable für die checkbox
+  final TextEditingController dateController = TextEditingController(); // für den DatePicker
+  Color errorMessageColor = Colors.transparent;
+  String errorMessage = "";
+
+  @override
+  void initState() {
+    super.initState();
+    dateController.text = "${selectedDate.toLocal()}".split(' ')[0];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final fileController = context.watch<FileController>();
+    tagList = fileController.listTag;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Transaction'),
-      ),
-      body: Form(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Input Feld für Name
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Enter your name',
-                ),
-                onChanged: (value) => itemName = value,
-              ),
-
-              const SizedBox(height: 16.0),
-
-              // Date Picker
-              SizedBox(
-                width: NexusSize.inputWidth.normal,
-                height: NexusSize.inputHeight.normal,
-                child: TextFormField(
-                  controller: _dateController,
+        appBar: AppBar(
+          title: const Text('Add Transaction'),
+        ),
+        body: Form(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(errorMessage, style: TextStyle(color: errorMessageColor)),
+                TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Pick the date',
+                    labelText: 'Enter a name for the transaction',
                   ),
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
-                  readOnly: true,
-                  onTap: () async {
-                    // Kalender zur Datumsauswahl
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2101),
-                    );
-                    if (pickedDate != null) {
-                      setState(() {
-                        _selectedDate = pickedDate;
-                        _dateController.text =
-                            "${pickedDate.toLocal()}".split(' ')[0];
-                      });
-                    }
-                  },
+                  onChanged: (value) => transactionName = value,
                 ),
-              ),
 
-              const SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
-              Row(
-                children: [
-                  //Dropdown Tag Liste
-                  SizedBox(
-                    width: NexusSize.inputWidth.smal,
-                    height: NexusSize.inputHeight.normal,
-                    child: DropdownButtonFormField<String>(
-                      value: _selectedTag,
-                      hint: const SizedBox(
-                        width: 100.0,
-                        child: Text(
-                          'Tag wählen',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: NexusColor.text),
-                        ),
-                      ),
-                      // viel Styling vielleicht kannst du das noch auslagern wäre zuckersüß mein Mäuschen
-                      decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 10.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      dropdownColor: NexusColor.inputs,
-                      menuMaxHeight: 150,
-                      style: const TextStyle(
-                        color: NexusColor.text,
-                        fontSize: 16.0,
-                      ),
-                      // TODO: Backend einbinden
-                      items: testList.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: SizedBox(
-                            width: 100,
-                            child: Text(
-                              value,
-                              overflow: TextOverflow
-                                  .ellipsis, // Textüberlauf behandeln
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      // speichert die ausgewählte Variable
-                      onChanged: (newValue) {
+                // Date Picker
+                SizedBox(
+                  width: NexusSize.inputWidth.normal,
+                  height: NexusSize.inputHeight.normal,
+                  child: TextFormField(
+                    controller: dateController,
+                    decoration: const InputDecoration(
+                      labelText: 'Select the date',
+                      icon: Icon(Icons.calendar_today)
+                    ),
+                    style: const TextStyle(
+                      fontSize: 12,
+                    ),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
+                      );
+                      if (pickedDate != null) {
                         setState(() {
-                          _selectedTag = newValue;
+                          selectedDate = pickedDate;
+                          dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
                         });
-                      },
-                    ),
+                      }
+                    },
                   ),
-                  // Input Feld für die Ausgaben
-                  const SizedBox(width: 16.0),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: NexusSize.inputWidth.smal,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Enter your expanses',
-                            ),
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+\.?\d*'),
-                              ),
-                            ],
-                            // Speichert die horrenden Summen
-                            onChanged: (value) {
-                              setState(() {
-                                expanses = double.tryParse(value) ?? 0.0;
-                              });
-                            },
-                          ),
-                        ),
+                ),
 
-                        // Repeat Checkbox
-                        // TODO: Checkbox hinzufügen und Textbox unbearbeitbar machen
-                        const SizedBox(height: 16.0),
-                        SizedBox(
-                          width: NexusSize.inputWidth.smal,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Repeat transaction',
-                            ),
-                            onChanged: (value) => itemName = value,
+                const SizedBox(height: 16.0),
+
+                Row(
+                  children: [
+                    //Dropdown Tag Liste
+                    SizedBox(
+                      width: NexusSize.inputWidth.smal,
+                      height: NexusSize.inputHeight.normal,
+                      child: DropdownButtonFormField<Tag>(
+                        value: selectedTag,
+                        hint: const SizedBox(
+                          width: 100.0,
+                          child: Text(
+                            'Select tags',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: NexusColor.text),
                           ),
                         ),
-                      ],
+                        // viel Styling vielleicht kannst man das noch auslagern
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 10.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                        dropdownColor: NexusColor.inputs,
+                        menuMaxHeight: 150,
+                        style: const TextStyle(
+                          color: NexusColor.text,
+                          fontSize: 16.0,
+                        ),
+                        items: tagList.map((Tag tag) {
+                          return DropdownMenuItem<Tag>(
+                            value: tag,
+                            child: SizedBox(
+                              width: 100,
+                              child: Text(
+                                tag.tagName,
+                                overflow: TextOverflow
+                                    .ellipsis, // Textüberlauf behandeln
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedTag = newValue;
+                          });
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: NexusSize.inputWidth.smal,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: 'Enter the amount',
+                              ),
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d*'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  amount = double.tryParse(value) ?? 0.0;
+                                });
+                              },
+                            ),
+                          ),
+
+                          // Checkbox for repeating transactions
+                          // const SizedBox(height: 16.0),
+                          // SizedBox(
+                          //   width: NexusSize.inputWidth.smal,
+                          //   child: TextFormField(
+                          //     decoration: const InputDecoration(
+                          //       labelText: 'Repeat transaction',
+                          //     ),
+                          //     onChanged: (value) => itemName = value,
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+        floatingActionButton: FloatingActionButton.extended(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          label: const Text('Create Transaction'),
+          icon: const Icon(Icons.add),
+          backgroundColor: NexusColor.accents,
+          onPressed: () async {
+            if (transactionName.isEmpty) {
+              setState(() {
+                errorMessage = "Name cannot be empty";
+                errorMessageColor = Colors.red;
+              });
+            } else if (amount == null) {
+              setState(() {
+                errorMessage = "Amount cannot be empty";
+                errorMessageColor = Colors.red;
+              });
+            } else {
+              await fileController.createTransaction(transactionName, selectedDate.toIso8601String(), [1], amount);
+              setState(() => errorMessageColor = Colors.transparent);
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            }
+          },
+        ),
+      );
   }
 }

@@ -47,6 +47,7 @@ class TagScreenState extends State<TagsScreen> {
       child: fileController.listTag.isEmpty
           ? Center(child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),))
           : Scaffold(
+            resizeToAvoidBottomInset: false,
             body: ListView.builder(
               itemCount: fileController.listTag.length,
               itemBuilder: (context, index) {

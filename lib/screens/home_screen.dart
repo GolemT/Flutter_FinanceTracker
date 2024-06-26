@@ -118,11 +118,9 @@ class HomeScreenState extends State<HomeScreen> {
                               const SizedBox(height: 8.0),
                               GestureDetector(
                                 onTap: () => _selectDate(context, (pickedDate) {
-                                  print(transactionDate);
                                   setState(() {
                                     transactionDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                                   });
-                                  print(transactionDate);
                                 }),
                                 child: AbsorbPointer(
                                   child: TextField(
@@ -222,7 +220,6 @@ class HomeScreenState extends State<HomeScreen> {
                                   // Ende ElevatedButton 1
                                   ElevatedButton(
                                     onPressed: () async {
-                                      print(selectedTags);
                                       selectedTags??= transaction.transactionTag.map((index) => tagList[index]).toList();
                                       List<int> selectedTagIndexes = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
 
@@ -230,11 +227,6 @@ class HomeScreenState extends State<HomeScreen> {
                                       transactionDate??= transaction.transactionDate;
                                       transactionAmount??= transaction.transactionAmount;
 
-
-                                      Transaction updatedTransaction = Transaction(transactionName!, transactionDate!, selectedTagIndexes, transactionAmount!, []);
-                                      print(updatedTransaction.toString());
-                                      int index = fileController.listTransaction.indexOf(transaction);
-                                      print(fileController.listTransaction[index].toString());
                                       await fileController.updateTransaction(
                                         fileController.listTransaction.indexOf(transaction),
                                         transactionName,

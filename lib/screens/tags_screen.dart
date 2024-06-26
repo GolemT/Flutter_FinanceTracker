@@ -45,7 +45,25 @@ class TagScreenState extends State<TagsScreen> {
         }
       },
       child: fileController.listTag.isEmpty
-          ? Center(child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),))
+          ? Scaffold(
+              body: Center(
+                child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+                )
+                ),
+                floatingActionButton: FloatingActionButton.extended(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                label: const Text('New Tag'),
+                icon: const Icon(Icons.add),
+                backgroundColor: NexusColor.accents,
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddTagScreen()),
+                  );
+                  fileController.readTag(); // Update tags after returning from AddTagScreen
+                },
+                ),
+                )
           : Scaffold(
             resizeToAvoidBottomInset: false,
             body: ListView.builder(

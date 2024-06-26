@@ -62,7 +62,7 @@ class TagScreenState extends State<TagsScreen> {
                               strokeAlign: BorderSide.strokeAlignInside))),
                   child: ExpansionTile(
                     title: Text(tag.tagName,
-                        style: Theme.of(context).textTheme.bodyMedium),
+                        style: const TextStyle(color: NexusColor.text, fontSize: 18.0)),
                     children: <Widget>[
                       Container(
                         color: NexusColor.background,

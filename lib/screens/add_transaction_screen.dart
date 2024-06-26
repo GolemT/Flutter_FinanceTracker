@@ -29,9 +29,19 @@ class TransactionsState extends State<AddTransactionScreen> {
   Future<void> _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
+      barrierColor: NexusColor.background,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            primaryColor: NexusColor.text,
+            colorScheme: const ColorScheme.dark(primary: NexusColor.text, onPrimary: NexusColor.background),
+          ),
+          child: child!,
+        );
+      },
     );
     if (pickedDate != null) {
       onDateSelected(pickedDate);

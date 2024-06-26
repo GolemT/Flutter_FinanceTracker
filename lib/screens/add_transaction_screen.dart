@@ -56,7 +56,7 @@ class TransactionsState extends State<AddTransactionScreen> {
     final items = tagList.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
 
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Allow the FAB to move when the keyboard appears
+      resizeToAvoidBottomInset: false, // Allow the FAB to move when the keyboard appears
       appBar: AppBar(
         title: const Text('Add Transaction'),
       ),
@@ -104,10 +104,9 @@ class TransactionsState extends State<AddTransactionScreen> {
               ),
               const SizedBox(height: 16.0),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start, // Align at the top
                 children: <Widget>[
                   Expanded(
-                    child: SizedBox(
-                      height: NexusSize.inputHeight.normal,
                       child: MultiSelectDialogField(
                         itemsTextStyle: const TextStyle(color: NexusColor.text),
                         selectedItemsTextStyle: const TextStyle(color: NexusColor.text),
@@ -115,7 +114,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                         searchable: true,
                         items: items,
                         backgroundColor: NexusColor.background,
-                        title: const Text("Tags", style: TextStyle(color: NexusColor.text)),
+                        title: const Text("Tags", style: TextStyle(color: NexusColor.text),),
                         selectedColor: Colors.blue,
                         decoration: BoxDecoration(
                           color: NexusColor.inputs,
@@ -137,6 +136,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                           });
                         },
                         chipDisplay: MultiSelectChipDisplay(
+                          alignment: Alignment.bottomCenter,
                           chipColor: NexusColor.inputs,
                           textStyle: const TextStyle(color: NexusColor.text),
                           items: selectedTags?.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList() ?? [],
@@ -147,7 +147,6 @@ class TransactionsState extends State<AddTransactionScreen> {
                           },
                         ),
                       ),
-                    ),
                   ),
                   const SizedBox(width: 16.0),
                   Expanded(

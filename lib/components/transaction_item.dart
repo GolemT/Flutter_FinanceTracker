@@ -73,10 +73,10 @@ class TransactionItemState extends State<TransactionItem> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: NexusColor.listBackground,
+        color: NexusColor.background,
         border: Border(
           bottom: BorderSide(
-            color: NexusColor.text,
+            color: NexusColor.inputs,
             style: BorderStyle.solid,
             strokeAlign: BorderSide.strokeAlignInside,
           ),

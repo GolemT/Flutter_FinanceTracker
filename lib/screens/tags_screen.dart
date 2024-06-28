@@ -53,7 +53,6 @@ class TagScreenState extends State<TagsScreen> {
                 floatingActionButton: FloatingActionButton.extended(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                 label: const Text('New Tag'),
-                icon: const Icon(Icons.add),
                 backgroundColor: NexusColor.accents,
                 onPressed: () async {
                   await Navigator.push(
@@ -72,10 +71,10 @@ class TagScreenState extends State<TagsScreen> {
                 final tag = fileController.listTag[index];
                 return Container(
                   decoration: const BoxDecoration(
-                      color: NexusColor.listBackground,
+                      color: NexusColor.background,
                       border: Border(
                           bottom: BorderSide(
-                              color: NexusColor.text,
+                              color: NexusColor.inputs,
                               style: BorderStyle.solid,
                               strokeAlign: BorderSide.strokeAlignInside))),
                   child: ExpansionTile(
@@ -182,7 +181,6 @@ class TagScreenState extends State<TagsScreen> {
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         label: const Text('New Tag'),
-        icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
           await Navigator.push(

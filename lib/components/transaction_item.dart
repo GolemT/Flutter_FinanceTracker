@@ -87,6 +87,10 @@ class TransactionItemState extends State<TransactionItem> {
           widget.transaction.transactionName,
           style: const TextStyle(color: NexusColor.text, fontSize: 20),
         ),
+        subtitle: Text(
+          widget.transaction.transactionDate,
+          style: const TextStyle(color: NexusColor.subText, fontSize: 16),
+        ),
         trailing: Text(
           widget.transaction.transactionAmount.toString(),
           style: TextStyle(

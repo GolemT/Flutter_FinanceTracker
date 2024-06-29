@@ -4,6 +4,7 @@ import 'package:finance_tracker/components/nav_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:finance_tracker/model/tag.dart';
+import 'package:finance_tracker/model/transaction.dart';
 import 'package:finance_tracker/components/transaction_item.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -46,7 +47,9 @@ class HomeScreen extends StatelessWidget {
           : ListView.builder(
               itemCount: fileController.listTransaction.length,
               itemBuilder: (context, index) {
-                final transaction = fileController.listTransaction[index];
+                List<Transaction> list = fileController.listTransaction;
+                list.sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
+                final transaction = list[index];
                 return TransactionItem(
                   transaction: transaction,
                   tagList: tagList,

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FinanceTracker',
+      title: 'Flutter Demo',
       theme: NexusTheme.nexusTheme,
       initialRoute: '/home',
       routes: {

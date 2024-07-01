@@ -4,8 +4,10 @@ import 'package:finance_tracker/assets/color_palette.dart';
 class NexusTheme {
   static ThemeData get nexusTheme {
     return ThemeData(
+      useMaterial3: true,
       scaffoldBackgroundColor: NexusColor.background,
       primaryColor: NexusColor.secondary,
+
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: NexusColor.text),
         bodyMedium: TextStyle(color: NexusColor.text),
@@ -33,6 +35,19 @@ class NexusTheme {
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: NexusColor.white,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: NexusColor.navigation,
+        elevation: 10.0,
+        surfaceTintColor: Colors.transparent,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

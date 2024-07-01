@@ -1,42 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:finance_tracker/model/transaction.dart';
 import 'package:finance_tracker/file_controller.dart';
-
-// Testing Data
-// [
-//     Transaction(
-//       "Car", "2024-01-13", [2], 4500.00, ["Arbeit"],
-//     ),
-//     Transaction(
-//       "Baloons", "2024-02-15", [0], -40.00, ["Freizeit"],
-//     ),
-//     Transaction(
-//       "Health Insurance", "2024-03-01", [3], -150.00, ["Versicherung"],
-//     ),
-//     Transaction(
-//       "Online Course on Data Science", "2024-04-15", [1], -200.00, ["Bildung"],
-//     ),
-//     Transaction(
-//       "Car", "2024-05-13", [2], 4500.00, ["Arbeit"],
-//     ),
-//     Transaction(
-//       "Baloons", "2024-06-15", [0], -40.00, ["Freizeit"],
-//     ),
-//     Transaction(
-//       "Health Insurance", "2024-07-01", [3], -150.00, ["Versicherung"],
-//     ),
-//     Transaction(
-//       "Online Course on Data Science", "2024-08-15", [1], -200.00, ["Bildung"],
-//     )
-//   ];
-
-
+import 'package:provider/provider.dart';
 
 class LineChartComponent extends StatefulWidget {
-  final List<Transaction> transactions = FileController().listTransaction;
-
-  LineChartComponent({super.key});
+  const LineChartComponent({super.key});
 
   @override
   LineChartComponentState createState() => LineChartComponentState();
@@ -55,7 +23,10 @@ class LineChartComponentState extends State<LineChartComponent> {
   }
 
   void fetchData() {
-    final dataArray = widget.transactions
+    final fileController = context.read<FileController>();
+    final transactions = fileController.listTransaction;
+
+    final dataArray = transactions
         .map((item) => {'date': item.transactionDate, 'amount': item.transactionAmount})
         .toList();
     dataArray.sort((a, b) => DateTime.parse(a['date'] as String).compareTo(DateTime.parse(b['date'] as String)));
@@ -93,87 +64,91 @@ class LineChartComponentState extends State<LineChartComponent> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: lineChartData.isEmpty
-            ? const Text("No Data Available")
-            : LineChart(
-                LineChartData(
-                  minY: minY,
-                  maxY: maxY,
-                  titlesData: FlTitlesData(
-                    bottomTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 22,
-                      interval: (lineChartData.length / 4).ceilToDouble(), // Maximal 4 Werte auf der X-Achse
-                      getTitles: (value) {
-                        int index = value.toInt();
-                        if (index >= 0 && index < xLabels.length) {
-                          return xLabels[index];
-                        } else {
-                          return '';
-                        }
-                      },
-                      getTextStyles: (context, value) => TextStyle(
-                        color: theme.textTheme.bodySmall?.color,
-                        fontSize: 12,
+        child: Consumer<FileController>(
+          builder: (context, fileController, child) {
+            return lineChartData.isEmpty
+                ? const Text("No Data Available")
+                : LineChart(
+                    LineChartData(
+                      minY: minY,
+                      maxY: maxY,
+                      titlesData: FlTitlesData(
+                        bottomTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 22,
+                          interval: (lineChartData.length / 4).ceilToDouble(),
+                          getTitles: (value) {
+                            int index = value.toInt();
+                            if (index >= 0 && index < xLabels.length) {
+                              return xLabels[index];
+                            } else {
+                              return '';
+                            }
+                          },
+                          getTextStyles: (context, value) => TextStyle(
+                            color: theme.textTheme.bodySmall?.color,
+                            fontSize: 12,
+                          ),
+                          margin: 8,
+                        ),
+                        leftTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 32,
+                          interval: 1,
+                          getTitles: (value) {
+                            if (value == minY || value == maxY || value == 0) {
+                              return value.toStringAsFixed(2);
+                            }
+                            return '';
+                          },
+                          getTextStyles: (context, value) => TextStyle(
+                            color: theme.textTheme.bodySmall?.color,
+                            fontSize: 12,
+                          ),
+                          margin: 8,
+                        ),
+                        topTitles: SideTitles(showTitles: false),
+                        rightTitles: SideTitles(showTitles: false),
                       ),
-                      margin: 8,
-                    ),
-                    leftTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 32,
-                      interval: 1,
-                      getTitles: (value) {
-                        if (value == minY || value == maxY || value == 0) {
-                          return value.toStringAsFixed(2);
-                        }
-                        return '';
-                      },
-                      getTextStyles: (context, value) => TextStyle(
-                        color: theme.textTheme.bodySmall?.color,
-                        fontSize: 12,
+                      gridData: FlGridData(
+                        show: true,
+                        drawVerticalLine: true,
+                        drawHorizontalLine: true,
+                        getDrawingHorizontalLine: (value) {
+                          return FlLine(
+                            color: theme.dividerColor,
+                            strokeWidth: 1,
+                          );
+                        },
+                        getDrawingVerticalLine: (value) {
+                          return FlLine(
+                            color: theme.dividerColor,
+                            strokeWidth: 1,
+                          );
+                        },
                       ),
-                      margin: 8,
-                    ),
-                    topTitles: SideTitles(showTitles: false), // Oben keine Titel
-                    rightTitles: SideTitles(showTitles: false), // Rechts keine Titel
-                  ),
-                  gridData: FlGridData(
-                    show: true,
-                    drawVerticalLine: true,
-                    drawHorizontalLine: true,
-                    getDrawingHorizontalLine: (value) {
-                      return FlLine(
-                        color: theme.dividerColor,
-                        strokeWidth: 1,
-                      );
-                    },
-                    getDrawingVerticalLine: (value) {
-                      return FlLine(
-                        color: theme.dividerColor,
-                        strokeWidth: 1,
-                      );
-                    },
-                  ),
-                  borderData: FlBorderData(
-                    show: true,
-                    border: Border(
-                      left: BorderSide(color: theme.dividerColor),
-                      bottom: BorderSide(color: theme.dividerColor),
-                    ),
-                  ),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: lineChartData,
-                      isCurved: false,
-                      colors: [theme.primaryColor],
-                      barWidth: 2,
-                      belowBarData: BarAreaData(
-                        show: false,
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border(
+                          left: BorderSide(color: theme.dividerColor),
+                          bottom: BorderSide(color: theme.dividerColor),
+                        ),
                       ),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: lineChartData,
+                          isCurved: false,
+                          colors: [theme.primaryColor],
+                          barWidth: 2,
+                          belowBarData: BarAreaData(
+                            show: false,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  );
+          },
+        ),
       ),
     );
   }

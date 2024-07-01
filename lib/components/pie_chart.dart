@@ -1,32 +1,11 @@
-import 'package:finance_tracker/model/tag.dart';
-import 'package:finance_tracker/model/transaction.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:finance_tracker/file_controller.dart';
-
-// Testing Data
-// [
-//     Transaction(
-//       "Car","2024-03-13",[2],4500.00,["Arbeit"]
-//     ),
-//     Transaction(
-//       "Baloons","2024-03-12",[0],-40.00,["Freizeit"]
-//     ),
-//     Transaction(
-//       "Health Insurance","2024-04-01",[3],-150.00,["Versicherung"]
-//     ),
-//     Transaction(
-//       "Online Course on Data Science","2024-04-15",[1],-200.00,["Bildung"]
-//       ),
-//   ];
-//   final List<Tag> tags = [Tag("Freizeit", "Freizeitausgabe"), Tag("Bildung", "Bildungsausgabe"), Tag("Arbeit", "Arbeitsausgabe"), Tag("Versicherung", "Versicherungsausgabe")];
+import 'package:provider/provider.dart';
 
 class PieChartComponent extends StatefulWidget {
-  final List<Transaction> transactions = FileController().listTransaction;
-  final List<Tag> tags = FileController().listTag;
-  final ThemeData themeMode = ThemeData();
-
-  PieChartComponent({super.key});
+  const PieChartComponent({super.key});
 
   @override
   PieChartComponentState createState() => PieChartComponentState();
@@ -42,20 +21,21 @@ class PieChartComponentState extends State<PieChartComponent> {
   }
 
   void fetchData() {
+    final fileController = context.read<FileController>();
     Map<String, double> sumsByTag = {};
 
-    for (var tag in widget.tags) {
+    for (var tag in fileController.listTag) {
       sumsByTag[tag.tagName] = 0;
     }
 
-    for (var transaction in widget.transactions) {
+    for (var transaction in fileController.listTransaction) {
       if (transaction.transactionAmount < 0) {
         for (var tag in transaction.transactionTag) {
-          if(tag < widget.tags.length) {
-            String tagName = widget.tags[tag].tagName;
+          if (tag < fileController.listTag.length) {
+            String tagName = fileController.listTag[tag].tagName;
             if (sumsByTag.containsKey(tagName)) {
-            sumsByTag[tagName] = sumsByTag[tagName]! + transaction.transactionAmount;
-          }
+              sumsByTag[tagName] = sumsByTag[tagName]! + transaction.transactionAmount;
+            }
           }
         }
       }
@@ -69,21 +49,31 @@ class PieChartComponentState extends State<PieChartComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return dataMap.isEmpty
-        ? const Text("No data available")
-        : PieChart(
-            dataMap: dataMap,
-            colorList: [
-              Colors.red.withOpacity(0.7),
-              Colors.green.withOpacity(0.7),
-              Colors.blue.withOpacity(0.7),
-            ],
-            chartValuesOptions: ChartValuesOptions(
-              showChartValuesInPercentage: true,
-              showChartValueBackground: false,
-              chartValueStyle: TextStyle(color: widget.themeMode.textTheme.bodyLarge?.color),
-            ),
-            chartType: ChartType.disc,
-          );
+    return Consumer<FileController>(
+      builder: (context, fileController, child) {
+        return dataMap.isEmpty
+            ? const Text("No data available")
+            : PieChart(
+                dataMap: dataMap,
+                colorList: [
+                  Colors.red.withOpacity(0.7),
+                  Colors.green.withOpacity(0.7),
+                  Colors.blue.withOpacity(0.7),
+                  NexusColor.accents,
+                  NexusColor.secondary,
+                  Colors.red.withOpacity(0.3),
+                  Colors.green.withOpacity(0.3),
+                  Colors.blue.withOpacity(0.3),
+                ],
+                chartValuesOptions: ChartValuesOptions(
+                  showChartValuesInPercentage: true,
+                  showChartValueBackground: false,
+                  chartValueStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color),
+                ),
+                chartType: ChartType.disc,
+              );
+      },
+    );
   }
 }

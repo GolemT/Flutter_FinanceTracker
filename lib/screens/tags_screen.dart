@@ -45,23 +45,43 @@ class TagScreenState extends State<TagsScreen> {
         }
       },
       child: fileController.listTag.isEmpty
-          ? Center(child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),))
+          ? Scaffold(
+              body: Center(
+                child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+                )
+                ),
+                floatingActionButton: FloatingActionButton.extended(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                label: const Text('New Tag'),
+                backgroundColor: NexusColor.accents,
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddTagScreen()),
+                  );
+                  fileController.readTag(); // Update tags after returning from AddTagScreen
+                },
+                ),
+                )
           : Scaffold(
+            resizeToAvoidBottomInset: false,
             body: ListView.builder(
               itemCount: fileController.listTag.length,
               itemBuilder: (context, index) {
                 final tag = fileController.listTag[index];
                 return Container(
                   decoration: const BoxDecoration(
-                      color: NexusColor.listBackground,
+                      color: NexusColor.background,
                       border: Border(
                           bottom: BorderSide(
-                              color: NexusColor.text,
+                              color: NexusColor.inputs,
                               style: BorderStyle.solid,
                               strokeAlign: BorderSide.strokeAlignInside))),
                   child: ExpansionTile(
+                    iconColor: NexusColor.text,
+                    collapsedIconColor: NexusColor.text,
                     title: Text(tag.tagName,
-                        style: Theme.of(context).textTheme.bodyMedium),
+                        style: const TextStyle(color: NexusColor.text, fontSize: 18.0)),
                     children: <Widget>[
                       Container(
                         color: NexusColor.background,
@@ -163,7 +183,6 @@ class TagScreenState extends State<TagsScreen> {
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         label: const Text('New Tag'),
-        icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
           await Navigator.push(

@@ -1,6 +1,6 @@
 class Tag {
-  final String tagName;
-  final String tagDescription;
+  String tagName;
+  String tagDescription;
 
   Tag(this.tagName, this.tagDescription);
 

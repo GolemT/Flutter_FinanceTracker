@@ -70,11 +70,12 @@ class PieChartComponentState extends State<PieChartComponent> {
                   Colors.blue.withOpacity(0.3),
                 ],
                 chartType: ChartType.disc,
-                chartValuesOptions: const ChartValuesOptions(
-                  showChartValuesInPercentage: true,
-                  showChartValuesOutside: true,
-                  decimalPlaces: 1,
-          ),
+                legendOptions: LegendOptions(
+                  showLegends: true,
+                  legendPosition: LegendPosition.right,
+                  showLegendsInRow: false,
+                  legendTextStyle: TextStyle(color: nexusColor.text),
+                ),
         );
       }
     );

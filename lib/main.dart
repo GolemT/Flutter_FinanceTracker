@@ -1,5 +1,7 @@
-import 'package:finance_tracker/assets/color_theme.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:finance_tracker/assets/color_theme.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
@@ -17,15 +19,38 @@ void main() => runApp(
   ),
 );
 
+
+Future themePicker () async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool('theme') == null) {
+    prefs.setBool('theme', true);
+    NexusColor.updateTheme(true);
+    return;
+  }
+  else {
+    final entry = prefs.getBool('theme');
+    NexusColor.updateTheme(entry!);
+    return;
+  }
+}
+
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    FutureBuilder(
+      future: themePicker(),
+      builder: (context, snapshot) {
+        return const CircularProgressIndicator();
+      },
+    );
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: NexusTheme.nexusTheme,
+      title: 'Finance Tracker',
       initialRoute: '/home',
+      theme: NexusTheme().nexusTheme,
       routes: {
         '/home': (context) => const HomeScreen(),
         '/tags': (context) => const TagsScreen(),

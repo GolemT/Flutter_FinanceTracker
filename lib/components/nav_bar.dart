@@ -2,10 +2,11 @@ import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
+  final nexusColor = NexusColor();
   final int pageIndex;
   final Function(int) onTap;
 
-  const NavBar({
+  NavBar({
     super.key,
     required this.pageIndex,
     required this.onTap,
@@ -18,7 +19,7 @@ class NavBar extends StatelessWidget {
         elevation: 0.0,
         child: Container(
           height: 60,
-          color: NexusColor.navigation,
+          color: nexusColor.navigation,
           child: Row(
             children: [
 
@@ -26,6 +27,7 @@ class NavBar extends StatelessWidget {
                 Icons.home_outlined,
                 pageIndex == 0,
                 'Home',
+                nexusColor,
                 onTap: () => onTap(0),
               ),
 
@@ -33,6 +35,7 @@ class NavBar extends StatelessWidget {
                 Icons.sell_outlined,
                 pageIndex == 1,
                 'Tags',
+                nexusColor,
                 onTap: () => onTap(1),
               ),
 
@@ -42,6 +45,7 @@ class NavBar extends StatelessWidget {
                 Icons.analytics_outlined,
                 pageIndex == 3,
                 'Analytics',
+                nexusColor,
                 onTap: () => onTap(3),
               ),
 
@@ -49,6 +53,7 @@ class NavBar extends StatelessWidget {
                 Icons.settings_outlined,
                 pageIndex == 4,
                 'Settings',
+                nexusColor,
                 onTap: () => onTap(4),
               ),
             ],
@@ -58,7 +63,8 @@ class NavBar extends StatelessWidget {
   }
 }
 
-Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
+Widget navItem(IconData icon, bool selected, String text, NexusColor nexusColor, {Function()? onTap}) {
+
   return Expanded(
     child: InkWell(
       onTap: onTap,
@@ -67,12 +73,12 @@ Widget navItem(IconData icon, bool selected, String text, {Function()? onTap}) {
         children: [
           Icon(
             icon,
-            color: selected ? NexusColor.accents : NexusColor.subText,
+            color: selected ? NexusColor.accents : nexusColor.subText,
             size: 30.0,
           ),
           Text(
             text,
-            style: TextStyle(color: selected ? NexusColor.accents : NexusColor.subText),
+            style: TextStyle(color: selected ? NexusColor.accents : nexusColor.subText),
           ),
         ],
       ),

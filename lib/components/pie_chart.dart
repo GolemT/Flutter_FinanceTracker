@@ -49,11 +49,15 @@ class PieChartComponentState extends State<PieChartComponent> {
 
   @override
   Widget build(BuildContext context) {
+    final nexusColor = NexusColor();
+
     return Consumer<FileController>(
       builder: (context, fileController, child) {
         return dataMap.isEmpty
-            ? const Text("No data available")
+            ? Text("No data available", style: TextStyle(color: nexusColor.text))
             : PieChart(
+                centerTextStyle: TextStyle(color: nexusColor.text),
+                animationDuration: const Duration(milliseconds: 80),
                 dataMap: dataMap,
                 colorList: [
                   Colors.red.withOpacity(0.7),
@@ -65,15 +69,14 @@ class PieChartComponentState extends State<PieChartComponent> {
                   Colors.green.withOpacity(0.3),
                   Colors.blue.withOpacity(0.3),
                 ],
-                chartValuesOptions: ChartValuesOptions(
-                  showChartValuesInPercentage: true,
-                  showChartValueBackground: false,
-                  chartValueStyle: TextStyle(
-                      color: Theme.of(context).textTheme.bodyLarge?.color),
-                ),
                 chartType: ChartType.disc,
-              );
-      },
+                chartValuesOptions: const ChartValuesOptions(
+                  showChartValuesInPercentage: true,
+                  showChartValuesOutside: true,
+                  decimalPlaces: 1,
+          ),
+        );
+      }
     );
   }
 }

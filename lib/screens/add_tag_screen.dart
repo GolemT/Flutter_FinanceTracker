@@ -20,12 +20,14 @@ class AddTagScreenState extends State<AddTagScreen> {
   @override
   Widget build(BuildContext context) {
     final fileController = context.read<FileController>();
+    final nexusColor = NexusColor();
 
     return Scaffold(
+      backgroundColor: nexusColor.background,
       appBar: AppBar(
-        title: Text('Add Tag', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color)),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        iconTheme: Theme.of(context).iconTheme,
+        title: Text('Add Tag', style: TextStyle(color: nexusColor.text)),
+        backgroundColor: nexusColor.navigation,
+        iconTheme: IconThemeData(color: nexusColor.text),
       ),
       body: Center(
         child: Form(
@@ -35,39 +37,45 @@ class AddTagScreenState extends State<AddTagScreen> {
               children: [
                 Text(errorMessage, style: TextStyle(color: errorMessageColor)),
                 TextFormField(
-                  decoration: const InputDecoration(
+                  controller: TextEditingController(),
+                  maxLength: 50,
+                  style: TextStyle(color: nexusColor.text),
+                  decoration: InputDecoration(
                     labelText: 'Tag Name',
-                    fillColor: NexusColor.inputs,
+                    fillColor: nexusColor.inputs,
                     filled: true,
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
+                    border: const OutlineInputBorder(),
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: NexusColor.accents),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: NexusColor.divider),
+                      borderSide: BorderSide(color: nexusColor.divider),
                     ),
-                    labelStyle: TextStyle(color: NexusColor.text),
-                    helperStyle: TextStyle(color: NexusColor.subText),
-                    hintStyle: TextStyle(color: NexusColor.text),
+                    labelStyle: TextStyle(color: nexusColor.text),
+                    helperStyle: TextStyle(color: nexusColor.subText),
+                    hintStyle: TextStyle(color: nexusColor.text),
                   ),
                   onChanged: (value) => tagName = value,
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
-                  decoration: const InputDecoration(
+                  controller: TextEditingController(),
+                  maxLength: 150,
+                  style: TextStyle(color: nexusColor.text),
+                  decoration: InputDecoration(
                     labelText: 'Tag Description',
-                    fillColor: NexusColor.inputs,
+                    fillColor: nexusColor.inputs,
                     filled: true,
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
+                    border: const OutlineInputBorder(),
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: NexusColor.accents),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: NexusColor.divider),
+                      borderSide: BorderSide(color: nexusColor.divider),
                     ),
-                    labelStyle: TextStyle(color: NexusColor.text),
-                    helperStyle: TextStyle(color: NexusColor.subText),
-                    hintStyle: TextStyle(color: NexusColor.text),
+                    labelStyle: TextStyle(color: nexusColor.text),
+                    helperStyle: TextStyle(color: nexusColor.subText),
+                    hintStyle: TextStyle(color: nexusColor.text),
                   ),
                   onChanged: (value) => tagDescription = value,
                 ),
@@ -86,12 +94,12 @@ class AddTagScreenState extends State<AddTagScreen> {
         if (tagName.isEmpty) {
           setState(() {
           errorMessage = "Name cannot be empty";
-          errorMessageColor = Colors.red;
+          errorMessageColor = NexusColor.negative;
           });
         } else if (fileController.listTag.any((tag) => tag.tagName == tagName)) {
           setState(() {
           errorMessage = "Tag already exists";
-          errorMessageColor = Colors.red;
+          errorMessageColor = NexusColor.negative;
           });
         } else {
           await fileController.createTag(tagName, tagDescription);

@@ -26,6 +26,7 @@ class TransactionItem extends StatefulWidget {
 }
 
 class TransactionItemState extends State<TransactionItem> {
+  final NexusColor nexusColor = NexusColor();
   late ValueNotifier<String> transactionName;
   late ValueNotifier<String> transactionDate;
   late ValueNotifier<List<Tag>> selectedTags;
@@ -56,9 +57,14 @@ class TransactionItemState extends State<TransactionItem> {
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget? child) {
         return Theme(
-          data: ThemeData.dark().copyWith(
-            primaryColor: NexusColor.text,
-            colorScheme: const ColorScheme.dark(primary: NexusColor.text, onPrimary: NexusColor.background),
+          data: ThemeData(
+            primaryColor: nexusColor.text,
+            colorScheme: ColorScheme.dark(
+              primary: nexusColor.text,
+              onPrimary: nexusColor.background,
+              surface: nexusColor.background,
+              onSurface: nexusColor.text,
+            ),
           ),
           child: child!,
         );
@@ -72,11 +78,11 @@ class TransactionItemState extends State<TransactionItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: NexusColor.background,
+      decoration: BoxDecoration(
+        color: nexusColor.background,
         border: Border(
           bottom: BorderSide(
-            color: NexusColor.inputs,
+            color: nexusColor.inputs,
             style: BorderStyle.solid,
             strokeAlign: BorderSide.strokeAlignInside,
           ),
@@ -85,11 +91,11 @@ class TransactionItemState extends State<TransactionItem> {
       child: ExpansionTile(
         title: Text(
           widget.transaction.transactionName,
-          style: const TextStyle(color: NexusColor.text, fontSize: 20),
+          style: TextStyle(color: nexusColor.text, fontSize: 20),
         ),
         subtitle: Text(
           widget.transaction.transactionDate,
-          style: const TextStyle(color: NexusColor.subText, fontSize: 16),
+          style: TextStyle(color: nexusColor.subText, fontSize: 16),
         ),
         trailing: Text(
           widget.transaction.transactionAmount.toString(),
@@ -108,7 +114,7 @@ class TransactionItemState extends State<TransactionItem> {
         },
         children: <Widget>[
           Container(
-            color: NexusColor.background,
+            color: nexusColor.background,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -118,10 +124,14 @@ class TransactionItemState extends State<TransactionItem> {
                     valueListenable: transactionName,
                     builder: (context, value, child) {
                       return TextField(
+                        controller: TextEditingController(text: value),
+                        maxLength: 50,
+                        style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           hintText: value,
                           helperText: 'Name',
                           filled: true,
+                          fillColor: nexusColor.inputs,
                         ),
                         onChanged: (newValue) {
                           transactionName.value = newValue;
@@ -138,9 +148,11 @@ class TransactionItemState extends State<TransactionItem> {
                         builder: (context, value, child) {
                           return TextField(
                             controller: TextEditingController(text: value),
-                            decoration: const InputDecoration(
+                            style: TextStyle(color: nexusColor.text),
+                            decoration: InputDecoration(
                               helperText: 'Date',
                               filled: true,
+                              fillColor: nexusColor.inputs,
                             ),
                           );
                         },
@@ -152,26 +164,26 @@ class TransactionItemState extends State<TransactionItem> {
                     valueListenable: selectedTags,
                     builder: (context, value, child) {
                       return MultiSelectDialogField(
-                        backgroundColor: NexusColor.background,
+                        backgroundColor: nexusColor.background,
                         searchable: true,
-                        itemsTextStyle: const TextStyle(color: NexusColor.text),
-                        selectedItemsTextStyle: const TextStyle(color: NexusColor.text),
+                        itemsTextStyle: TextStyle(color: nexusColor.text),
+                        selectedItemsTextStyle: TextStyle(color: nexusColor.text),
                         items: widget.items,
                         initialValue: value,
-                        title: const Text("Tags", style: TextStyle(color: NexusColor.text)),
+                        title: Text("Tags", style: TextStyle(color: nexusColor.text)),
                         selectedColor: Colors.blue,
                         decoration: BoxDecoration(
-                          color: NexusColor.inputs,
+                          color: nexusColor.inputs,
                           border: Border.all(
-                            color: NexusColor.divider,
+                            color: nexusColor.divider,
                             width: 2,
                           ),
                         ),
-                        buttonIcon: const Icon(Icons.arrow_drop_down, color: NexusColor.text),
-                        buttonText: const Text(
+                        buttonIcon: Icon(Icons.arrow_drop_down, color: nexusColor.text),
+                        buttonText: Text(
                           "Select Tags",
                           style: TextStyle(
-                            color: NexusColor.text,
+                            color: nexusColor.text,
                             fontSize: 16,
                           ),
                         ),
@@ -179,8 +191,8 @@ class TransactionItemState extends State<TransactionItem> {
                           selectedTags.value = results.cast<Tag>();
                         },
                         chipDisplay: MultiSelectChipDisplay(
-                          chipColor: NexusColor.inputs,
-                          textStyle: const TextStyle(color: NexusColor.text),
+                          chipColor: nexusColor.inputs,
+                          textStyle: TextStyle(color: nexusColor.text),
                           items: value.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList(),
                           onTap: (tag) {
                             value.remove(tag);
@@ -195,10 +207,14 @@ class TransactionItemState extends State<TransactionItem> {
                     valueListenable: transactionAmount,
                     builder: (context, value, child) {
                       return TextField(
+                        controller: TextEditingController(text: value.toString()),
+                        maxLength: 50,
+                        style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           hintText: value.toString(),
                           helperText: 'Amount',
                           filled: true,
+                          fillColor: nexusColor.inputs,
                         ),
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(
@@ -231,9 +247,9 @@ class TransactionItemState extends State<TransactionItem> {
                           maximumSize: const Size(37, 37),
                           backgroundColor: NexusColor.negative,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.delete,
-                          color: NexusColor.text,
+                          color: nexusColor.text,
                           size: 20,
                         ),
                       ),
@@ -261,9 +277,9 @@ class TransactionItemState extends State<TransactionItem> {
                           maximumSize: const Size(37, 37),
                           backgroundColor: NexusColor.positive,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.check,
-                          color: NexusColor.text,
+                          color: nexusColor.text,
                           size: 20,
                         ),
                       ),

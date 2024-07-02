@@ -1,5 +1,6 @@
 import 'package:finance_tracker/components/line_chart.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/components/pie_chart.dart';
 
@@ -9,7 +10,7 @@ class AnalyticsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = Theme.of(context);
+    final nexusColor = NexusColor();
 
     return NavScreen(
       pageIndex: 3,
@@ -37,7 +38,7 @@ class AnalyticsScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 30), // Padding am oberen Rand
               Card(
-                color: themeMode.inputDecorationTheme.fillColor,
+                color: nexusColor.inputs,
                 elevation: 4,
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -47,9 +48,9 @@ class AnalyticsScreen extends StatelessWidget {
                     children: [
                       Text(
                         "Cost by Tag",
-                        style: themeMode.textTheme.bodyLarge,
+                        style: TextStyle(color: nexusColor.text),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 300, // Feste Höhe für das Pie Chart
                         child: PieChartComponent(),
                       ),
@@ -60,7 +61,7 @@ class AnalyticsScreen extends StatelessWidget {
               Card(
                 elevation: 4,
                 margin: const EdgeInsets.symmetric(vertical: 8),
-                color: themeMode.inputDecorationTheme.fillColor,
+                color: nexusColor.inputs,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -68,9 +69,9 @@ class AnalyticsScreen extends StatelessWidget {
                     children: [
                       Text(
                         "Banking History",
-                        style: themeMode.textTheme.bodyLarge,
+                        style: TextStyle(color: nexusColor.text),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 250, // Feste Höhe für das Line Chart
                         child: LineChartComponent(),
                       ),

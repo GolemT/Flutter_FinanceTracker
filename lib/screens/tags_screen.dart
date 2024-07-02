@@ -23,6 +23,7 @@ class TagScreenState extends State<TagsScreen> {
   @override
   Widget build(BuildContext context) {
     final fileController = context.watch<FileController>();
+    final nexusColor = NexusColor();
     String tagName = "";
     String tagDescription = "";
 
@@ -46,8 +47,9 @@ class TagScreenState extends State<TagsScreen> {
       },
       child: fileController.listTag.isEmpty
           ? Scaffold(
+            backgroundColor: nexusColor.background,
               body: Center(
-                child: Text("No tags available", style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+                child: Text("No tags available", style: TextStyle(color: nexusColor.text, fontSize: 20.0),
                 )
                 ),
                 floatingActionButton: FloatingActionButton.extended(
@@ -65,36 +67,41 @@ class TagScreenState extends State<TagsScreen> {
                 )
           : Scaffold(
             resizeToAvoidBottomInset: false,
+            backgroundColor: nexusColor.background,
             body: ListView.builder(
               itemCount: fileController.listTag.length,
               itemBuilder: (context, index) {
                 final tag = fileController.listTag[index];
                 return Container(
-                  decoration: const BoxDecoration(
-                      color: NexusColor.background,
+                  decoration: BoxDecoration(
+                      color: nexusColor.background,
                       border: Border(
                           bottom: BorderSide(
-                              color: NexusColor.inputs,
+                              color: nexusColor.inputs,
                               style: BorderStyle.solid,
                               strokeAlign: BorderSide.strokeAlignInside))),
                   child: ExpansionTile(
-                    iconColor: NexusColor.text,
-                    collapsedIconColor: NexusColor.text,
+                    iconColor: nexusColor.text,
+                    collapsedIconColor: nexusColor.text,
                     title: Text(tag.tagName,
-                        style: const TextStyle(color: NexusColor.text, fontSize: 18.0)),
+                        style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
                     children: <Widget>[
                       Container(
-                        color: NexusColor.background,
+                        color: nexusColor.background,
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               TextField(
+                                controller: TextEditingController(text: tag.tagName),
+                                maxLength: 50,
+                                style: TextStyle(color: nexusColor.text),
                                 decoration: InputDecoration(
                                   hintText: tag.tagName,
                                   helperText: 'Name',
                                   filled: true,
+                                  fillColor: nexusColor.inputs,
                                 ),
                                 onChanged: (value) => {
                                   tagName = value,
@@ -102,10 +109,13 @@ class TagScreenState extends State<TagsScreen> {
                               ), // Ende TextField 1
                               const SizedBox(height: 8.0),
                               TextField(
+                                controller: TextEditingController(text: tag.tagDescription),
+                                maxLength: 150,
+                                style: TextStyle(color: nexusColor.text),
                                 decoration: InputDecoration(
-                                  hintText: tag.tagDescription,
                                   helperText: 'Description',
                                   filled: true,
+                                  fillColor: nexusColor.inputs,
                                 ),
                                 onChanged: (value) => {
                                   tagDescription = value,
@@ -130,9 +140,9 @@ class TagScreenState extends State<TagsScreen> {
                                       maximumSize: const Size(37, 37),
                                       backgroundColor: NexusColor.negative,
                                     ), // Ende ElevatedButton.styleFrom
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.delete,
-                                      color: NexusColor.text,
+                                      color: nexusColor.text,
                                       size: 20,
                                     ),
                                   ),
@@ -162,9 +172,9 @@ class TagScreenState extends State<TagsScreen> {
                                       maximumSize: const Size(37, 37),
                                       backgroundColor: NexusColor.positive,
                                     ), // Ende ElevatedButton.styleFrom
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.check,
-                                      color: NexusColor.text,
+                                      color: nexusColor.text,
                                       size: 20,
                                     ),
                                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
 
 class LineChartComponent extends StatefulWidget {
   const LineChartComponent({super.key});
@@ -60,8 +61,9 @@ class LineChartComponentState extends State<LineChartComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final nexusColor = NexusColor();
     return Scaffold(
+      backgroundColor: nexusColor.background,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<FileController>(
@@ -86,7 +88,7 @@ class LineChartComponentState extends State<LineChartComponent> {
                             }
                           },
                           getTextStyles: (context, value) => TextStyle(
-                            color: theme.textTheme.bodySmall?.color,
+                            color: nexusColor.text,
                             fontSize: 12,
                           ),
                           margin: 8,
@@ -102,7 +104,7 @@ class LineChartComponentState extends State<LineChartComponent> {
                             return '';
                           },
                           getTextStyles: (context, value) => TextStyle(
-                            color: theme.textTheme.bodySmall?.color,
+                            color: nexusColor.text,
                             fontSize: 12,
                           ),
                           margin: 8,
@@ -116,13 +118,13 @@ class LineChartComponentState extends State<LineChartComponent> {
                         drawHorizontalLine: true,
                         getDrawingHorizontalLine: (value) {
                           return FlLine(
-                            color: theme.dividerColor,
+                            color: nexusColor.divider,
                             strokeWidth: 1,
                           );
                         },
                         getDrawingVerticalLine: (value) {
                           return FlLine(
-                            color: theme.dividerColor,
+                            color: nexusColor.divider,
                             strokeWidth: 1,
                           );
                         },
@@ -130,15 +132,15 @@ class LineChartComponentState extends State<LineChartComponent> {
                       borderData: FlBorderData(
                         show: true,
                         border: Border(
-                          left: BorderSide(color: theme.dividerColor),
-                          bottom: BorderSide(color: theme.dividerColor),
+                          left: BorderSide(color: nexusColor.divider),
+                          bottom: BorderSide(color: nexusColor.divider),
                         ),
                       ),
                       lineBarsData: [
                         LineChartBarData(
                           spots: lineChartData,
                           isCurved: false,
-                          colors: [theme.primaryColor],
+                          colors: [NexusColor.secondary],
                           barWidth: 2,
                           belowBarData: BarAreaData(
                             show: false,

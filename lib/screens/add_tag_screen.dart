@@ -38,7 +38,7 @@ class AddTagScreenState extends State<AddTagScreen> {
                 Text(errorMessage, style: TextStyle(color: errorMessageColor)),
                 TextFormField(
                   controller: TextEditingController(),
-                  maxLength: 50,
+                  maxLength: 20,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
                     labelText: 'Tag Name',

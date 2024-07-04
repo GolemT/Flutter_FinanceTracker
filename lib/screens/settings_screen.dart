@@ -86,7 +86,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextField(
-                        maxLength: 50,
+                        maxLength: 15,
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           label: Text("Account Budget", style: TextStyle(color: nexusColor.text)),
@@ -151,9 +151,18 @@ class SettingsScreenState extends State<SettingsScreen> {
             title: Text('Language', style: TextStyle(color: nexusColor.text)),
           ),
           ListTile(
+            title: Text('Notifications', style: TextStyle(color: nexusColor.text)),
+          ),
+          ListTile(
             title: Text('Support', style: TextStyle(color: nexusColor.text)),
             onTap: () {
               Navigator.pushNamed(context, '/support');
+            },
+          ),
+          ListTile(
+            title: Text('License', style: TextStyle(color: nexusColor.text)),
+            onTap: () {
+              Navigator.pushNamed(context, '/License');
             },
           ),
           ListTile(

@@ -125,7 +125,7 @@ class TransactionItemState extends State<TransactionItem> {
                     builder: (context, value, child) {
                       return TextField(
                         controller: TextEditingController(text: value),
-                        maxLength: 50,
+                        maxLength: 20,
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           hintText: value,
@@ -208,7 +208,7 @@ class TransactionItemState extends State<TransactionItem> {
                     builder: (context, value, child) {
                       return TextField(
                         controller: TextEditingController(text: value.toString()),
-                        maxLength: 50,
+                        maxLength: 15,
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           hintText: value.toString(),

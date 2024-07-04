@@ -95,7 +95,7 @@ class TagScreenState extends State<TagsScreen> {
                             children: <Widget>[
                               TextField(
                                 controller: TextEditingController(text: tag.tagName),
-                                maxLength: 50,
+                                maxLength: 20,
                                 style: TextStyle(color: nexusColor.text),
                                 decoration: InputDecoration(
                                   hintText: tag.tagName,

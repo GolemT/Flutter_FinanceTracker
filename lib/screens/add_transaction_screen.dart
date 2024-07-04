@@ -81,7 +81,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                 height: NexusSize.inputHeight.normal,
                 child: TextFormField(
                   controller: TextEditingController(),
-                  maxLength: 50,
+                  maxLength: 20,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
                     labelText: 'Enter a name for the transaction',
@@ -175,7 +175,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                     child: SizedBox(
                       height: NexusSize.inputHeight.normal,
                       child: TextFormField(
-                        maxLength: 50,
+                        maxLength: 15,
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           labelText: 'Enter the amount',

@@ -18,6 +18,7 @@ class LineChartComponentState extends State<LineChartComponent> {
   double minY = 0;
   double maxY = 0;
   late SharedPreferences prefs;
+  NexusColor nexusColor = NexusColor();
 
   @override
   void initState() {
@@ -74,8 +75,10 @@ class LineChartComponentState extends State<LineChartComponent> {
         child: Consumer<FileController>(
           builder: (context, fileController, child) {
             return lineChartData.isEmpty
-                ? const Text("No Data Available")
-                : LineChart(
+                ? Text("No Data Available", style: TextStyle(color: nexusColor.text))
+                : lineChartData.length == 1 
+                  ? Text('Not enough Data', style: TextStyle(color: nexusColor.text)) 
+                  : LineChart(
                     LineChartData(
                       minY: minY,
                       maxY: maxY,

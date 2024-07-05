@@ -25,13 +25,15 @@ Future themePicker () async {
   if (prefs.getBool('theme') == null) {
     prefs.setBool('theme', true);
     NexusColor.updateTheme(true);
-    return;
+  }
+  if(prefs.getDouble('budget') == null){
+    prefs.setDouble('budget', 0.0);
   }
   else {
     final entry = prefs.getBool('theme');
     NexusColor.updateTheme(entry!);
-    return;
   }
+  return;
 }
 
 

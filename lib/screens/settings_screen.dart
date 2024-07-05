@@ -17,7 +17,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class SettingsScreenState extends State<SettingsScreen> {
-  final String patreon = 'https://flutter.dev';
+  final String patreon = 'https://www.patreon.com/NexusCode';
   final String appStore = "";
   late SharedPreferences prefs;
   bool? _themeGroupValue;
@@ -280,6 +280,9 @@ class SettingsScreenState extends State<SettingsScreen> {
                           await fileController.resetTransaction();
                           await fileController.resetTag();
                           await fileController.refreshTagsAndTransactions();
+
+                          prefs.remove('theme');
+                          prefs.remove('budget');
 
                           Navigator.pushReplacement(
                             context,

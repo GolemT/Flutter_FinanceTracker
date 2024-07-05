@@ -31,6 +31,9 @@ class TransactionItemState extends State<TransactionItem> {
   late ValueNotifier<String> transactionDate;
   late ValueNotifier<List<Tag>> selectedTags;
   late ValueNotifier<double> transactionAmount;
+  late TextEditingController transactionNameController;
+  late TextEditingController transactionDateController;
+  late TextEditingController transactionAmountController;
   bool isExpanded = false;
 
   @override
@@ -40,6 +43,22 @@ class TransactionItemState extends State<TransactionItem> {
     transactionDate = ValueNotifier(widget.transaction.transactionDate);
     selectedTags = ValueNotifier(widget.transaction.transactionTag.map((index) => widget.tagList[index]).toList());
     transactionAmount = ValueNotifier(widget.transaction.transactionAmount);
+
+    transactionNameController = TextEditingController(text: widget.transaction.transactionName);
+    transactionDateController = TextEditingController(text: widget.transaction.transactionDate);
+    transactionAmountController = TextEditingController(text: widget.transaction.transactionAmount.toString());
+  }
+
+  @override
+  void dispose() {
+    transactionName.dispose();
+    transactionDate.dispose();
+    selectedTags.dispose();
+    transactionAmount.dispose();
+    transactionNameController.dispose();
+    transactionDateController.dispose();
+    transactionAmountController.dispose();
+    super.dispose();
   }
 
   void _resetValues() {
@@ -47,6 +66,10 @@ class TransactionItemState extends State<TransactionItem> {
     transactionDate.value = widget.transaction.transactionDate;
     selectedTags.value = widget.transaction.transactionTag.map((index) => widget.tagList[index]).toList();
     transactionAmount.value = widget.transaction.transactionAmount;
+
+    transactionNameController.text = widget.transaction.transactionName;
+    transactionDateController.text = widget.transaction.transactionDate;
+    transactionAmountController.text = widget.transaction.transactionAmount.toString();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -72,6 +95,7 @@ class TransactionItemState extends State<TransactionItem> {
     );
     if (pickedDate != null) {
       transactionDate.value = DateFormat('yyyy-MM-dd').format(pickedDate);
+      transactionDateController.text = transactionDate.value;
     }
   }
 
@@ -120,42 +144,32 @@ class TransactionItemState extends State<TransactionItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ValueListenableBuilder<String>(
-                    valueListenable: transactionName,
-                    builder: (context, value, child) {
-                      return TextField(
-                        controller: TextEditingController(text: value),
-                        maxLength: 20,
-                        style: TextStyle(color: nexusColor.text),
-                        decoration: InputDecoration(
-                          hintText: value,
-                          helperText: 'Name',
-                          filled: true,
-                          fillColor: nexusColor.inputs,
-                        ),
-                        onChanged: (newValue) {
-                          transactionName.value = newValue;
-                        },
-                      );
+                  TextField(
+                    controller: transactionNameController,
+                    maxLength: 20,
+                    style: TextStyle(color: nexusColor.text),
+                    decoration: InputDecoration(
+                      hintText: transactionNameController.text,
+                      helperText: 'Name',
+                      filled: true,
+                      fillColor: nexusColor.inputs,
+                    ),
+                    onChanged: (newValue) {
+                      transactionName.value = newValue;
                     },
                   ),
                   const SizedBox(height: 8.0),
                   GestureDetector(
                     onTap: () => _selectDate(context),
                     child: AbsorbPointer(
-                      child: ValueListenableBuilder<String>(
-                        valueListenable: transactionDate,
-                        builder: (context, value, child) {
-                          return TextField(
-                            controller: TextEditingController(text: value),
-                            style: TextStyle(color: nexusColor.text),
-                            decoration: InputDecoration(
-                              helperText: 'Date',
-                              filled: true,
-                              fillColor: nexusColor.inputs,
-                            ),
-                          );
-                        },
+                      child: TextField(
+                        controller: transactionDateController,
+                        style: TextStyle(color: nexusColor.text),
+                        decoration: InputDecoration(
+                          helperText: 'Date',
+                          filled: true,
+                          fillColor: nexusColor.inputs,
+                        ),
                       ),
                     ),
                   ),
@@ -203,29 +217,24 @@ class TransactionItemState extends State<TransactionItem> {
                     },
                   ),
                   const SizedBox(height: 8.0),
-                  ValueListenableBuilder<double>(
-                    valueListenable: transactionAmount,
-                    builder: (context, value, child) {
-                      return TextField(
-                        controller: TextEditingController(text: value.toString()),
-                        maxLength: 15,
-                        style: TextStyle(color: nexusColor.text),
-                        decoration: InputDecoration(
-                          hintText: value.toString(),
-                          helperText: 'Amount',
-                          filled: true,
-                          fillColor: nexusColor.inputs,
-                        ),
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'^-?\d*\.?\d*'),
-                          ),
-                        ],
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        onChanged: (newValue) {
-                          transactionAmount.value = double.tryParse(newValue) ?? 0.0;
-                        },
-                      );
+                  TextField(
+                    controller: transactionAmountController,
+                    maxLength: 15,
+                    style: TextStyle(color: nexusColor.text),
+                    decoration: InputDecoration(
+                      hintText: transactionAmountController.text,
+                      helperText: 'Amount',
+                      filled: true,
+                      fillColor: nexusColor.inputs,
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r'^-?\d*\.?\d*'),
+                      ),
+                    ],
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    onChanged: (newValue) {
+                      transactionAmount.value = double.tryParse(newValue) ?? 0.0;
                     },
                   ),
                   const SizedBox(height: 16.0),

@@ -54,7 +54,7 @@ class PieChartComponentState extends State<PieChartComponent> {
     return Consumer<FileController>(
       builder: (context, fileController, child) {
         return dataMap.isEmpty
-            ? Text("No data available", style: TextStyle(color: nexusColor.text))
+            ? Text("No tagged expenses", style: TextStyle(color: nexusColor.text))
             : PieChart(
                 centerTextStyle: TextStyle(color: nexusColor.text),
                 animationDuration: const Duration(milliseconds: 80),

@@ -1,5 +1,6 @@
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
+import 'package:finance_tracker/screens/settings_subscreens/license.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/file_controller.dart';
@@ -237,8 +238,11 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text('License', style: TextStyle(color: nexusColor.text)),
-            onTap: () {
-              Navigator.pushNamed(context, '/License');
+            onTap: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LicenseScreen()),
+          );
             },
           ),
           ListTile(

@@ -1,3 +1,4 @@
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
@@ -15,6 +16,8 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class SettingsScreenState extends State<SettingsScreen> {
+  final String patreon = 'https://flutter.dev';
+  final String appStore = "";
   late SharedPreferences prefs;
   bool? _themeGroupValue;
   late TextEditingController _budgetController;
@@ -240,14 +243,14 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text('Buy us a Coffee <3', style: TextStyle(color: nexusColor.text)),
-            onTap: () {
-              // Navigate to Patreon
+            onTap: () async {
+              await EasyLauncher.url(url: patreon);
             },
           ),
           ListTile(
             title: Text('Rate us!', style: TextStyle(color: nexusColor.text)),
-            onTap: () {
-              // Navigate app store
+            onTap: () async {
+              await EasyLauncher.url(url: appStore);
             },
           ),
           ListTile(

@@ -4,6 +4,7 @@ import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -16,10 +17,13 @@ class SettingsScreen extends StatefulWidget {
 class SettingsScreenState extends State<SettingsScreen> {
   late SharedPreferences prefs;
   bool? _themeGroupValue;
+  late TextEditingController _budgetController;
+  String account = "";
 
   @override
   void initState() {
     super.initState();
+    _budgetController = TextEditingController();
     _loadPreferences();
   }
 
@@ -27,6 +31,9 @@ class SettingsScreenState extends State<SettingsScreen> {
     prefs = await SharedPreferences.getInstance();
     setState(() {
       _themeGroupValue = prefs.getBool('theme') ?? true;
+      double? budget = prefs.getDouble('budget');
+      account = budget?.toString() ?? "";
+      _budgetController.text = account;
     });
   }
 
@@ -38,11 +45,20 @@ class SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  void _handleBudgetChange(String value) {
+    setState(() {
+      double? budget = double.tryParse(value);
+      if (budget != null) {
+        prefs.setDouble("budget", budget);
+        account = value;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final fileController = Provider.of<FileController>(context);
     final nexusColor = NexusColor();
-    _loadPreferences();
 
     return NavScreen(
       pageIndex: 4,
@@ -86,7 +102,14 @@ class SettingsScreenState extends State<SettingsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       TextField(
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         maxLength: 15,
+                        controller: _budgetController,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^-?\d*\.?\d*'),
+                          ),
+                        ],
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           label: Text("Account Budget", style: TextStyle(color: nexusColor.text)),
@@ -95,8 +118,58 @@ class SettingsScreenState extends State<SettingsScreen> {
                           fillColor: nexusColor.inputs,
                         ),
                         onChanged: (value) {
-                          prefs.setString('budget', value);
+                          _handleBudgetChange(value);
                         },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: () {
+                              prefs.remove('budget');
+
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/home',
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(8.0),
+                              minimumSize: const Size(37, 37),
+                              maximumSize: const Size(37, 37),
+                              backgroundColor: NexusColor.negative,
+                            ),
+                            child: Icon(
+                              Icons.delete,
+                              color: nexusColor.text,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(width: 240.0),
+                          ElevatedButton(
+                            onPressed: () async {
+                              _handleBudgetChange(_budgetController.text);
+
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/settings',
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(8.0),
+                              minimumSize: const Size(37, 37),
+                              maximumSize: const Size(37, 37),
+                              backgroundColor: NexusColor.positive,
+                            ),
+                            child: Icon(
+                              Icons.check,
+                              color: nexusColor.text,
+                              size: 20,
+                            ),
+                          ),
+                        ]
                       ),
                     ],
                   ),
@@ -217,5 +290,11 @@ class SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _budgetController.dispose();
+    super.dispose();
   }
 }

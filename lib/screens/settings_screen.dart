@@ -1,4 +1,5 @@
 import 'package:easy_url_launcher/easy_url_launcher.dart';
+import 'package:finance_tracker/screens/settings_subscreens/support.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/screens/settings_subscreens/license.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
@@ -99,6 +100,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
               title: Text('Budget', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              leading: Icon(Icons.account_balance, color: nexusColor.text,),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -196,6 +198,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
               title: Text('Theme', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              leading: Icon(Icons.mode_night_outlined, color: nexusColor.text,),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -226,33 +229,44 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: Text('Language', style: TextStyle(color: nexusColor.text)),
+            leading: Icon(Icons.translate, color: nexusColor.text,),
           ),
           ListTile(
             title: Text('Notifications', style: TextStyle(color: nexusColor.text)),
+            leading: Icon(Icons.notifications, color: nexusColor.text,),
           ),
           ListTile(
             title: Text('Support', style: TextStyle(color: nexusColor.text)),
-            onTap: () {
-              Navigator.pushNamed(context, '/support');
+            leading: Icon(Icons.support_agent, color: nexusColor.text,),
+            trailing: Icon(Icons.arrow_forward_ios, color: nexusColor.text,),
+            onTap: () async {
+              await Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const SupportScreen())
+              );
             },
           ),
           ListTile(
             title: Text('License', style: TextStyle(color: nexusColor.text)),
+            leading: Icon(Icons.gavel, color: nexusColor.text,),
+            trailing: Icon(Icons.arrow_forward_ios, color: nexusColor.text,),
             onTap: () async {
               await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const LicenseScreen()),
-          );
+              );
             },
           ),
           ListTile(
             title: Text('Buy us a Coffee <3', style: TextStyle(color: nexusColor.text)),
+            leading: Icon(Icons.coffee_outlined, color: nexusColor.text,),
             onTap: () async {
               await EasyLauncher.url(url: patreon);
             },
           ),
           ListTile(
             title: Text('Rate us!', style: TextStyle(color: nexusColor.text)),
+            leading: Icon(Icons.star, color: nexusColor.text,),
             onTap: () async {
               await EasyLauncher.url(url: appStore);
             },

@@ -80,7 +80,6 @@ class TransactionsState extends State<AddTransactionScreen> {
                 width: NexusSize.inputWidth.normal,
                 height: NexusSize.inputHeight.normal,
                 child: TextFormField(
-                  controller: TextEditingController(),
                   maxLength: 20,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(

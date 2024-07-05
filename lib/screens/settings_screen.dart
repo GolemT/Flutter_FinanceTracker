@@ -130,7 +130,7 @@ class SettingsScreenState extends State<SettingsScreen> {
 
                               Navigator.pushReplacementNamed(
                                 context,
-                                '/home',
+                                '/settings',
                               );
                             },
                             style: ElevatedButton.styleFrom(

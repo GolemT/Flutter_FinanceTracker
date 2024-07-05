@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LineChartComponent extends StatefulWidget {
   const LineChartComponent({super.key});
@@ -16,6 +17,7 @@ class LineChartComponentState extends State<LineChartComponent> {
   List<String> xLabels = [];
   double minY = 0;
   double maxY = 0;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
@@ -23,18 +25,21 @@ class LineChartComponentState extends State<LineChartComponent> {
     fetchData();
   }
 
-  void fetchData() {
+  Future<void> fetchData() async {
+    prefs = await SharedPreferences.getInstance();
     final fileController = context.read<FileController>();
     final transactions = fileController.listTransaction;
+
+    double initialBudget = prefs.getDouble('budget') ?? 0.0;
 
     final dataArray = transactions
         .map((item) => {'date': item.transactionDate, 'amount': item.transactionAmount})
         .toList();
     dataArray.sort((a, b) => DateTime.parse(a['date'] as String).compareTo(DateTime.parse(b['date'] as String)));
 
-    double cumulativeSum = 0;
-    double minSum = double.infinity;
-    double maxSum = double.negativeInfinity;
+    double cumulativeSum = initialBudget;
+    double minSum = initialBudget;
+    double maxSum = initialBudget;
 
     final sumsByDate = dataArray.map((item) {
       cumulativeSum += item['amount'] as double;

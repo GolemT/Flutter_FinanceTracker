@@ -236,7 +236,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             leading: Icon(Icons.notifications, color: nexusColor.text,),
           ),
           ListTile(
-            title: Text('Support', style: TextStyle(color: nexusColor.text)),
+            title: Text('Support/FAQ', style: TextStyle(color: nexusColor.text)),
             leading: Icon(Icons.support_agent, color: nexusColor.text,),
             trailing: Icon(Icons.arrow_forward_ios, color: nexusColor.text,),
             onTap: () async {

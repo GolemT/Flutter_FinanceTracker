@@ -12,7 +12,7 @@ class SupportScreen extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text('Support', style: TextStyle(color: nexusColor.text)),
+        title: Text('Support/FAQ', style: TextStyle(color: nexusColor.text)),
         backgroundColor: nexusColor.navigation,
         iconTheme: IconThemeData(color: nexusColor.text),
       ),

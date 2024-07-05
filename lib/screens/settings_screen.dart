@@ -19,6 +19,7 @@ class SettingsScreen extends StatefulWidget {
 
 class SettingsScreenState extends State<SettingsScreen> {
   final String patreon = 'https://www.patreon.com/NexusCode';
+  // TODO: Add App Store URL
   final String appStore = "";
   late SharedPreferences prefs;
   bool? _themeGroupValue;
@@ -227,13 +228,65 @@ class SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-          ListTile(
-            title: Text('Language', style: TextStyle(color: nexusColor.text)),
-            leading: Icon(Icons.translate, color: nexusColor.text,),
+          // TODO: Implement Languages
+          Container(
+            decoration: BoxDecoration(
+              color: nexusColor.background,
+              border: Border(
+                bottom: BorderSide(
+                  color: nexusColor.inputs,
+                  style: BorderStyle.solid,
+                  strokeAlign: BorderSide.strokeAlignInside,
+                ),
+              ),
+            ),
+            child: ExpansionTile(
+              iconColor: nexusColor.text,
+              collapsedIconColor: nexusColor.text,
+              title: Text('Language', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              leading: Icon(Icons.translate, color: nexusColor.text,),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Language Selector', style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-          ListTile(
-            title: Text('Notifications', style: TextStyle(color: nexusColor.text)),
-            leading: Icon(Icons.notifications, color: nexusColor.text,),
+          // TODO: Implement Notification
+          Container(
+            decoration: BoxDecoration(
+              color: nexusColor.background,
+              border: Border(
+                bottom: BorderSide(
+                  color: nexusColor.inputs,
+                  style: BorderStyle.solid,
+                  strokeAlign: BorderSide.strokeAlignInside,
+                ),
+              ),
+            ),
+            child: ExpansionTile(
+              iconColor: nexusColor.text,
+              collapsedIconColor: nexusColor.text,
+              title: Text('Notification', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              leading: Icon(Icons.notifications, color: nexusColor.text,),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Notification Selector', style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           ListTile(
             title: Text('Support/FAQ', style: TextStyle(color: nexusColor.text)),
@@ -260,6 +313,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text('Buy us a Coffee <3', style: TextStyle(color: nexusColor.text)),
             leading: Icon(Icons.coffee_outlined, color: nexusColor.text,),
+            trailing: Icon(Icons.language, color: nexusColor.text),
             onTap: () async {
               await EasyLauncher.url(url: patreon);
             },
@@ -267,6 +321,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             title: Text('Rate us!', style: TextStyle(color: nexusColor.text)),
             leading: Icon(Icons.star, color: nexusColor.text,),
+            trailing: Icon(Icons.language, color: nexusColor.text),
             onTap: () async {
               await EasyLauncher.url(url: appStore);
             },

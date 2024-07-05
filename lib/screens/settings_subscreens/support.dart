@@ -2,6 +2,8 @@ import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 
+// TODO: Add support/FAQ questions and answers
+
 class SupportScreen extends StatelessWidget {
 
   const SupportScreen({super.key});

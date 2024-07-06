@@ -18,6 +18,7 @@ class AddTransactionScreen extends StatefulWidget {
 
 class TransactionsState extends State<AddTransactionScreen> {
   String transactionName = "";
+  final nexusColor = NexusColor();
   String? transactionDate;
   List<Tag>? selectedTags = [];
   double? amount;
@@ -29,15 +30,20 @@ class TransactionsState extends State<AddTransactionScreen> {
   Future<void> _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
-      barrierColor: NexusColor.background,
+      barrierColor: nexusColor.background,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget? child) {
         return Theme(
-          data: ThemeData.dark().copyWith(
-            primaryColor: NexusColor.text,
-            colorScheme: const ColorScheme.dark(primary: NexusColor.text, onPrimary: NexusColor.background),
+          data: ThemeData(
+            primaryColor: nexusColor.text,
+            colorScheme: ColorScheme.dark(
+              primary: nexusColor.text,
+              onPrimary: nexusColor.background,
+              surface: nexusColor.background,
+              onSurface: nexusColor.text,
+            ),
           ),
           child: child!,
         );
@@ -56,9 +62,12 @@ class TransactionsState extends State<AddTransactionScreen> {
     final items = tagList.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
 
     return Scaffold(
-      resizeToAvoidBottomInset: false, // Allow the FAB to move when the keyboard appears
+      backgroundColor: nexusColor.background,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Add Transaction'),
+        title: Text('Add Transaction', style: TextStyle(color: nexusColor.text)),
+        backgroundColor: nexusColor.navigation,
+        iconTheme: IconThemeData(color: nexusColor.text),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -71,8 +80,15 @@ class TransactionsState extends State<AddTransactionScreen> {
                 width: NexusSize.inputWidth.normal,
                 height: NexusSize.inputHeight.normal,
                 child: TextFormField(
-                  decoration: const InputDecoration(
+                  maxLength: 20,
+                  style: TextStyle(color: nexusColor.text),
+                  decoration: InputDecoration(
                     labelText: 'Enter a name for the transaction',
+                    filled: true,
+                    fillColor: nexusColor.inputs,
+                    labelStyle: TextStyle(color: nexusColor.text),
+                    helperStyle: TextStyle(color: nexusColor.subText),
+                    hintStyle: TextStyle(color: nexusColor.text),
                   ),
                   onChanged: (value) => transactionName = value,
                 ),
@@ -90,10 +106,15 @@ class TransactionsState extends State<AddTransactionScreen> {
                   }),
                   child: AbsorbPointer(
                     child: TextField(
+                      style: TextStyle(color: nexusColor.text),
                       controller: TextEditingController(text: transactionDate),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Select a date",
                         filled: true,
+                        fillColor: nexusColor.inputs,
+                        labelStyle: TextStyle(color: nexusColor.text),
+                        helperStyle: TextStyle(color: nexusColor.subText),
+                        hintStyle: TextStyle(color: nexusColor.text),
                       ),
                       onChanged: (value) => {
                         // Date will be handled by DatePicker
@@ -104,29 +125,29 @@ class TransactionsState extends State<AddTransactionScreen> {
               ),
               const SizedBox(height: 16.0),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start, // Align at the top
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
                       child: MultiSelectDialogField(
-                        itemsTextStyle: const TextStyle(color: NexusColor.text),
-                        selectedItemsTextStyle: const TextStyle(color: NexusColor.text),
-                        buttonIcon: const Icon(Icons.arrow_drop_down, color: NexusColor.text),
+                        itemsTextStyle: TextStyle(color: nexusColor.text),
+                        selectedItemsTextStyle: TextStyle(color: nexusColor.text),
+                        buttonIcon: Icon(Icons.arrow_drop_down, color: nexusColor.text),
                         searchable: true,
                         items: items,
-                        backgroundColor: NexusColor.background,
-                        title: const Text("Tags", style: TextStyle(color: NexusColor.text),),
-                        selectedColor: Colors.blue,
+                        backgroundColor: nexusColor.background,
+                        title: Text("Tags", style: TextStyle(color: nexusColor.text),),
+                        selectedColor: NexusColor.secondary,
                         decoration: BoxDecoration(
-                          color: NexusColor.inputs,
+                          color: nexusColor.inputs,
                           border: Border.all(
-                            color: NexusColor.divider,
+                            color: nexusColor.divider,
                             width: 2,
                           ),
                         ),
-                        buttonText: const Text(
+                        buttonText: Text(
                           "Select Tags",
                           style: TextStyle(
-                            color: NexusColor.text,
+                            color: nexusColor.text,
                             fontSize: 16,
                           ),
                         ),
@@ -137,8 +158,8 @@ class TransactionsState extends State<AddTransactionScreen> {
                         },
                         chipDisplay: MultiSelectChipDisplay(
                           alignment: Alignment.bottomCenter,
-                          chipColor: NexusColor.inputs,
-                          textStyle: const TextStyle(color: NexusColor.text),
+                          chipColor: nexusColor.inputs,
+                          textStyle: TextStyle(color: nexusColor.text),
                           items: selectedTags?.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList() ?? [],
                           onTap: (value) {
                             setState(() {
@@ -153,9 +174,15 @@ class TransactionsState extends State<AddTransactionScreen> {
                     child: SizedBox(
                       height: NexusSize.inputHeight.normal,
                       child: TextFormField(
-                        decoration: const InputDecoration(
+                        maxLength: 15,
+                        style: TextStyle(color: nexusColor.text),
+                        decoration: InputDecoration(
                           labelText: 'Enter the amount',
                           filled: true,
+                          fillColor: nexusColor.inputs,
+                          labelStyle: TextStyle(color: nexusColor.text),
+                          helperStyle: TextStyle(color: nexusColor.subText),
+                          hintStyle: TextStyle(color: nexusColor.text),
                         ),
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(
@@ -184,12 +211,12 @@ class TransactionsState extends State<AddTransactionScreen> {
           if (transactionName.isEmpty) {
             setState(() {
               errorMessage = "Name cannot be empty";
-              errorMessageColor = Colors.red;
+              errorMessageColor = NexusColor.negative;
             });
           } else if (amount == null) {
             setState(() {
               errorMessage = "Amount cannot be empty";
-              errorMessageColor = Colors.red;
+              errorMessageColor = NexusColor.negative;
             });
           } else {
             List<int> tagIds = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();

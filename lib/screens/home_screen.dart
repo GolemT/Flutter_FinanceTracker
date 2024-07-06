@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
 import 'package:finance_tracker/components/transaction_item.dart';
@@ -13,8 +14,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fileController = context.watch<FileController>();
-    final List<Tag> tagList = fileController.listTag;
-    final items = tagList.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
+    final items = fileController.listTag.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
+    final nexusColor = NexusColor();
 
     return NavScreen(
       pageIndex: 0,
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
           ? Center(
               child: Text(
                 "No transactions available",
-                style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+                style: TextStyle(color: nexusColor.text, fontSize: 20),
               ),
             )
           : ListView.builder(
@@ -52,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                 final transaction = list[index];
                 return TransactionItem(
                   transaction: transaction,
-                  tagList: tagList,
+                  tagList: fileController.listTag,
                   items: items,
                   fileController: fileController,
                 );

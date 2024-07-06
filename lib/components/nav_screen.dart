@@ -17,7 +17,9 @@ class NavScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nexusColor = NexusColor();
     return Scaffold(
+      backgroundColor: nexusColor.background,
       resizeToAvoidBottomInset: false,
       body: child,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -28,9 +30,9 @@ class NavScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => const AddTransactionScreen()));
         },
-        child: const Icon(
+        child: Icon(
           Icons.add,
-          color: NexusColor.text,
+          color: nexusColor.text,
         ),
       ),
       bottomNavigationBar: NavBar(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LineChartComponent extends StatefulWidget {
   const LineChartComponent({super.key});
@@ -15,6 +17,8 @@ class LineChartComponentState extends State<LineChartComponent> {
   List<String> xLabels = [];
   double minY = 0;
   double maxY = 0;
+  late SharedPreferences prefs;
+  NexusColor nexusColor = NexusColor();
 
   @override
   void initState() {
@@ -22,18 +26,21 @@ class LineChartComponentState extends State<LineChartComponent> {
     fetchData();
   }
 
-  void fetchData() {
+  Future<void> fetchData() async {
+    prefs = await SharedPreferences.getInstance();
     final fileController = context.read<FileController>();
     final transactions = fileController.listTransaction;
+
+    double initialBudget = prefs.getDouble('budget') ?? 0.0;
 
     final dataArray = transactions
         .map((item) => {'date': item.transactionDate, 'amount': item.transactionAmount})
         .toList();
     dataArray.sort((a, b) => DateTime.parse(a['date'] as String).compareTo(DateTime.parse(b['date'] as String)));
 
-    double cumulativeSum = 0;
-    double minSum = double.infinity;
-    double maxSum = double.negativeInfinity;
+    double cumulativeSum = initialBudget;
+    double minSum = initialBudget;
+    double maxSum = initialBudget;
 
     final sumsByDate = dataArray.map((item) {
       cumulativeSum += item['amount'] as double;
@@ -60,15 +67,18 @@ class LineChartComponentState extends State<LineChartComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final nexusColor = NexusColor();
     return Scaffold(
+      backgroundColor: nexusColor.background,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<FileController>(
           builder: (context, fileController, child) {
             return lineChartData.isEmpty
-                ? const Text("No Data Available")
-                : LineChart(
+                ? Text("No Data Available", style: TextStyle(color: nexusColor.text))
+                : lineChartData.length == 1 
+                  ? Text('Not enough Data', style: TextStyle(color: nexusColor.text)) 
+                  : LineChart(
                     LineChartData(
                       minY: minY,
                       maxY: maxY,
@@ -86,7 +96,7 @@ class LineChartComponentState extends State<LineChartComponent> {
                             }
                           },
                           getTextStyles: (context, value) => TextStyle(
-                            color: theme.textTheme.bodySmall?.color,
+                            color: nexusColor.text,
                             fontSize: 12,
                           ),
                           margin: 8,
@@ -102,7 +112,7 @@ class LineChartComponentState extends State<LineChartComponent> {
                             return '';
                           },
                           getTextStyles: (context, value) => TextStyle(
-                            color: theme.textTheme.bodySmall?.color,
+                            color: nexusColor.text,
                             fontSize: 12,
                           ),
                           margin: 8,
@@ -116,13 +126,13 @@ class LineChartComponentState extends State<LineChartComponent> {
                         drawHorizontalLine: true,
                         getDrawingHorizontalLine: (value) {
                           return FlLine(
-                            color: theme.dividerColor,
+                            color: nexusColor.divider,
                             strokeWidth: 1,
                           );
                         },
                         getDrawingVerticalLine: (value) {
                           return FlLine(
-                            color: theme.dividerColor,
+                            color: nexusColor.divider,
                             strokeWidth: 1,
                           );
                         },
@@ -130,15 +140,15 @@ class LineChartComponentState extends State<LineChartComponent> {
                       borderData: FlBorderData(
                         show: true,
                         border: Border(
-                          left: BorderSide(color: theme.dividerColor),
-                          bottom: BorderSide(color: theme.dividerColor),
+                          left: BorderSide(color: nexusColor.divider),
+                          bottom: BorderSide(color: nexusColor.divider),
                         ),
                       ),
                       lineBarsData: [
                         LineChartBarData(
                           spots: lineChartData,
                           isCurved: false,
-                          colors: [theme.primaryColor],
+                          colors: [NexusColor.secondary],
                           barWidth: 2,
                           belowBarData: BarAreaData(
                             show: false,

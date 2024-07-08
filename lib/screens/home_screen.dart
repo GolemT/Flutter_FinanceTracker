@@ -53,25 +53,6 @@ class HomeScreen extends StatelessWidget {
 
     return NavScreen(
       pageIndex: 0,
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            Navigator.pushReplacementNamed(context, '/home');
-            break;
-          case 1:
-            Navigator.pushReplacementNamed(context, '/tags');
-            break;
-          case 2:
-            Navigator.pushReplacementNamed(context, '/addTransaction');
-            break;
-          case 3:
-            Navigator.pushReplacementNamed(context, '/analytics');
-            break;
-          case 4:
-            Navigator.pushReplacementNamed(context, '/settings');
-            break;
-        }
-      },
       child: SingleChildScrollView(
         child: Column(
           children: [

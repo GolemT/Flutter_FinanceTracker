@@ -6,13 +6,11 @@ import 'package:finance_tracker/components/nav_bar.dart';
 class NavScreen extends StatelessWidget {
   final Widget child;
   final int pageIndex;
-  final Function(int) onTap;
 
   const NavScreen({
     super.key,
     required this.child,
-    required this.pageIndex,
-    required this.onTap,
+    required this.pageIndex
   });
 
   @override
@@ -37,7 +35,6 @@ class NavScreen extends StatelessWidget {
       ),
       bottomNavigationBar: NavBar(
         pageIndex: pageIndex,
-        onTap: onTap,
       ),
     );
   }

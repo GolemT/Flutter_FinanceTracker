@@ -14,22 +14,6 @@ class AnalyticsScreen extends StatelessWidget {
 
     return NavScreen(
       pageIndex: 3,
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            Navigator.pushReplacementNamed(context, '/home');
-            break;
-          case 1:
-            Navigator.pushReplacementNamed(context, '/tags');
-            break;
-          case 3:
-            Navigator.pushReplacementNamed(context, '/analytics');
-            break;
-          case 4:
-            Navigator.pushReplacementNamed(context, '/settings');
-            break;
-        }
-      },
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

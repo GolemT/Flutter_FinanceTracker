@@ -29,22 +29,6 @@ class TagScreenState extends State<TagsScreen> {
 
     return NavScreen(
       pageIndex: 1,
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            Navigator.pushReplacementNamed(context, '/home');
-            break;
-          case 1:
-            Navigator.pushReplacementNamed(context, '/tags');
-            break;
-          case 3:
-            Navigator.pushReplacementNamed(context, '/analytics');
-            break;
-          case 4:
-            Navigator.pushReplacementNamed(context, '/settings');
-            break;
-        }
-      },
       child: fileController.listTag.isEmpty
           ? Scaffold(
               backgroundColor: nexusColor.background,

@@ -1,19 +1,42 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:flutter/material.dart';
+import 'package:finance_tracker/components/NoAnimationRoute.dart';
+import 'package:finance_tracker/screens/analytics_screen.dart';
+import 'package:finance_tracker/screens/settings_screen.dart';
+import 'package:finance_tracker/screens/tags_screen.dart';
+import 'package:finance_tracker/screens/home_screen.dart';
 
 class NavBar extends StatelessWidget {
   final nexusColor = NexusColor();
   final int pageIndex;
-  final Function(int) onTap;
 
   NavBar({
     super.key,
     required this.pageIndex,
-    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    void onTap(int index) {
+      switch (index) {
+        case 0:
+          Navigator.push(context, NoAnimationPageRoute(builder: (context) => const HomeScreen(), settings: const RouteSettings(name: '/home')));
+          break;
+        case 1:
+          Navigator.push(context, NoAnimationPageRoute(builder: (context) => const TagsScreen(), settings: const RouteSettings(name: '/tags')));
+          break;
+        case 2:
+          Navigator.pushReplacementNamed(context, '/addTransaction');
+          break;
+        case 3:
+          Navigator.push(context, NoAnimationPageRoute(builder: (context) => const AnalyticsScreen(), settings: const RouteSettings(name: '/analytics')));
+          break;
+        case 4:
+          Navigator.push(context, NoAnimationPageRoute(builder: (context) => const SettingsScreen(), settings: const RouteSettings(name: '/settings')));
+          break;
+      }
+    }
+
     return BottomAppBar(
         padding: const EdgeInsets.all(0),
         elevation: 0.0,

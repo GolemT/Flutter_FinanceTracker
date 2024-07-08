@@ -4,72 +4,55 @@ import 'package:finance_tracker/model/transaction.dart';
 import 'package:flutter/material.dart';
 
 class FileController extends ChangeNotifier {
-
   List<Transaction> listTransaction = [];
   Transaction? transaction;
 
   List<Tag> listTag = [];
   Tag? tag;
 
-  //Inital loading of the data and mapping tags to transactions  
+  // Initial loading of the data and mapping tags to transactions
   FileController() {
     refreshTagsAndTransactions();
   }
 
-  //Reads and updates the tansaction list from the JSON. Notifys listeners to update shown values.
+  // Reads and updates the transaction list from the JSON. Notifies listeners to update shown values.
   Future<void> readTransaction() async {
     final jsonDataTransaction = await FileManager().readFileTransactionManager();
-    //If transactions exist and a transaction has taggs, add the Names of the Tag to the Transaction class
+    // If transactions exist and a transaction has tags, add the names of the tags to the Transaction class
     if (jsonDataTransaction != null) {
       listTransaction = (jsonDataTransaction as List).map((item) => Transaction.fromJson(item as Map<String, dynamic>)).toList();
-        var i = 0;
-        while(i < listTransaction.length){
-          listTransaction[i].transactionTagName.clear();
-          var j = 0;
-          listTransaction[i].transactionTagName = [];
-          while(j < listTransaction[i].transactionTag.length){
-            try{
-              listTransaction[i].transactionTagName.add(listTag[listTransaction[i].transactionTag[j]].tagName);
-
-            }catch(e){
-            }
-            j++;
-          }
-          i++;
+      for (var transaction in listTransaction) {
+        transaction.transactionTagName.clear();
+        transaction.transactionTagName = transaction.transactionTag.map((index) => listTag[index].tagName).toList();
       }
       notifyListeners();
     }
   }
 
-  //Takes input and creates a new Transaction. Automaticlly updates the Tag-Transaction mapping
-  createTransaction(transactionName, transactionDate, transactionTag, transactionAmount) async {
+  // Takes input and creates a new transaction. Automatically updates the Tag-Transaction mapping
+  createTransaction(String transactionName, String transactionDate, List<int> transactionTag, double transactionAmount) async {
     await FileManager().writeFileTransactionManager(transactionName, transactionDate, transactionTag, transactionAmount);
     await refreshTagsAndTransactions();
-}
+  }
 
-  updateTransaction(transactionIndex, transactionName, transactionDate, tag, transactionAmount) async{
+  updateTransaction(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async {
     await FileManager().updateTransactionManager(transactionIndex, transactionName, transactionDate, tag, transactionAmount);
     await refreshTagsAndTransactions();
-}
+  }
 
-  deleteTransaction(transactionIndex) async{
+  deleteTransaction(int transactionIndex) async {
     await FileManager().deleteTransactionManager(transactionIndex);
     await refreshTagsAndTransactions();
-}
+  }
 
-
-  //nuke whole transaction JSON file
-  resetTransaction() async{
+  // Nuke whole transaction JSON file
+  resetTransaction() async {
     await FileManager().resetFileTransactionManager();
     listTransaction = [];
     await refreshTagsAndTransactions();
   }
 
-
-  //--------------------------------------------------------------- TAGS ---------------------------------------------------------------//
-
-
-  //Reads and updates the list of tags from the JSON. Notifys listeners to update shown values.
+  // Reads and updates the list of tags from the JSON. Notifies listeners to update shown values.
   Future<void> readTag() async {
     final jsonDataTag = await FileManager().readTagManager();
     if (jsonDataTag != null) {
@@ -78,31 +61,27 @@ class FileController extends ChangeNotifier {
       listTag = [];
     }
     notifyListeners();
-
   }
 
-  //Takes input and creates a new tag. Automaticlly updates the Tag-Transaction mapping
-  createTag(tagName, tagDescription) async{
-    tag = await FileManager().writeTagManager(tagName ,tagDescription);
+  // Takes input and creates a new tag. Automatically updates the Tag-Transaction mapping
+  createTag(String tagName, String tagDescription) async {
+    tag = await FileManager().writeTagManager(tagName, tagDescription);
     await refreshTagsAndTransactions();
-
-    }
-
-  updateTag(tagIndex, tagName, tagDescription) async{
-    tag = await FileManager().updateTagManager(tagIndex, tagName ,tagDescription);
-    await refreshTagsAndTransactions();
-
   }
 
-  //deletes Tag and updates transactionTag indices
-  deleteTag(tagIndex) async{
+  updateTag(int tagIndex, String tagName, String tagDescription) async {
+    tag = await FileManager().updateTagManager(tagIndex, tagName, tagDescription);
+    await refreshTagsAndTransactions();
+  }
+
+  // Deletes tag and updates transactionTag indices
+  deleteTag(int tagIndex) async {
     await FileManager().deleteTagManager(tagIndex);
     await refreshTagsAndTransactions();
-
   }
 
-  //nuke whole tag JSON file
-  resetTag() async{
+  // Nuke whole tag JSON file
+  resetTag() async {
     await FileManager().resetTagManager();
     listTag = [];
     await refreshTagsAndTransactions();
@@ -112,5 +91,4 @@ class FileController extends ChangeNotifier {
     await readTag();
     await readTransaction();
   }
-
 }

@@ -53,7 +53,8 @@ class HomeScreen extends StatelessWidget {
 
     return NavScreen(
       pageIndex: 0,
-      child: SingleChildScrollView(
+      child: SafeArea(
+        child: SingleChildScrollView(
         child: Column(
           children: [
             FutureBuilder<double>(
@@ -73,7 +74,6 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const SizedBox(height: 20),
                         _buildCircle(
                           amount: totalBalance,
                           color: NexusColor.accents,
@@ -164,6 +164,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      ), 
     );
   }
 

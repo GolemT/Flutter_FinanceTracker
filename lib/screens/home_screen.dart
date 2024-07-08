@@ -167,7 +167,7 @@ class HomeScreen extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: fileController.listTransaction.length,
                         itemBuilder: (context, index) {
-                          List<Transaction> list = fileController.listTransaction;
+                          List<Transaction> list = List.from(fileController.listTransaction);
                           list.sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
                           final transaction = list[index];
                           return TransactionItem(

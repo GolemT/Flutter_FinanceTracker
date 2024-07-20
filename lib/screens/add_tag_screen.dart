@@ -3,6 +3,7 @@ import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class AddTagScreen extends StatefulWidget {
   const AddTagScreen({super.key});
@@ -25,7 +26,7 @@ class AddTagScreenState extends State<AddTagScreen> {
     return Scaffold(
       backgroundColor: nexusColor.background,
       appBar: AppBar(
-        title: Text('Add Tag', style: TextStyle(color: nexusColor.text)),
+        title: Text(AppLocalizations.of(context).translate('addTag'), style: TextStyle(color: nexusColor.text)),
         backgroundColor: nexusColor.navigation,
         iconTheme: IconThemeData(color: nexusColor.text),
       ),
@@ -41,7 +42,7 @@ class AddTagScreenState extends State<AddTagScreen> {
                   maxLength: 20,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
-                    labelText: 'Tag Name',
+                    labelText: AppLocalizations.of(context).translate('tagName'),
                     fillColor: nexusColor.inputs,
                     filled: true,
                     border: const OutlineInputBorder(),
@@ -63,7 +64,7 @@ class AddTagScreenState extends State<AddTagScreen> {
                   maxLength: 150,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
-                    labelText: 'Tag Description',
+                    labelText: AppLocalizations.of(context).translate('tagDescr'),
                     fillColor: nexusColor.inputs,
                     filled: true,
                     border: const OutlineInputBorder(),
@@ -87,18 +88,18 @@ class AddTagScreenState extends State<AddTagScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        label: const Text('Create Tag'),
+        label:  Text(AppLocalizations.of(context).translate('tagCreate')),
         icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
         if (tagName.isEmpty) {
           setState(() {
-          errorMessage = "Name cannot be empty";
+          errorMessage = AppLocalizations.of(context).translate('noEmptyNameError');
           errorMessageColor = NexusColor.negative;
           });
         } else if (fileController.listTag.any((tag) => tag.tagName == tagName)) {
           setState(() {
-          errorMessage = "Tag already exists";
+          errorMessage = AppLocalizations.of(context).translate('duplicateTagError');
           errorMessageColor = NexusColor.negative;
           });
         } else {

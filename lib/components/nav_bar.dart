@@ -58,7 +58,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.sell_outlined,
                 pageIndex == 1,
-                'Tags',
+                AppLocalizations.of(context).translate('tags'),
                 nexusColor,
                 onTap: () => onTap(1),
               ),
@@ -68,7 +68,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.analytics_outlined,
                 pageIndex == 3,
-                'Analytics',
+                AppLocalizations.of(context).translate('analytics'),
                 nexusColor,
                 onTap: () => onTap(3),
               ),
@@ -76,7 +76,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.settings_outlined,
                 pageIndex == 4,
-                'Settings',
+                AppLocalizations.of(context).translate('settings'),
                 nexusColor,
                 onTap: () => onTap(4),
               ),

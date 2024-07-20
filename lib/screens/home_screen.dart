@@ -8,6 +8,7 @@ import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
 import 'package:finance_tracker/components/transaction_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -63,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error calculating total balance', style: TextStyle(color: nexusColor.text, fontSize: 20));
+                  return Text(AppLocalizations.of(context).translate('balanceCalcError'), style: TextStyle(color: nexusColor.text, fontSize: 20));
                 } else {
                   double totalBalance = snapshot.data ?? 0.0;
                   double totalIncome = _calculateTotalIncome(fileController);
@@ -119,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Transaction List',
+                        AppLocalizations.of(context).translate('transList'),
                         style: TextStyle(
                           color: nexusColor.text,
                           fontSize: 16,
@@ -138,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                 fileController.listTransaction.isEmpty
                     ? Center(
                         child: Text(
-                          "No transactions available",
+                          AppLocalizations.of(context).translate('noTransAvailable'),
                           style: TextStyle(color: nexusColor.text, fontSize: 20),
                         ),
                       )

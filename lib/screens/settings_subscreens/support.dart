@@ -1,6 +1,7 @@
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 // TODO: Add support/FAQ questions and answers
 
@@ -37,7 +38,7 @@ class SupportScreen extends StatelessWidget {
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
               title: Text(
-                'Frage 1',
+                AppLocalizations.of(context).translate('questionOne'),
                 style: TextStyle(color: nexusColor.text, fontSize: 18.0),
               ),
               children: <Widget>[
@@ -48,7 +49,7 @@ class SupportScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Antwort 1', style: TextStyle(color: nexusColor.text))
+                        Text(AppLocalizations.of(context).translate('answerOne'), style: TextStyle(color: nexusColor.text))
                       ]
                     )
                   ),
@@ -71,7 +72,7 @@ class SupportScreen extends StatelessWidget {
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
               title: Text(
-                'Frage 2',
+                AppLocalizations.of(context).translate('questionTwo'),
                 style: TextStyle(color: nexusColor.text, fontSize: 18.0),
               ),
               children: <Widget>[
@@ -82,7 +83,7 @@ class SupportScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Antwort 2', style: TextStyle(color: nexusColor.text))
+                        Text(AppLocalizations.of(context).translate('answerTwo'), style: TextStyle(color: nexusColor.text))
                       ]
                     )
                   ),
@@ -105,7 +106,7 @@ class SupportScreen extends StatelessWidget {
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
               title: Text(
-                'Frage 3',
+                AppLocalizations.of(context).translate('questionThree'),
                 style: TextStyle(color: nexusColor.text, fontSize: 18.0),
               ),
               children: <Widget>[
@@ -116,7 +117,7 @@ class SupportScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Antwort 3', style: TextStyle(color: nexusColor.text))
+                        Text(AppLocalizations.of(context).translate('answerThree'), style: TextStyle(color: nexusColor.text))
                       ]
                     )
                   ),
@@ -134,8 +135,8 @@ class SupportScreen extends StatelessWidget {
           onPressed: () async {
             await EasyLauncher.email(
               email: 'tkosleckmicro@gmail.com',
-              subject: 'Request for Support',
-              body: 'Hello NexusCode');
+              subject: AppLocalizations.of(context).translate('supportSubject'),
+              body: AppLocalizations.of(context).translate('supportBody'));
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: NexusColor.secondary,

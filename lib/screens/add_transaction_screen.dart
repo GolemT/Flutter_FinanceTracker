@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
@@ -65,7 +66,7 @@ class TransactionsState extends State<AddTransactionScreen> {
       backgroundColor: nexusColor.background,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Add Transaction', style: TextStyle(color: nexusColor.text)),
+        title: Text(AppLocalizations.of(context).translate('transAdd'), style: TextStyle(color: nexusColor.text)),
         backgroundColor: nexusColor.navigation,
         iconTheme: IconThemeData(color: nexusColor.text),
       ),
@@ -83,7 +84,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                   maxLength: 20,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
-                    labelText: 'Enter a name for the transaction',
+                    labelText: AppLocalizations.of(context).translate('transNameLabel'),
                     filled: true,
                     fillColor: nexusColor.inputs,
                     labelStyle: TextStyle(color: nexusColor.text),
@@ -109,7 +110,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                       style: TextStyle(color: nexusColor.text),
                       controller: TextEditingController(text: transactionDate),
                       decoration: InputDecoration(
-                        labelText: "Select a date",
+                        labelText: AppLocalizations.of(context).translate('dateSelectLabel'),
                         filled: true,
                         fillColor: nexusColor.inputs,
                         labelStyle: TextStyle(color: nexusColor.text),
@@ -135,7 +136,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                         searchable: true,
                         items: items,
                         backgroundColor: nexusColor.background,
-                        title: Text("Tags", style: TextStyle(color: nexusColor.text),),
+                        title: Text(AppLocalizations.of(context).translate('tags'), style: TextStyle(color: nexusColor.text),),
                         selectedColor: NexusColor.secondary,
                         decoration: BoxDecoration(
                           color: nexusColor.inputs,
@@ -145,7 +146,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                           ),
                         ),
                         buttonText: Text(
-                          "Select Tags",
+                          AppLocalizations.of(context).translate('selectTagsButton'),
                           style: TextStyle(
                             color: nexusColor.text,
                             fontSize: 16,
@@ -177,7 +178,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                         maxLength: 15,
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
-                          labelText: 'Enter the amount',
+                          labelText: AppLocalizations.of(context).translate('enterAmountLabel'),
                           filled: true,
                           fillColor: nexusColor.inputs,
                           labelStyle: TextStyle(color: nexusColor.text),
@@ -204,18 +205,18 @@ class TransactionsState extends State<AddTransactionScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        label: const Text('Create Transaction'),
+        label: Text(AppLocalizations.of(context).translate('transCreate')),
         icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
           if (transactionName.isEmpty) {
             setState(() {
-              errorMessage = "Name cannot be empty";
+              errorMessage = AppLocalizations.of(context).translate('noEmptyNameError');
               errorMessageColor = NexusColor.negative;
             });
           } else if (amount == null) {
             setState(() {
-              errorMessage = "Amount cannot be empty";
+              errorMessage = AppLocalizations.of(context).translate('noEmptyAmountError');
               errorMessageColor = NexusColor.negative;
             });
           } else {

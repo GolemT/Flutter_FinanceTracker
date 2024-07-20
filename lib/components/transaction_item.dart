@@ -6,6 +6,7 @@ import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class TransactionItem extends StatefulWidget {
   final Transaction transaction;
@@ -150,7 +151,7 @@ class TransactionItemState extends State<TransactionItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionNameController.text,
-                      helperText: 'Name',
+                      helperText: AppLocalizations.of(context).translate('name'),
                       filled: true,
                       fillColor: nexusColor.inputs,
                     ),
@@ -184,7 +185,7 @@ class TransactionItemState extends State<TransactionItem> {
                         selectedItemsTextStyle: TextStyle(color: nexusColor.text),
                         items: widget.items,
                         initialValue: value,
-                        title: Text("Tags", style: TextStyle(color: nexusColor.text)),
+                        title: Text(AppLocalizations.of(context).translate('Tags'), style: TextStyle(color: nexusColor.text)),
                         selectedColor: Colors.blue,
                         decoration: BoxDecoration(
                           color: nexusColor.inputs,
@@ -195,7 +196,7 @@ class TransactionItemState extends State<TransactionItem> {
                         ),
                         buttonIcon: Icon(Icons.arrow_drop_down, color: nexusColor.text),
                         buttonText: Text(
-                          "Select Tags",
+                          AppLocalizations.of(context).translate('selectTagsButton'),
                           style: TextStyle(
                             color: nexusColor.text,
                             fontSize: 16,
@@ -223,7 +224,7 @@ class TransactionItemState extends State<TransactionItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionAmountController.text,
-                      helperText: 'Amount',
+                      helperText: AppLocalizations.of(context).translate('amount'),
                       filled: true,
                       fillColor: nexusColor.inputs,
                     ),

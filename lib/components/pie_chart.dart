@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class PieChartComponent extends StatefulWidget {
   const PieChartComponent({super.key});
@@ -54,7 +55,7 @@ class PieChartComponentState extends State<PieChartComponent> {
     return Consumer<FileController>(
       builder: (context, fileController, child) {
         return dataMap.isEmpty
-            ? Text("No tagged expenses", style: TextStyle(color: nexusColor.text))
+            ? Text(AppLocalizations.of(context).translate('noTaggedE'), style: TextStyle(color: nexusColor.text))
             : PieChart(
                 centerTextStyle: TextStyle(color: nexusColor.text),
                 animationDuration: const Duration(milliseconds: 80),

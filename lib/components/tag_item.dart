@@ -2,6 +2,7 @@ import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class TagItem extends StatefulWidget {
   final Tag tag;
@@ -92,7 +93,7 @@ class TagItemState extends State<TagItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagNameController.text,
-                      helperText: 'Name',
+                      helperText: AppLocalizations.of(context).translate('name'),
                       filled: true,
                       fillColor: nexusColor.inputs,
                     ),
@@ -107,7 +108,7 @@ class TagItemState extends State<TagItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagDescriptionController.text,
-                      helperText: 'Description',
+                      helperText: AppLocalizations.of(context).translate('Description'),
                       filled: true,
                       fillColor: nexusColor.inputs,
                     ),

@@ -6,6 +6,7 @@ import 'package:finance_tracker/screens/add_tag_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class TagsScreen extends StatefulWidget {
   const TagsScreen({super.key});
@@ -35,14 +36,14 @@ class TagScreenState extends State<TagsScreen> {
               backgroundColor: nexusColor.background,
               body: Center(
                 child: Text(
-                  "No tags available",
+                  AppLocalizations.of(context).translate('noTags'),
                   style: TextStyle(color: nexusColor.text, fontSize: 20.0),
                 ),
               ),
               floatingActionButton: FloatingActionButton.extended(
                 heroTag: 'newTagButton', // Add a unique heroTag here
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                label: const Text('New Tag'),
+                label: Text(AppLocalizations.of(context).translate('newTag')),
                 backgroundColor: NexusColor.accents,
                 onPressed: () async {
                   await Navigator.push(
@@ -73,7 +74,7 @@ class TagScreenState extends State<TagsScreen> {
               floatingActionButton: FloatingActionButton.extended(
                 heroTag: 'newTagButton',
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                label: const Text('New Tag'),
+                label: Text(AppLocalizations.of(context).translate('newTag')),
                 backgroundColor: NexusColor.accents,
                 onPressed: () async {
                   await Navigator.push(

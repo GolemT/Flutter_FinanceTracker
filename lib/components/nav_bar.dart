@@ -1,7 +1,7 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/components/localisations.dart';
 import 'package:flutter/material.dart';
-import 'package:finance_tracker/components/NoAnimationRoute.dart';
+import 'package:finance_tracker/components/no_animation_route.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';

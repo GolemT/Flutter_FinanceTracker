@@ -9,6 +9,7 @@ import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:finance_tracker/components/locale_notifier.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -25,6 +26,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   bool? _themeGroupValue;
   late TextEditingController _budgetController;
   String account = "";
+  String? _selectedLanguage;
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class SettingsScreenState extends State<SettingsScreen> {
       double? budget = prefs.getDouble('budget');
       account = budget?.toString() ?? "";
       _budgetController.text = account;
+      _selectedLanguage = prefs.getString('lang') == 'en' ? 'English' : 'Deutsch';
     });
   }
 
@@ -58,6 +61,21 @@ class SettingsScreenState extends State<SettingsScreen> {
         prefs.setDouble("budget", budget);
         account = value;
       }
+    });
+  }
+
+    void _handleLanguageChange(String? value) {
+    setState(() {
+      _selectedLanguage = value;
+      if (value == 'English') {
+        context.read<LocaleNotifier>().setLocale(const Locale('en'));
+      } else if (value == 'Deutsch') {
+        context.read<LocaleNotifier>().setLocale(const Locale('de'));
+      }
+      prefs.setString('lang', value!);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsScreen()));
     });
   }
 
@@ -212,7 +230,6 @@ class SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-          // TODO: Implement Languages
           Container(
             decoration: BoxDecoration(
               color: nexusColor.background,
@@ -235,7 +252,22 @@ class SettingsScreenState extends State<SettingsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Language Selector', style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                      Text('Select your preferred language', style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                      DropdownButton<String>(
+                        value: _selectedLanguage,
+                        dropdownColor: nexusColor.inputs,
+                        items: const [
+                          DropdownMenuItem(
+                            value: 'English',
+                            child: Text('English'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Deutsch',
+                            child: Text('Deutsch'),
+                          ),
+                        ],
+                        onChanged: _handleLanguageChange,
+                      ),
                     ],
                   ),
                 ),

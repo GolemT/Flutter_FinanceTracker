@@ -1,0 +1,67 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+
+class AppLocalizations {
+  final Locale locale;
+
+  AppLocalizations(this.locale);
+
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+
+  late Map<String, String> _localizedStrings;
+
+  Future<bool> load() async {
+    String jsonString = await rootBundle.loadString('lib/i18n/${locale.languageCode}.json');
+    Map<String, dynamic> jsonMap = json.decode(jsonString);
+
+    _localizedStrings = jsonMap.map((key, value) {
+      return MapEntry(key, value.toString());
+    });
+
+    return true;
+  }
+
+  String translate(String key) {
+    return _localizedStrings[key] ?? '';
+  }
+}
+
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) {
+    return ['en', 'de'].contains(locale.languageCode);
+  }
+
+  @override
+  Future<AppLocalizations> load(Locale locale) async {
+    AppLocalizations localizations = AppLocalizations(locale);
+    await localizations.load();
+    return localizations;
+  }
+
+  @override
+  bool shouldReload(covariant LocalizationsDelegate<AppLocalizations> old) {
+    return false;
+  }
+}
+
+class LocaleNotifier extends ChangeNotifier {
+  Locale _locale = Locale('en');
+
+  Locale get locale => _locale;
+
+  void setLocale(Locale locale) {
+    if (locale != _locale) {
+      _locale = locale;
+      notifyListeners();
+    }
+  }
+}

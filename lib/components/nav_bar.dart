@@ -1,4 +1,5 @@
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/components/localisations.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/components/NoAnimationRoute.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
@@ -49,7 +50,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.home_outlined,
                 pageIndex == 0,
-                'Home',
+                AppLocalizations.of(context).translate('home'),
                 nexusColor,
                 onTap: () => onTap(0),
               ),

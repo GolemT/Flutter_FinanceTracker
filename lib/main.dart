@@ -9,16 +9,18 @@ import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:finance_tracker/components/localisations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(
   MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => FileController()),
+      ChangeNotifierProvider(create: (context) => LocaleNotifier()),
     ],
     child: const MyApp(),
   ),
 );
-
 
 Future themePicker () async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -36,7 +38,6 @@ Future themePicker () async {
   return;
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -49,16 +50,41 @@ class MyApp extends StatelessWidget {
       },
     );
 
-    return MaterialApp(
-      title: 'Finance Tracker',
-      initialRoute: '/home',
-      theme: NexusTheme().nexusTheme,
-      routes: {
-        '/home': (context) => const HomeScreen(),
-        '/tags': (context) => const TagsScreen(),
-        '/addTransaction': (context) => const AddTransactionScreen(),
-        '/analytics': (context) => const AnalyticsScreen(),
-        '/settings': (context) => const SettingsScreen(),
+    return Consumer<LocaleNotifier>(
+      builder: (context, localeNotifier, _) {
+        return MaterialApp(
+          title: 'Finance Tracker',
+          locale: localeNotifier.locale,
+          supportedLocales: [
+            Locale('en', ''),
+            Locale('de', ''),
+          ],
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          localeResolutionCallback: (locale, supportedLocales) {
+            if (locale == null) {
+              return supportedLocales.first;
+            }
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode) {
+                return supportedLocale;
+              }
+            }
+            return supportedLocales.first;
+          },
+          initialRoute: '/home',
+          theme: NexusTheme().nexusTheme,
+          routes: {
+            '/home': (context) => const HomeScreen(),
+            '/tags': (context) => const TagsScreen(),
+            '/addTransaction': (context) => const AddTransactionScreen(),
+            '/analytics': (context) => const AnalyticsScreen(),
+            '/settings': (context) => const SettingsScreen(),
+          },
+        );
       },
     );
   }

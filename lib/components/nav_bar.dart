@@ -102,7 +102,7 @@ Widget navItem(IconData icon, bool selected, String text, NexusColor nexusColor,
           ),
           Text(
             text,
-            style: TextStyle(color: selected ? NexusColor.accents : nexusColor.subText),
+            style: TextStyle(color: selected ? NexusColor.accents : nexusColor.subText, fontSize: 12.0),
           ),
         ],
       ),

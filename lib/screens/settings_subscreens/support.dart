@@ -135,8 +135,8 @@ class SupportScreen extends StatelessWidget {
           onPressed: () async {
             await EasyLauncher.email(
               email: 'tkosleckmicro@gmail.com',
-              subject: AppLocalizations.of(context).translate('supportSubject'),
-              body: AppLocalizations.of(context).translate('supportBody'));
+              subject: "Request for Support",
+              body: "Hello NexusCode");
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: NexusColor.secondary,
@@ -146,7 +146,7 @@ class SupportScreen extends StatelessWidget {
             ),
           ),
           child: Text(
-            'Text us',
+            AppLocalizations.of(context).translate('interaction'),
             style: TextStyle(color: nexusColor.text, fontSize: 18),
           ),
         ),

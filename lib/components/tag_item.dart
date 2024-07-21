@@ -104,7 +104,7 @@ class TagItemState extends State<TagItem> {
                   const SizedBox(height: 8.0),
                   TextField(
                     controller: tagDescriptionController,
-                    maxLength: 20,
+                    maxLength: 150,
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagDescriptionController.text,

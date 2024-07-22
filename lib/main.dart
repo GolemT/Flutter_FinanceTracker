@@ -13,6 +13,14 @@ import 'package:provider/provider.dart';
 import 'package:finance_tracker/components/localisations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:finance_tracker/components/locale_notifier.dart';
+import 'package:workmanager/workmanager.dart';
+
+void callbackDispatcher() {
+ Workmanager().executeTask((task, inputData) {
+ // Your background task logic goes here
+ return Future.value(true);
+ });
+}
 
 void main() => runApp(
   MultiProvider(

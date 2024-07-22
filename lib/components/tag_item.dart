@@ -108,7 +108,7 @@ class TagItemState extends State<TagItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagDescriptionController.text,
-                      helperText: AppLocalizations.of(context).translate('Description'),
+                      helperText: AppLocalizations.of(context).translate('description'),
                       filled: true,
                       fillColor: nexusColor.inputs,
                     ),

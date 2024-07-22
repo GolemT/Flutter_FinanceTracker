@@ -14,7 +14,7 @@
     "langEn": "Englisch",
     "langDe": "Deutsch",
     "notif": "Benachrichtigungen",
-    "notifSelect": "Benachrichtigs Einstellungen",
+    "notifSelect": "Benachrichtigungs Einstellungen",
     "support": "Hilfe/FAQ",
     "license": "Lizenz ",
     "weArePoorGiveUsMoney": "Kaufe uns ein Kaffee <3",
@@ -30,7 +30,7 @@
     "noTaggedE": "Keine getaggten Ausgaben",
     "name": "Name",
     "description": "Beschreibung",
-    "amount": "Menge",
+    "amount": "Betrag",
 
     "tags": "Tags",
     "selectTagsButton": "Tags auswählen",
@@ -44,7 +44,7 @@
 
     "noEmptyNameError": "Name kann nicht leer sein",
     "duplicateTagError": "Tag existiert schon",
-    "noEmptyAmountError": "Menge darf nicht leer sein",
+    "noEmptyAmountError": "Betrag darf nicht leer sein",
     "balanceCalcError": "Fehler bei der Berechnung des Kontostandes",
 
     "transCreate": "Transaktion erstellen",
@@ -53,7 +53,7 @@
     "transList": "Transaktions Liste",
     "noTransAvailable": "Keine Transaktion verfügbar",
     "dateSelectLabel": "Datum auswählen",
-    "enterAmountLabel": "Menge auswählen",
+    "enterAmountLabel": "Betrag auswählen",
     "bankHistory": "Kontoverlauf",
 
     "questionOne": "Frage Eins",

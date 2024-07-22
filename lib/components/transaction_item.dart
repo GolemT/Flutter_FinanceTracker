@@ -185,7 +185,7 @@ class TransactionItemState extends State<TransactionItem> {
                         selectedItemsTextStyle: TextStyle(color: nexusColor.text),
                         items: widget.items,
                         initialValue: value,
-                        title: Text(AppLocalizations.of(context).translate('Tags'), style: TextStyle(color: nexusColor.text)),
+                        title: Text(AppLocalizations.of(context).translate('tags'), style: TextStyle(color: nexusColor.text)),
                         selectedColor: Colors.blue,
                         decoration: BoxDecoration(
                           color: nexusColor.inputs,

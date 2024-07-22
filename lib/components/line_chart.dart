@@ -4,6 +4,7 @@ import 'package:finance_tracker/file_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class LineChartComponent extends StatefulWidget {
   const LineChartComponent({super.key});
@@ -75,9 +76,9 @@ class LineChartComponentState extends State<LineChartComponent> {
         child: Consumer<FileController>(
           builder: (context, fileController, child) {
             return lineChartData.isEmpty
-                ? Text("No Data Available", style: TextStyle(color: nexusColor.text))
+                ? Text(AppLocalizations.of(context).translate('noData'), style: TextStyle(color: nexusColor.text))
                 : lineChartData.length == 1 
-                  ? Text('Not enough Data', style: TextStyle(color: nexusColor.text)) 
+                  ? Text(AppLocalizations.of(context).translate('insufData'), style: TextStyle(color: nexusColor.text)) 
                   : LineChart(
                     LineChartData(
                       minY: minY,

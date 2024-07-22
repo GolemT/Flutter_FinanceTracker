@@ -1,6 +1,7 @@
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/components/localisations.dart';
 import 'package:flutter/material.dart';
-import 'package:finance_tracker/components/NoAnimationRoute.dart';
+import 'package:finance_tracker/components/no_animation_route.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
@@ -49,7 +50,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.home_outlined,
                 pageIndex == 0,
-                'Home',
+                AppLocalizations.of(context).translate('home'),
                 nexusColor,
                 onTap: () => onTap(0),
               ),
@@ -57,7 +58,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.sell_outlined,
                 pageIndex == 1,
-                'Tags',
+                AppLocalizations.of(context).translate('tags'),
                 nexusColor,
                 onTap: () => onTap(1),
               ),
@@ -67,7 +68,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.analytics_outlined,
                 pageIndex == 3,
-                'Analytics',
+                AppLocalizations.of(context).translate('analytics'),
                 nexusColor,
                 onTap: () => onTap(3),
               ),
@@ -75,7 +76,7 @@ class NavBar extends StatelessWidget {
               navItem(
                 Icons.settings_outlined,
                 pageIndex == 4,
-                'Settings',
+                AppLocalizations.of(context).translate('settings'),
                 nexusColor,
                 onTap: () => onTap(4),
               ),
@@ -101,7 +102,7 @@ Widget navItem(IconData icon, bool selected, String text, NexusColor nexusColor,
           ),
           Text(
             text,
-            style: TextStyle(color: selected ? NexusColor.accents : nexusColor.subText),
+            style: TextStyle(color: selected ? NexusColor.accents : nexusColor.subText, fontSize: 12.0),
           ),
         ],
       ),

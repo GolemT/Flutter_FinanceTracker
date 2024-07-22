@@ -3,6 +3,7 @@ import 'package:finance_tracker/components/nav_screen.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/components/pie_chart.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class AnalyticsScreen extends StatelessWidget {
 
@@ -31,7 +32,7 @@ class AnalyticsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Cost by Tag",
+                        AppLocalizations.of(context).translate('costByTag'),
                         style: TextStyle(color: nexusColor.text),
                       ),
                       const SizedBox(
@@ -52,7 +53,7 @@ class AnalyticsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Banking History",
+                        AppLocalizations.of(context).translate('bankHistory'),
                         style: TextStyle(color: nexusColor.text),
                       ),
                       const SizedBox(

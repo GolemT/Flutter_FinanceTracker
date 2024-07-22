@@ -9,6 +9,8 @@ import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:finance_tracker/components/locale_notifier.dart';
+import 'package:finance_tracker/components/localisations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -25,6 +27,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   bool? _themeGroupValue;
   late TextEditingController _budgetController;
   String account = "";
+  String? _selectedLanguage;
 
   @override
   void initState() {
@@ -40,6 +43,7 @@ class SettingsScreenState extends State<SettingsScreen> {
       double? budget = prefs.getDouble('budget');
       account = budget?.toString() ?? "";
       _budgetController.text = account;
+      _selectedLanguage = prefs.getString('lang') == 'en' ? 'English' : 'Deutsch';
     });
   }
 
@@ -58,6 +62,21 @@ class SettingsScreenState extends State<SettingsScreen> {
         prefs.setDouble("budget", budget);
         account = value;
       }
+    });
+  }
+
+    void _handleLanguageChange(String? value) {
+    setState(() {
+      _selectedLanguage = value;
+      if (value == 'English') {
+        context.read<LocaleNotifier>().setLocale(const Locale('en'));
+      } else if (value == 'Deutsch') {
+        context.read<LocaleNotifier>().setLocale(const Locale('de'));
+      }
+      prefs.setString('lang', value!);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsScreen()));
     });
   }
 
@@ -84,7 +103,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: ExpansionTile(
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
-              title: Text('Budget', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              title: Text(AppLocalizations.of(context).translate('budget'), style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
               leading: Icon(Icons.account_balance, color: nexusColor.text,),
               children: <Widget>[
                 Padding(
@@ -103,8 +122,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                         ],
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
-                          label: Text("Account Budget", style: TextStyle(color: nexusColor.text)),
-                          hintText: "Enter your budget",
+                          label: Text(AppLocalizations.of(context).translate('accBudget'), style: TextStyle(color: nexusColor.text)),
+                          hintText: AppLocalizations.of(context).translate('accBudgetHint'),
                           filled: true,
                           fillColor: nexusColor.inputs,
                         ),
@@ -182,7 +201,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: ExpansionTile(
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
-              title: Text('Theme', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              title: Text(AppLocalizations.of(context).translate('theme'), style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
               leading: Icon(Icons.mode_night_outlined, color: nexusColor.text,),
               children: <Widget>[
                 Padding(
@@ -191,7 +210,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       ListTile(
-                        title: Text('Light Theme', style: TextStyle(color: nexusColor.text)),
+                        title: Text(AppLocalizations.of(context).translate('themeLight'), style: TextStyle(color: nexusColor.text)),
                         leading: Radio<bool?>(
                           value: false,
                           groupValue: _themeGroupValue,
@@ -199,7 +218,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       ListTile(
-                        title: Text('Dark Theme', style: TextStyle(color: nexusColor.text)),
+                        title: Text(AppLocalizations.of(context).translate('themeDark'), style: TextStyle(color: nexusColor.text)),
                         leading: Radio<bool?>(
                           value: true,
                           groupValue: _themeGroupValue,
@@ -212,7 +231,6 @@ class SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           ),
-          // TODO: Implement Languages
           Container(
             decoration: BoxDecoration(
               color: nexusColor.background,
@@ -227,7 +245,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: ExpansionTile(
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
-              title: Text('Language', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              title: Text(AppLocalizations.of(context).translate('lang'), style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
               leading: Icon(Icons.translate, color: nexusColor.text,),
               children: <Widget>[
                 Padding(
@@ -235,7 +253,22 @@ class SettingsScreenState extends State<SettingsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Language Selector', style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                      Text(AppLocalizations.of(context).translate('langSelect'), style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                      DropdownButton<String>(
+                        value: _selectedLanguage,
+                        dropdownColor: nexusColor.inputs,
+                        items: [
+                          DropdownMenuItem(
+                            value: 'English',
+                            child: Text(AppLocalizations.of(context).translate('langEn')),
+                          ),
+                          DropdownMenuItem(
+                            value: 'Deutsch',
+                            child: Text(AppLocalizations.of(context).translate('langDe')),
+                          ),
+                        ],
+                        onChanged: _handleLanguageChange,
+                      ),
                     ],
                   ),
                 ),
@@ -257,7 +290,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             child: ExpansionTile(
               iconColor: nexusColor.text,
               collapsedIconColor: nexusColor.text,
-              title: Text('Notification', style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
+              title: Text(AppLocalizations.of(context).translate('notif'), style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
               leading: Icon(Icons.notifications, color: nexusColor.text,),
               children: <Widget>[
                 Padding(
@@ -265,7 +298,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Notification Selector', style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                      Text(AppLocalizations.of(context).translate('notifSelect'), style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
                     ],
                   ),
                 ),
@@ -273,7 +306,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ListTile(
-            title: Text('Support/FAQ', style: TextStyle(color: nexusColor.text)),
+            title: Text(AppLocalizations.of(context).translate('support'), style: TextStyle(color: nexusColor.text)),
             leading: Icon(Icons.support_agent, color: nexusColor.text,),
             trailing: Icon(Icons.arrow_forward_ios, color: nexusColor.text,),
             onTap: () async {
@@ -284,7 +317,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           ListTile(
-            title: Text('License', style: TextStyle(color: nexusColor.text)),
+            title: Text(AppLocalizations.of(context).translate('license'), style: TextStyle(color: nexusColor.text)),
             leading: Icon(Icons.gavel, color: nexusColor.text,),
             trailing: Icon(Icons.arrow_forward_ios, color: nexusColor.text,),
             onTap: () async {
@@ -295,7 +328,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           ListTile(
-            title: Text('Buy us a Coffee <3', style: TextStyle(color: nexusColor.text)),
+            title: Text(AppLocalizations.of(context).translate('weArePoorGiveUsMoney'), style: TextStyle(color: nexusColor.text)),
             leading: Icon(Icons.coffee_outlined, color: nexusColor.text,),
             trailing: Icon(Icons.language, color: nexusColor.text),
             onTap: () async {
@@ -303,7 +336,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           ListTile(
-            title: Text('Rate us!', style: TextStyle(color: nexusColor.text)),
+            title: Text(AppLocalizations.of(context).translate('rateUs'), style: TextStyle(color: nexusColor.text)),
             leading: Icon(Icons.star, color: nexusColor.text,),
             trailing: Icon(Icons.language, color: nexusColor.text),
             onTap: () async {
@@ -312,21 +345,21 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.delete, color: NexusColor.negative),
-            title: const Text('Delete all Data', style: TextStyle(color: NexusColor.negative)),
+            title: Text(AppLocalizations.of(context).translate('dataPurge'), style: TextStyle(color: NexusColor.negative)),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Delete all Data', style: TextStyle(color: nexusColor.text)),
-                    content: Text('Are you sure you want to delete all data? This action cannot be undone.', style: TextStyle(color: nexusColor.text)),
+                    title: Text(AppLocalizations.of(context).translate('dataPurge'), style: TextStyle(color: nexusColor.text)),
+                    content: Text(AppLocalizations.of(context).translate('dataPurgeConfirmation'), style: TextStyle(color: nexusColor.text)),
                     backgroundColor: nexusColor.background,
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Cancel'),
+                        child: Text(AppLocalizations.of(context).translate('cancel')),
                       ),
                       TextButton(
                         onPressed: () async {
@@ -342,7 +375,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                             MaterialPageRoute(builder: (context) => const HomeScreen()),
                           );
                         },
-                        child: const Text('Delete'),
+                        child: Text(AppLocalizations.of(context).translate('delete')),
                       ),
                     ],
                   );

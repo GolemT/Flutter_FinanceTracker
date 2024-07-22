@@ -9,56 +9,84 @@ import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:finance_tracker/components/localisations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:finance_tracker/components/locale_notifier.dart';
 
 void main() => runApp(
   MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => FileController()),
+      ChangeNotifierProvider(create: (context) => LocaleNotifier()),
     ],
     child: const MyApp(),
   ),
 );
 
-
-Future themePicker () async {
+Future<void> themePicker() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('theme') == null) {
     prefs.setBool('theme', true);
     NexusColor.updateTheme(true);
   }
-  if(prefs.getDouble('budget') == null){
+  if (prefs.getDouble('budget') == null) {
     prefs.setDouble('budget', 0.0);
-  }
-  else {
+  } else {
     final entry = prefs.getBool('theme');
     NexusColor.updateTheme(entry!);
   }
-  return;
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    FutureBuilder(
+    return FutureBuilder(
       future: themePicker(),
       builder: (context, snapshot) {
-        return const CircularProgressIndicator();
-      },
-    );
-
-    return MaterialApp(
-      title: 'Finance Tracker',
-      initialRoute: '/home',
-      theme: NexusTheme().nexusTheme,
-      routes: {
-        '/home': (context) => const HomeScreen(),
-        '/tags': (context) => const TagsScreen(),
-        '/addTransaction': (context) => const AddTransactionScreen(),
-        '/analytics': (context) => const AnalyticsScreen(),
-        '/settings': (context) => const SettingsScreen(),
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Consumer<LocaleNotifier>(
+            builder: (context, localeNotifier, _) {
+              return MaterialApp(
+                title: 'Finance Tracker',
+                locale: localeNotifier.locale,
+                supportedLocales: const [
+                  Locale('en', ''),
+                  Locale('de', ''),
+                ],
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  if (locale == null) {
+                    return supportedLocales.first;
+                  }
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode) {
+                      return supportedLocale;
+                    }
+                  }
+                  return supportedLocales.first;
+                },
+                initialRoute: '/home',
+                theme: NexusTheme().nexusTheme,
+                routes: {
+                  '/home': (context) => const HomeScreen(),
+                  '/tags': (context) => const TagsScreen(),
+                  '/addTransaction': (context) => const AddTransactionScreen(),
+                  '/analytics': (context) => const AnalyticsScreen(),
+                  '/settings': (context) => const SettingsScreen(),
+                },
+              );
+            },
+          );
+        }
       },
     );
   }

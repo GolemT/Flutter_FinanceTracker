@@ -5,9 +5,8 @@ import 'package:finance_tracker/screens/settings_subscreens/license.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/file_controller.dart';
-import 'package:finance_tracker/screens/home_screen.dart';
+import 'package:finance_tracker/screens/setup_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/components/locale_notifier.dart';
 import 'package:finance_tracker/components/localisations.dart';
@@ -25,14 +24,11 @@ class SettingsScreenState extends State<SettingsScreen> {
   final String appStore = "";
   late SharedPreferences prefs;
   bool? _themeGroupValue;
-  late TextEditingController _budgetController;
-  String account = "";
   String? _selectedLanguage;
 
   @override
   void initState() {
     super.initState();
-    _budgetController = TextEditingController();
     _loadPreferences();
   }
 
@@ -40,9 +36,6 @@ class SettingsScreenState extends State<SettingsScreen> {
     prefs = await SharedPreferences.getInstance();
     setState(() {
       _themeGroupValue = prefs.getBool('theme') ?? true;
-      double? budget = prefs.getDouble('budget');
-      account = budget?.toString() ?? "";
-      _budgetController.text = account;
       _selectedLanguage = prefs.getString('lang') == 'en' ? 'English' : 'Deutsch';
     });
   }
@@ -52,16 +45,6 @@ class SettingsScreenState extends State<SettingsScreen> {
       prefs.setBool("theme", value!);
       _themeGroupValue = value;
       NexusColor.updateTheme(value);
-    });
-  }
-
-  void _handleBudgetChange(String value) {
-    setState(() {
-      double? budget = double.tryParse(value);
-      if (budget != null) {
-        prefs.setDouble("budget", budget);
-        account = value;
-      }
     });
   }
 
@@ -89,104 +72,6 @@ class SettingsScreenState extends State<SettingsScreen> {
       pageIndex: 4,
       child: ListView(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: nexusColor.background,
-              border: Border(
-                bottom: BorderSide(
-                  color: nexusColor.inputs,
-                  style: BorderStyle.solid,
-                  strokeAlign: BorderSide.strokeAlignInside,
-                ),
-              ),
-            ),
-            child: ExpansionTile(
-              iconColor: nexusColor.text,
-              collapsedIconColor: nexusColor.text,
-              title: Text(AppLocalizations.of(context).translate('budget'), style: TextStyle(color: nexusColor.text, fontSize: 18.0)),
-              leading: Icon(Icons.account_balance, color: nexusColor.text,),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      TextField(
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        maxLength: 15,
-                        controller: _budgetController,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'^-?\d*\.?\d*'),
-                          ),
-                        ],
-                        style: TextStyle(color: nexusColor.text),
-                        decoration: InputDecoration(
-                          label: Text(AppLocalizations.of(context).translate('accBudget'), style: TextStyle(color: nexusColor.text)),
-                          hintText: AppLocalizations.of(context).translate('accBudgetHint'),
-                          filled: true,
-                          fillColor: nexusColor.inputs,
-                        ),
-                        onChanged: (value) {
-                          _handleBudgetChange(value);
-                        },
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          ElevatedButton(
-                            onPressed: () {
-                              prefs.remove('budget');
-
-                              Navigator.pushReplacementNamed(
-                                context,
-                                '/settings',
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(8.0),
-                              minimumSize: const Size(37, 37),
-                              maximumSize: const Size(37, 37),
-                              backgroundColor: NexusColor.negative,
-                            ),
-                            child: Icon(
-                              Icons.delete,
-                              color: nexusColor.text,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: 240.0),
-                          ElevatedButton(
-                            onPressed: () async {
-                              _handleBudgetChange(_budgetController.text);
-
-                              Navigator.pushReplacementNamed(
-                                context,
-                                '/settings',
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(8.0),
-                              minimumSize: const Size(37, 37),
-                              maximumSize: const Size(37, 37),
-                              backgroundColor: NexusColor.positive,
-                            ),
-                            child: Icon(
-                              Icons.check,
-                              color: nexusColor.text,
-                              size: 20,
-                            ),
-                          ),
-                        ]
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
           Container(
             decoration: BoxDecoration(
               color: nexusColor.background,
@@ -369,10 +254,12 @@ class SettingsScreenState extends State<SettingsScreen> {
 
                           prefs.remove('theme');
                           prefs.remove('budget');
+                          prefs.remove('lang');
+                          prefs.remove('isFirstRun');
 
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const HomeScreen()),
+                            MaterialPageRoute(builder: (context) => const SetupScreen()),
                           );
                         },
                         child: Text(AppLocalizations.of(context).translate('delete')),
@@ -386,11 +273,5 @@ class SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _budgetController.dispose();
-    super.dispose();
   }
 }

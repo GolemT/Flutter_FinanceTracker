@@ -63,5 +63,11 @@
     "questionThree": "Question Three",
     "answerThree": "Answer Three",
 
-    "interaction": "Text us"
+    "interaction": "Text us",
+
+    "setupTitle": "Setup",
+    "themeSelect": "Select a theme",
+    "accSetup": "Please enter your current account balance",
+    "notifSetup": "Do you wish to enable notifications?",
+    "finishSetup": "Finish Setup"
 }

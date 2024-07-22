@@ -63,5 +63,11 @@
     "questionThree": "Frage Drei",
     "answerThree": "Antwort Drei",
 
-    "interaction": "Kontaktier uns"
+    "interaction": "Kontaktier uns",
+
+    "setupTitle": "Setup",
+    "themeSelect": "Wähle ein Farbschema",
+    "accSetup": "Bitte gib deinen Kontostand ein",
+    "notifSetup": "Möchtest du Benachrichtigungen erhalten?",
+    "finishSetup": "Setup beenden"
 }

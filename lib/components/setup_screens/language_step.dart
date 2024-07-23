@@ -74,11 +74,11 @@ class LanguageStepState extends State<LanguageStep> {
                       items: [
                         DropdownMenuItem(
                           value: 'English',
-                          child: Text(AppLocalizations.of(context).translate('langEn'), style: TextStyle(fontSize: 18)),
+                          child: Text(AppLocalizations.of(context).translate('langEn'), style: TextStyle(color: nexusColor.text, fontSize: 18)),
                         ),
                         DropdownMenuItem(
                           value: 'Deutsch',
-                          child: Text(AppLocalizations.of(context).translate('langDe'), style: TextStyle(fontSize: 18)),
+                          child: Text(AppLocalizations.of(context).translate('langDe'), style: TextStyle(color: nexusColor.text, fontSize: 18)),
                         ),
                       ],
                       onChanged: _handleLanguageChange,

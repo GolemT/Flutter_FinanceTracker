@@ -105,10 +105,12 @@ class AddTagScreenState extends State<AddTagScreen> {
         } else {
           await fileController.createTag(tagName, tagDescription);
           setState(() => errorMessageColor = Colors.transparent);
-          await Navigator.push(
+          if(context.mounted){
+            await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const TagsScreen()),
           );
+          }
         }
         },
       ),  

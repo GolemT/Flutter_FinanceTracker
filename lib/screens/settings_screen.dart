@@ -43,7 +43,9 @@ class SettingsScreenState extends State<SettingsScreen> {
   void _handleThemeChange(bool? value) async {
     prefs = await SharedPreferences.getInstance();
     prefs.setBool("theme", value!);
-    Provider.of<NexusColor>(context, listen: false).updateTheme(value);
+    if(mounted){
+      Provider.of<NexusColor>(context, listen: false).updateTheme(value);
+    }
     setState(() {
       _themeGroupValue = value;
     });
@@ -229,7 +231,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.delete, color: NexusColor.negative),
-            title: Text(AppLocalizations.of(context).translate('dataPurge'), style: TextStyle(color: NexusColor.negative)),
+            title: Text(AppLocalizations.of(context).translate('dataPurge'), style: const TextStyle(color: NexusColor.negative)),
             onTap: () {
               showDialog(
                 context: context,
@@ -256,10 +258,12 @@ class SettingsScreenState extends State<SettingsScreen> {
                           prefs.remove('lang');
                           prefs.remove('isFirstRun');
 
-                          Navigator.pushReplacement(
+                          if(context.mounted){
+                            Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => const SetupScreen()),
                           );
+                          }
                         },
                         child: Text(AppLocalizations.of(context).translate('delete')),
                       ),

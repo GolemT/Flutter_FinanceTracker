@@ -223,10 +223,12 @@ class TransactionsState extends State<AddTransactionScreen> {
             List<int> tagIds = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
             await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!);
             setState(() => errorMessageColor = Colors.transparent);
-            await Navigator.push(
+            if(context.mounted) {
+              await Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen())
             );
+            }
           }
         },
       ),

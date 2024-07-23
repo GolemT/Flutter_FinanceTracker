@@ -30,7 +30,9 @@ class ThemeStepState extends State<ThemeStep> {
   void _handleThemeChange(bool? value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("theme", value!);
-    Provider.of<NexusColor>(context, listen: false).updateTheme(value);
+    if(mounted){
+      Provider.of<NexusColor>(context, listen: false).updateTheme(value);
+    }
     setState(() {
       _themeGroupValue = value;
     });

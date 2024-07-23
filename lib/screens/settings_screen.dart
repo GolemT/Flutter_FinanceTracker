@@ -40,15 +40,17 @@ class SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  void _handleThemeChange(bool? value) {
+  void _handleThemeChange(bool? value) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool("theme", value!);
+    Provider.of<NexusColor>(context, listen: false).updateTheme(value);
     setState(() {
-      prefs.setBool("theme", value!);
       _themeGroupValue = value;
-      NexusColor.updateTheme(value);
     });
   }
 
-    void _handleLanguageChange(String? value) {
+  void _handleLanguageChange(String? value) async {
+    prefs = await SharedPreferences.getInstance();
     setState(() {
       _selectedLanguage = value;
       if (value == 'English') {
@@ -57,16 +59,13 @@ class SettingsScreenState extends State<SettingsScreen> {
         context.read<LocaleNotifier>().setLocale(const Locale('de'));
       }
       prefs.setString('lang', value!);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const SettingsScreen()));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final fileController = Provider.of<FileController>(context);
-    final nexusColor = NexusColor();
+    final nexusColor = Provider.of<NexusColor>(context);
 
     return NavScreen(
       pageIndex: 4,
@@ -79,7 +78,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 bottom: BorderSide(
                   color: nexusColor.inputs,
                   style: BorderStyle.solid,
-                  strokeAlign: BorderSide.strokeAlignInside,
+                  width: 1.0,
                 ),
               ),
             ),
@@ -123,7 +122,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 bottom: BorderSide(
                   color: nexusColor.inputs,
                   style: BorderStyle.solid,
-                  strokeAlign: BorderSide.strokeAlignInside,
+                  width: 1.0,
                 ),
               ),
             ),
@@ -168,7 +167,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 bottom: BorderSide(
                   color: nexusColor.inputs,
                   style: BorderStyle.solid,
-                  strokeAlign: BorderSide.strokeAlignInside,
+                  width: 1.0,
                 ),
               ),
             ),

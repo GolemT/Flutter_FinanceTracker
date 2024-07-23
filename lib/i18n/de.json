@@ -65,9 +65,14 @@
 
     "interaction": "Kontaktier uns",
 
-    "setupTitle": "Setup",
+    "intro": "Lass uns deine Erfahrung personalisieren",
     "themeSelect": "Wähle ein Farbschema",
-    "accSetup": "Bitte gib deinen Kontostand ein",
-    "notifSetup": "Möchtest du Benachrichtigungen erhalten?",
-    "finishSetup": "Setup beenden"
+    "accSetup": "Bitte gebe deinen aktuellen Kontostand ein",
+    "budgetExplain": "Dieser wird benutzt um einen Überblick über deinen Kontostand auf der Startseite zu geben",
+    "notifSetup": "Möchtest du Benachrichtigungen aktivieren?",
+    "finish": "Fertig!",
+    "next": "Nächster",
+    "back": "Zurück",
+    "done": "Du bist bereit!",
+    "finishText": "Finance Tracker ist jetzt bereit zur Nutzung. Du kannst deine Einstellungen jederzeit im Einstellungs Menü ändern."
 }

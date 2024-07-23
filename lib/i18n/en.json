@@ -65,9 +65,14 @@
 
     "interaction": "Text us",
 
-    "setupTitle": "Setup",
+    "intro": "Lets personalize your experience",
     "themeSelect": "Select a theme",
     "accSetup": "Please enter your current account balance",
+    "budgetExplain": "This will be used to display your account balance on the home screen",
     "notifSetup": "Do you wish to enable notifications?",
-    "finishSetup": "Finish Setup"
+    "finish": "Finish",
+    "next": "Next",
+    "back": "Back",
+    "done": "Looks like you're all set!",
+    "finishText": "Finance Tracker is now ready to use. You can always change your settings later in the settings menu."
 }

@@ -17,6 +17,7 @@ import 'package:finance_tracker/components/locale_notifier.dart';
 void main() => runApp(
   MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (context) => NexusColor()),
       ChangeNotifierProvider(create: (context) => FileController()),
       ChangeNotifierProvider(create: (context) => LocaleNotifier()),
     ],
@@ -24,22 +25,9 @@ void main() => runApp(
   ),
 );
 
-Future<bool> themePicker() async {
+Future<bool> firstRunCheck() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
-
-  if (prefs.getBool('theme') == null) {
-    prefs.setBool('theme', true);
-    NexusColor.updateTheme(true);
-  } else {
-    final entry = prefs.getBool('theme');
-    NexusColor.updateTheme(entry!);
-  }
-  
-  if (prefs.getDouble('budget') == null) {
-    prefs.setDouble('budget', 0.0);
-  }
-
   return isFirstRun;
 }
 
@@ -49,7 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: themePicker(),
+      future: firstRunCheck(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

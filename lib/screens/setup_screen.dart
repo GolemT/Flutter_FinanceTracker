@@ -1,11 +1,14 @@
-import 'package:finance_tracker/components/locale_notifier.dart';
+import 'package:finance_tracker/components/setup_screens/notifications_step.dart';
+import 'package:finance_tracker/components/setup_screens/language_step.dart';
+import 'package:finance_tracker/components/setup_screens/welcome_step.dart';
+import 'package:finance_tracker/components/setup_screens/budget_step.dart';
+import 'package:finance_tracker/components/setup_screens/finish_step.dart';
+import 'package:finance_tracker/components/setup_screens/theme_step.dart';
 import 'package:finance_tracker/components/localisations.dart';
-import 'package:finance_tracker/components/no_animation_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SetupScreen extends StatefulWidget {
   const SetupScreen({super.key});
@@ -15,182 +18,128 @@ class SetupScreen extends StatefulWidget {
 }
 
 class SetupScreenState extends State<SetupScreen> {
+  PageController pageController = PageController();
   final nexusColor = NexusColor();
   late SharedPreferences prefs;
-  bool? _themeGroupValue;
-  late TextEditingController _budgetController;
-  String account = "";
-  String? _selectedLanguage;
+  int _currentPage = 0;
+
+  Future<void> _loadPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   @override
   void initState() {
     super.initState();
-    _budgetController = TextEditingController();
     _loadPreferences();
   }
 
-  Future<void> _loadPreferences() async {
-    prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _themeGroupValue = prefs.getBool('theme') ?? true;
-      double? budget = prefs.getDouble('budget');
-      account = budget?.toString() ?? "";
-      _budgetController.text = account;
-      _selectedLanguage = prefs.getString('lang') == 'en' ? 'English' : 'Deutsch';
-    });
+  void _onNext() {
+    if (_currentPage < 5) {
+      pageController.animateToPage(_currentPage + 1,
+          duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    }
   }
 
-  finishSetup() async {
+  void _onBack() {
+    if (_currentPage > 0) {
+      pageController.animateToPage(_currentPage - 1,
+          duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    }
+  }
+
+  void _onFinish() {
     prefs.setBool('isFirstRun', false);
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
-  void _handleThemeChange(bool? value) {
-    setState(() {
-      prefs.setBool("theme", value!);
-      _themeGroupValue = value;
-      NexusColor.updateTheme(value);
-    });
-    Navigator.push(context, NoAnimationPageRoute(builder: (context) => const SetupScreen(), settings: const RouteSettings(name: '/setup')));
+  Widget _buildIndicator(int index) {
+    Color color;
+    if (index == _currentPage) {
+      color = NexusColor.secondary; // Active step
+    } else if (index < _currentPage) {
+      color = NexusColor.accents; // Completed step
+    } else {
+      color = nexusColor.inputs; // Not visited step
+    }
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+      height: 12.0,
+      width: 12.0,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
+    );
   }
 
-  void _handleBudgetChange(String value) {
-    setState(() {
-      double? budget = double.tryParse(value);
-      if (budget != null) {
-        prefs.setDouble("budget", budget);
-        account = value;
-      }
-    });
-  }
-
-  void _handleLanguageChange(String? value) {
-    setState(() {
-      _selectedLanguage = value!;
-      if (value == 'English') {
-        context.read<LocaleNotifier>().setLocale(const Locale('en'));
-      } else if (value == 'Deutsch') {
-        context.read<LocaleNotifier>().setLocale(const Locale('de'));
-      }
-      prefs.setString('lang', value);
-    });
+  List<Widget> _buildPageIndicator() {
+    List<Widget> list = [];
+    for (int i = 0; i < 6; i++) {
+      list.add(_buildIndicator(i));
+    }
+    return list;
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context).translate('setupTitle'), style: TextStyle(color: nexusColor.text)),
-          backgroundColor: nexusColor.navigation,
-          iconTheme: IconThemeData(color: nexusColor.text),
-        ),
-        backgroundColor: nexusColor.background,
-        body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('langSelect'), style: TextStyle(color: nexusColor.text, fontSize: 20.0)),
-                      DropdownButton<String>(
-                        value: _selectedLanguage,
-                        dropdownColor: nexusColor.inputs,
-                        style: TextStyle(color: nexusColor.text, fontSize: 16.0),
-                        items: [
-                          DropdownMenuItem(
-                            value: 'English',
-                            child: Text(AppLocalizations.of(context).translate('langEn')),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Deutsch',
-                            child: Text(AppLocalizations.of(context).translate('langDe')),
-                          ),
-                        ],
-                        onChanged: _handleLanguageChange,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('themeSelect'), style: TextStyle(color: nexusColor.text, fontSize: 20.0)),
-                      ListTile(
-                        title: Text(AppLocalizations.of(context).translate('themeLight'), style: TextStyle(color: nexusColor.text)),
-                        leading: Radio<bool?>(
-                          value: false,
-                          groupValue: _themeGroupValue,
-                          onChanged: _handleThemeChange,
-                        ),
-                      ),
-                      ListTile(
-                        title: Text(AppLocalizations.of(context).translate('themeDark'), style: TextStyle(color: nexusColor.text)),
-                        leading: Radio<bool?>(
-                          value: true,
-                          groupValue: _themeGroupValue,
-                          onChanged: _handleThemeChange,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('accSetup'), style: TextStyle(color: nexusColor.text, fontSize: 20.0)),
-                      TextField(
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        maxLength: 15,
-                        controller: _budgetController,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'^-?\d*\.?\d*'),
-                          ),
-                        ],
-                        style: TextStyle(color: nexusColor.text),
-                        decoration: InputDecoration(
-                          label: Text(AppLocalizations.of(context).translate('accBudget'), style: TextStyle(color: nexusColor.text)),
-                          hintText: AppLocalizations.of(context).translate('accBudgetHint'),
-                          filled: true,
-                          fillColor: nexusColor.inputs,
-                        ),
-                        onChanged: (value) {
-                          _handleBudgetChange(value);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('notifSetup'), style: TextStyle(color: nexusColor.text, fontSize: 20.0)),
-                      Text(AppLocalizations.of(context).translate('notifSelect'), style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
-                    ],
-                  ),
-                ),
+    NexusColor nexusColor = Provider.of<NexusColor>(context);
+
+    return Scaffold(
+      backgroundColor: nexusColor.background,
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              children: const [
+                WelcomeStep(),
+                LanguageStep(),
+                ThemeStep(),
+                BudgetStep(),
+                NotificationsStep(),
+                FinishStep(),
               ],
             ),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          heroTag: 'SetupButton',
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          label: Text(AppLocalizations.of(context).translate('finishSetup')),
-          backgroundColor: NexusColor.accents,
-          onPressed: () async {
-            await finishSetup();
-            Navigator.pushReplacementNamed(context, '/home');
-          },
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _currentPage == 0
+                        ? Colors.transparent
+                        : NexusColor.secondary,
+                  ),
+                  onPressed: _currentPage == 0 ? null : _onBack,
+                  child: Text(AppLocalizations.of(context).translate('back'), style: TextStyle(color: nexusColor.background)),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _buildPageIndicator(),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: NexusColor.secondary,
+                  ),
+                  onPressed: _currentPage == 5 ? _onFinish : _onNext,
+                  child: _currentPage == 5
+                  ? Text(AppLocalizations.of(context).translate('finish'), style: TextStyle(color: nexusColor.background))
+                  : Text(AppLocalizations.of(context).translate('next'), style: TextStyle(color: nexusColor.background))
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

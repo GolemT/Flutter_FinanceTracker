@@ -150,10 +150,12 @@ class TagItemState extends State<TagItem> {
                             tagName.value,
                             tagDescription.value,
                           );
-                          Navigator.pushReplacementNamed(
-                            context,
-                            '/tags',
-                          );
+                          if(context.mounted){
+                            Navigator.pushReplacementNamed(
+                              context,
+                              '/tags',
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),

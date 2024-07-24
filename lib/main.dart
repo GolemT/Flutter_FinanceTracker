@@ -6,6 +6,7 @@ import 'package:finance_tracker/screens/analytics_screen.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:finance_tracker/screens/settings_screen.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
+import 'package:finance_tracker/screens/setup_screen.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ import 'package:finance_tracker/components/locale_notifier.dart';
 void main() => runApp(
   MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (context) => NexusColor()),
       ChangeNotifierProvider(create: (context) => FileController()),
       ChangeNotifierProvider(create: (context) => LocaleNotifier()),
     ],
@@ -23,18 +25,10 @@ void main() => runApp(
   ),
 );
 
-Future<void> themePicker() async {
+Future<bool> firstRunCheck() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getBool('theme') == null) {
-    prefs.setBool('theme', true);
-    NexusColor.updateTheme(true);
-  }
-  if (prefs.getDouble('budget') == null) {
-    prefs.setDouble('budget', 0.0);
-  } else {
-    final entry = prefs.getBool('theme');
-    NexusColor.updateTheme(entry!);
-  }
+  bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
+  return isFirstRun;
 }
 
 class MyApp extends StatelessWidget {
@@ -42,12 +36,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: themePicker(),
+    return FutureBuilder<bool>(
+      future: firstRunCheck(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
+          bool isFirstRun = snapshot.data ?? true;
           return Consumer<LocaleNotifier>(
             builder: (context, localeNotifier, _) {
               return MaterialApp(
@@ -74,7 +69,7 @@ class MyApp extends StatelessWidget {
                   }
                   return supportedLocales.first;
                 },
-                initialRoute: '/home',
+                initialRoute: isFirstRun ? '/setup' : '/home',
                 theme: NexusTheme().nexusTheme,
                 routes: {
                   '/home': (context) => const HomeScreen(),
@@ -82,6 +77,7 @@ class MyApp extends StatelessWidget {
                   '/addTransaction': (context) => const AddTransactionScreen(),
                   '/analytics': (context) => const AnalyticsScreen(),
                   '/settings': (context) => const SettingsScreen(),
+                  '/setup': (context) => const SetupScreen(),
                 },
               );
             },

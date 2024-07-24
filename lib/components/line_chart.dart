@@ -29,7 +29,7 @@ class LineChartComponentState extends State<LineChartComponent> {
 
   Future<void> fetchData() async {
     prefs = await SharedPreferences.getInstance();
-    final fileController = context.read<FileController>();
+    final fileController = mounted ? context.read<FileController>() : FileController();
     final transactions = fileController.listTransaction;
 
     double initialBudget = prefs.getDouble('budget') ?? 0.0;

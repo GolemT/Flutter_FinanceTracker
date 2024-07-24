@@ -75,6 +75,7 @@ class LicenseScreen extends StatelessWidget {
     ''';
 
     return Scaffold(
+      backgroundColor: nexusColor.background,
       appBar: AppBar(
         title: Text('License', style: TextStyle(color: nexusColor.text),),
         backgroundColor: nexusColor.navigation,

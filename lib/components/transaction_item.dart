@@ -275,10 +275,12 @@ class TransactionItemState extends State<TransactionItem> {
                             selectedTagIndexes,
                             transactionAmount.value,
                           );
-                          Navigator.pushReplacementNamed(
-                            context,
-                            '/home',
-                          );
+                          if(context.mounted){
+                            Navigator.pushReplacementNamed(
+                              context,
+                              '/home',
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),

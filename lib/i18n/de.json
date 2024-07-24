@@ -63,5 +63,16 @@
     "questionThree": "Frage Drei",
     "answerThree": "Antwort Drei",
 
-    "interaction": "Kontaktier uns"
+    "interaction": "Kontaktier uns",
+
+    "intro": "Lass uns deine Erfahrung personalisieren",
+    "themeSelect": "Wähle ein Farbschema",
+    "accSetup": "Bitte gebe deinen aktuellen Kontostand ein",
+    "budgetExplain": "Dieser wird benutzt um einen Überblick über deinen Kontostand auf der Startseite zu geben",
+    "notifSetup": "Möchtest du Benachrichtigungen aktivieren?",
+    "finish": "Fertig!",
+    "next": "Weiter",
+    "back": "Zurück",
+    "done": "Du bist bereit!",
+    "finishText": "Finance Tracker ist jetzt bereit zur Nutzung. Du kannst deine Einstellungen jederzeit im Einstellungs Menü ändern."
 }

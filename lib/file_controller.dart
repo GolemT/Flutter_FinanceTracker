@@ -29,11 +29,13 @@ class FileController extends ChangeNotifier {
     }
   }
 
-  // Takes input and creates a new transaction. Automatically updates the Tag-Transaction mapping
-  createTransaction(String transactionName, String transactionDate, List<int> transactionTag, double transactionAmount) async {
+  //Takes input and creates a new Transaction. Automaticlly updates the Tag-Transaction mapping
+  createTransaction(transactionName, transactionDate, transactionTag, transactionAmount) async {
+    print(transactionName);
     await FileManager().writeFileTransactionManager(transactionName, transactionDate, transactionTag, transactionAmount);
     await refreshTagsAndTransactions();
-  }
+    print("FUUUUUUUUUUUUUU");
+}
 
   updateTransaction(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async {
     await FileManager().updateTransactionManager(transactionIndex, transactionName, transactionDate, tag, transactionAmount);

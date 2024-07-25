@@ -14,29 +14,65 @@ import 'package:finance_tracker/components/localisations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:finance_tracker/components/locale_notifier.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:finance_tracker/model/transaction.dart';
+import 'package:finance_tracker/file_controller.dart';
 
 void callbackDispatcher() {
- Workmanager().executeTask((task, inputData) {
- // Your background task logic goes here
- return Future.value(true);
- });
+
+  Workmanager().executeTask((task, inputData) async {
+    
+    print("executeTask");
+
+    await performTask();
+
+    return Future.value(true);
+  });
 }
 
-void main() => runApp(
-  MultiProvider(
-    providers: [
+Future<void> performTask() async {
+    final  fileController = FileController();
+
+    String transactionName = "Repeat pls";
+    String transactionDate = "2022-2-2";
+    List<int> transactionTag = [1];
+    double transactionAmount = 350;
+
+    await fileController.createTransaction(transactionName, transactionDate, transactionTag, transactionAmount);
+
+    print("Transaction created");
+}
+
+
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: true,
+  );
+
+  Workmanager().registerPeriodicTask(
+    "1",
+    "repeatingTransaction",
+    frequency: Duration(minutes: 15),
+  );
+
+  runApp(
+    MultiProvider(
+      providers: [
       ChangeNotifierProvider(create: (context) => NexusColor()),
       ChangeNotifierProvider(create: (context) => FileController()),
       ChangeNotifierProvider(create: (context) => LocaleNotifier()),
-    ],
-    child: const MyApp(),
-  ),
-);
+      ],
+      child: const MyApp(),
+    ),
+  );
 
 Future<bool> firstRunCheck() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
   return isFirstRun;
+}
 }
 
 class MyApp extends StatelessWidget {

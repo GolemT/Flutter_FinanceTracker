@@ -2,6 +2,7 @@ import 'package:finance_tracker/file_manager.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FileController extends ChangeNotifier {
   List<Transaction> listTransaction = [];
@@ -19,6 +20,7 @@ class FileController extends ChangeNotifier {
   Future<void> readTransaction() async {
     final jsonDataTransaction = await FileManager().readFileTransactionManager();
     // If transactions exist and a transaction has tags, add the names of the tags to the Transaction class
+
     if (jsonDataTransaction != null) {
       listTransaction = (jsonDataTransaction as List).map((item) => Transaction.fromJson(item as Map<String, dynamic>)).toList();
       for (var transaction in listTransaction) {
@@ -30,11 +32,9 @@ class FileController extends ChangeNotifier {
   }
 
   //Takes input and creates a new Transaction. Automaticlly updates the Tag-Transaction mapping
-  createTransaction(transactionName, transactionDate, transactionTag, transactionAmount) async {
-    print(transactionName);
-    await FileManager().writeFileTransactionManager(transactionName, transactionDate, transactionTag, transactionAmount);
+  createTransaction(transactionName, transactionDate, transactionTag, transactionAmount, bool repeat) async {
+    await FileManager().writeFileTransactionManager(transactionName, transactionDate, transactionTag, transactionAmount, repeat);
     await refreshTagsAndTransactions();
-    print("FUUUUUUUUUUUUUU");
 }
 
   updateTransaction(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async {
@@ -50,7 +50,8 @@ class FileController extends ChangeNotifier {
   // Nuke whole transaction JSON file
   resetTransaction() async {
     await FileManager().resetFileTransactionManager();
-    listTransaction = [];
+    listTransaction = [];    
+    await FileManager().resetFileRepTransactionManager();
     await refreshTagsAndTransactions();
   }
 
@@ -89,8 +90,56 @@ class FileController extends ChangeNotifier {
     await refreshTagsAndTransactions();
   }
 
+  Future readRepTransaction() async {
+    final jsonDataRepTransaction = await FileManager().readFileRepTransactionManager();
+    return jsonDataRepTransaction;
+  }
+
   Future<void> refreshTagsAndTransactions() async {
     await readTag();
     await readTransaction();
   }
+
+
+  //----------------------------------------------------------  WORKMANAGER ZEUGS ----------------------------------------------------------//
+
+Future<void> performTask() async {
+  final  fileController = FileController();
+
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+
+  final jsonDataRepTransaction = await fileController.readRepTransaction();
+  final listRepTransaction = (jsonDataRepTransaction as List).map((item) => Transaction.fromJson(item as Map<String, dynamic>)).toList();
+
+  int i = 0;
+
+  while(i < listRepTransaction.length){
+
+    final DateTime now = DateTime.now();
+    int transactionDay = dateFormat.parse(listRepTransaction[i].transactionDate).day;
+
+    DateTime firstDayOfNextMonth = (now.month < 12)
+      ? DateTime(now.year, now.month + 1, 1)
+      : DateTime(now.year + 1, 1, 1);
+
+    DateTime lastDayOfCurrentMonth = firstDayOfNextMonth.subtract(const Duration(days: 1));
+
+    if ((now.day == transactionDay) ||
+    (now.day ==  lastDayOfCurrentMonth.day && transactionDay > 28)){
+        await fileController.createTransaction(
+          listRepTransaction[i].transactionName, 
+          DateFormat('yyyy-MM-dd').format(DateTime.now()).toString(), 
+          listRepTransaction[i].transactionTag, 
+          listRepTransaction[i].transactionAmount, 
+          false
+        );
+
+    } 
+
+  i += 1;
+  }
+}
+
+
 }

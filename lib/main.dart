@@ -1,5 +1,6 @@
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/assets/color_theme.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
@@ -14,35 +15,18 @@ import 'package:finance_tracker/components/localisations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:finance_tracker/components/locale_notifier.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:finance_tracker/model/transaction.dart';
-import 'package:finance_tracker/file_controller.dart';
 
 void callbackDispatcher() {
 
   Workmanager().executeTask((task, inputData) async {
     
-    print("executeTask");
+    final  fileController = FileController();
 
-    await performTask();
+    await fileController.performTask();
 
     return Future.value(true);
   });
 }
-
-Future<void> performTask() async {
-    final  fileController = FileController();
-
-    String transactionName = "Repeat pls";
-    String transactionDate = "2022-2-2";
-    List<int> transactionTag = [1];
-    double transactionAmount = 350;
-
-    await fileController.createTransaction(transactionName, transactionDate, transactionTag, transactionAmount);
-
-    print("Transaction created");
-}
-
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,11 +34,15 @@ void main() {
     callbackDispatcher,
     isInDebugMode: true,
   );
+  Workmanager().registerOneOffTask(
+      "oneoff-task", 
+      "test-task"
+  );
 
   Workmanager().registerPeriodicTask(
     "1",
     "repeatingTransaction",
-    frequency: Duration(minutes: 15),
+    frequency: const Duration(days: 1),
   );
 
   runApp(
@@ -67,13 +55,14 @@ void main() {
       child: const MyApp(),
     ),
   );
+}
 
 Future<bool> firstRunCheck() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
   return isFirstRun;
 }
-}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

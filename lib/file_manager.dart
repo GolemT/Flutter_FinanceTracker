@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
-import 'package:finance_tracker/model/reptransaction.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
@@ -57,21 +57,9 @@ class FileManager {
   //Ensure that existing and new transaction are a List
   Future<List<dynamic>> listTransactionManager(fileTransaction) async{
 
-
-
-
-
-    //File fileTransaction = await getFileTransaction;
-
-
-
-
-
     List<dynamic> jsonListTransaction = [];
     try {
-      print(await fileTransaction.exists()); //HIER STIRBTS. WARUM FRAG IHR EUCH? NAJA, WENN ICH DAS WÜSSTE WÜRDE ICH DEN KOMMENTAR HIER WOHL NICHT SCHREIBEN
       if (await fileTransaction.exists()) {
-        print("fileTransaction.exists()");   //Jetzt gehts bis hier?????
         String fileContentTransaction = await fileTransaction.readAsString();
 
         if (fileContentTransaction.isNotEmpty) {
@@ -84,7 +72,6 @@ class FileManager {
         }
       }
     } catch (e) {
-      print("catch");
       //loggin later?
     }
     return jsonListTransaction;
@@ -92,12 +79,17 @@ class FileManager {
 
   //reading existing transaction data and adding the new transaction.
   //Saving all JSON encoded to the transaction file
- Future writeFileTransactionManager(String transactionName, String transactionDate, List<int> tag, double transactionAmount) async {
+ Future writeFileTransactionManager(String transactionName, String transactionDate, List<int> tag, double transactionAmount, bool repeat) async {
     
     final Transaction newTransaction = Transaction(transactionName, transactionDate, tag, transactionAmount, []); 
 
-    File fileTransaction = await getFileTransaction;
-    print("erfolgreich get file");
+    File fileTransaction;
+
+    if (repeat){
+      fileTransaction = await getFileRepTransaction;
+    }else{
+      fileTransaction = await getFileTransaction;
+    } 
 
 
     List<dynamic> jsonListTransaction = await listTransactionManager(fileTransaction);
@@ -140,7 +132,7 @@ class FileManager {
 
   //------------------------------------------------------ REPEATING TRANSACTIONS ------------------------------------------------------//
 
-  /*
+  
   //trying to read the repeating transaction data and decodes them
   Future readFileRepTransactionManager() async{
     String fileContentRepTransaction;
@@ -159,11 +151,16 @@ class FileManager {
     return null;
   }
 
+  Future resetFileRepTransactionManager()async{
+    File fileTransaction = await getFileRepTransaction;
+    await fileTransaction.writeAsString("", flush: true);
+
+  }
 
   //read data from the transaction File and returning it
   //Ensure that existing and new transaction are a List
-  Future<List<dynamic>> listRepTransactionManager() async{
-    File fileRepTransaction = await getFileRepTransaction;
+  Future<List<dynamic>> listRepTransactionManager(fileRepTransaction) async{
+
 
     List<dynamic> jsonListRepTransaction = [];
     try {
@@ -187,6 +184,7 @@ class FileManager {
   }
 
 
+  /*
  Future writeFileRepTransactionManager(String transactionName, List<int> tag, double transactionAmount) async {
     final RepTransaction newTransaction = RepTransaction(transactionName, tag, transactionAmount, []); 
     File fileRepTransaction = await getFileRepTransaction;
@@ -247,7 +245,6 @@ class FileManager {
         return json.decode(fileContentTag);
         }
       }catch(error){
-        print(error);
       }
     }
     
@@ -320,10 +317,15 @@ class FileManager {
   Future deleteTagManager(int tagIndex) async {
     File fileTag = await getFileTag;
     File fileTransaction = await getFileTransaction;
+    File fileRepTransaction = await getFileRepTransaction;
 
   List<dynamic> jsonListTag = await listTagManager();
   List<dynamic> jsonListTransaction = await listTransactionManager(fileTransaction);
   List<Transaction> listFormatedTransaction = (jsonListTransaction as List).map((item) => Transaction.fromJson(item as Map<String, dynamic>)).toList();
+
+  List<dynamic> jsonListRepTransaction = await listRepTransactionManager(fileRepTransaction);
+  List<Transaction> listFormatedRepTransaction = (jsonListRepTransaction as List).map((item) => Transaction.fromJson(item as Map<String, dynamic>)).toList();
+
 
     jsonListTag.removeAt(tagIndex);
     await fileTag.writeAsString(json.encode(jsonListTag), flush: true);
@@ -343,7 +345,25 @@ class FileManager {
         }
         i++;
     }
+
+    //Remove Tag from repeating Transaction if it gets deleted and all transactionTag get updated if the index of the Tags gets changed through deletion
+    var k = 0;
+    while(k < listFormatedRepTransaction.length){
+        var h = 0;
+        while(h < listFormatedRepTransaction[k].transactionTag.length){
+          if(listFormatedRepTransaction[k].transactionTag[h] == tagIndex){
+            listFormatedRepTransaction[k].transactionTag.removeAt(h);
+          }
+          else if (listFormatedRepTransaction[k].transactionTag[h] > tagIndex){
+            listFormatedRepTransaction[k].transactionTag[h] = listFormatedRepTransaction[k].transactionTag[h] - 1;
+          }
+          h++;
+        }
+        k++;
+    }
+
     await fileTransaction.writeAsString(json.encode(listFormatedTransaction), flush: true);
+    await fileRepTransaction.writeAsString(json.encode(listFormatedRepTransaction), flush: true);
 
   }
 

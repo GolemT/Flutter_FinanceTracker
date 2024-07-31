@@ -31,7 +31,7 @@ class FileController extends ChangeNotifier {
     }
   }
 
-  //Takes input and creates a new Transaction. Automaticlly updates the Tag-Transaction mapping
+  //Takes input and creates a new Transaction. Automatically updates the Tag-Transaction mapping
   createTransaction(transactionName, transactionDate, transactionTag, transactionAmount, bool repeat) async {
     await FileManager().writeFileTransactionManager(transactionName, transactionDate, transactionTag, transactionAmount, repeat);
     await refreshTagsAndTransactions();
@@ -54,6 +54,22 @@ class FileController extends ChangeNotifier {
     await FileManager().resetFileRepTransactionManager();
     await refreshTagsAndTransactions();
   }
+
+  //------------------------------------------------------ REPEATING TRANSACTIONS ------------------------------------------------------//
+
+
+  updateRepTransaction(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async {
+    await FileManager().updateTransactionManager(transactionIndex, transactionName, transactionDate, tag, transactionAmount);
+    await refreshTagsAndTransactions();
+  }
+
+  deleteRepTransaction(int transactionIndex) async {
+    await FileManager().deleteTransactionManager(transactionIndex);
+    await refreshTagsAndTransactions();
+  }
+
+  //--------------------------------------------------------------- TAGS ---------------------------------------------------------------//
+
 
   // Reads and updates the list of tags from the JSON. Notifies listeners to update shown values.
   Future<void> readTag() async {
@@ -119,6 +135,7 @@ Future<void> performTask() async {
     final DateTime now = DateTime.now();
     int transactionDay = dateFormat.parse(listRepTransaction[i].transactionDate).day;
 
+    //Checks if the current Data matches the transaction date. Controlls that the day is included in the current month, if not it will uses the last day of the month 
     DateTime firstDayOfNextMonth = (now.month < 12)
       ? DateTime(now.year, now.month + 1, 1)
       : DateTime(now.year + 1, 1, 1);

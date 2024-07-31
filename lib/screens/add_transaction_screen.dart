@@ -203,7 +203,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                 children: <Widget> [  
                   Expanded(
                       child: CheckboxListTile(
-                        title: Text("Repeat"),
+                        title: Text(AppLocalizations.of(context).translate('repeat'), style: TextStyle(color: nexusColor.text)),
                         value: repeat,
                         onChanged: (bool? value) {
                           setState(() {
@@ -239,6 +239,7 @@ class TransactionsState extends State<AddTransactionScreen> {
           } else {
             List<int> tagIds = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
             await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, repeat);
+            await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, false);
             setState(() => errorMessageColor = Colors.transparent);
             if(context.mounted) {
               await Navigator.push(

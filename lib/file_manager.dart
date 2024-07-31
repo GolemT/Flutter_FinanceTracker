@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/model/transaction.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
@@ -17,13 +16,13 @@ class FileManager {
   //Setting the file for transactions
   Future<File> get getFileTransaction async{
     final path = await directoryPath;
-    return File('$path/transaction.json');
+    return File('$path/transactionList.json');
   }
 
   //Setting the file for repeating Transaction
   Future<File> get getFileRepTransaction async{
     final path = await directoryPath;
-    return File('$path/reptransaction.json');
+    return File('$path/repTransactionList.json');
   }
 
   //Setting the file for tags
@@ -151,12 +150,6 @@ class FileManager {
     return null;
   }
 
-  Future resetFileRepTransactionManager()async{
-    File fileTransaction = await getFileRepTransaction;
-    await fileTransaction.writeAsString("", flush: true);
-
-  }
-
   //read data from the transaction File and returning it
   //Ensure that existing and new transaction are a List
   Future<List<dynamic>> listRepTransactionManager(fileRepTransaction) async{
@@ -184,27 +177,14 @@ class FileManager {
   }
 
 
-  /*
- Future writeFileRepTransactionManager(String transactionName, List<int> tag, double transactionAmount) async {
-    final RepTransaction newTransaction = RepTransaction(transactionName, tag, transactionAmount, []); 
-    File fileRepTransaction = await getFileRepTransaction;
-
-    List<dynamic> jsonListRepTransaction = await listTransactionManager();
-
-    jsonListRepTransaction.add(newTransaction.toJson());
-
-    await fileRepTransaction.writeAsString(json.encode(jsonListRepTransaction), flush: true);
-  }
-
-
     //overwriting the transaction of the given index
-  Future updateRepTransactionManager(int transactionRepIndex, String transactionName, List<int> tag, double transactionAmount) async{
-    final RepTransaction newTransaction = RepTransaction(transactionName, tag, transactionAmount, []); 
+  Future updateRepTransactionManager(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async{
+    final Transaction newTransaction = Transaction(transactionName, transactionDate, tag, transactionAmount, []); 
     File fileRepTransaction = await getFileRepTransaction;
 
-    List<dynamic> jsonListRepTransaction = await listTransactionManager();
+    List<dynamic> jsonListRepTransaction = await listTransactionManager(fileRepTransaction);
 
-    jsonListRepTransaction[transactionRepIndex] = newTransaction.toJson();
+    jsonListRepTransaction[transactionIndex] = newTransaction.toJson();
 
     await fileRepTransaction.writeAsString(json.encode(jsonListRepTransaction), flush: true);
 
@@ -213,7 +193,7 @@ class FileManager {
   Future deleteRepTransactionManager(transactionRepIndex) async{
     File fileRepTransaction = await getFileRepTransaction;
 
-    List<dynamic> jsonListRepTransaction = await listTransactionManager();
+    List<dynamic> jsonListRepTransaction = await listTransactionManager(fileRepTransaction);
     
     jsonListRepTransaction.removeAt(transactionRepIndex);
 
@@ -228,7 +208,7 @@ class FileManager {
 
   }
 
-  */
+  
 
   //--------------------------------------------------------------- TAGS ---------------------------------------------------------------//
 

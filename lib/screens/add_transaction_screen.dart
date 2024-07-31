@@ -199,6 +199,23 @@ class TransactionsState extends State<AddTransactionScreen> {
                   ),
                 ],
               ),
+              Row(
+                children: <Widget> [  
+                  Expanded(
+                      child: CheckboxListTile(
+                        title: Text(AppLocalizations.of(context).translate('repeat'), style: TextStyle(color: nexusColor.text)),
+                        value: repeat,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            repeat = value ?? false;
+                          });
+                      },
+                      activeColor: NexusColor.accents,
+                    
+                   )
+                  )
+                ],
+              )
             ],
           ),
         ),
@@ -221,7 +238,10 @@ class TransactionsState extends State<AddTransactionScreen> {
             });
           } else {
             List<int> tagIds = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
-            await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!);
+            await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, repeat);
+            if (repeat == true){
+              await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, false);
+            }
             setState(() => errorMessageColor = Colors.transparent);
             if(context.mounted) {
               await Navigator.push(

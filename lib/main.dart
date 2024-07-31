@@ -13,23 +13,55 @@ import 'package:provider/provider.dart';
 import 'package:finance_tracker/components/localisations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:finance_tracker/components/locale_notifier.dart';
+import 'package:workmanager/workmanager.dart';
 
-void main() => runApp(
-  MultiProvider(
-    providers: [
+void callbackDispatcher() {
+
+  Workmanager().executeTask((task, inputData) async {
+    
+    final  fileController = FileController();
+
+    await fileController.performTask();
+
+    return Future.value(true);
+  });
+}
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: true,
+  );
+  Workmanager().registerOneOffTask(
+      "oneoff-task", 
+      "test-task"
+  );
+
+  Workmanager().registerPeriodicTask(
+    "1",
+    "repeatingTransaction",
+    frequency: const Duration(days: 1),
+  );
+
+  runApp(
+    MultiProvider(
+      providers: [
       ChangeNotifierProvider(create: (context) => NexusColor()),
       ChangeNotifierProvider(create: (context) => FileController()),
       ChangeNotifierProvider(create: (context) => LocaleNotifier()),
-    ],
-    child: const MyApp(),
-  ),
-);
+      ],
+      child: const MyApp(),
+    ),
+  );
+}
 
 Future<bool> firstRunCheck() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
   return isFirstRun;
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -46,7 +46,9 @@ class TestScreen extends StatelessWidget {
                   controllerName.text,
                   "gestern",
                   [0, 1],
-                  double.parse(controllerAmount.text));
+                  double.parse(controllerAmount.text),
+                  false
+                  );
             },
             child: const Text('Speichern'),
           ),

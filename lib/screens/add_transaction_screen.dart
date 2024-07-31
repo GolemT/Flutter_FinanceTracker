@@ -239,7 +239,9 @@ class TransactionsState extends State<AddTransactionScreen> {
           } else {
             List<int> tagIds = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
             await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, repeat);
-            await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, false);
+            if (repeat == true){
+              await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, false);
+            }
             setState(() => errorMessageColor = Colors.transparent);
             if(context.mounted) {
               await Navigator.push(

@@ -17,6 +17,22 @@ class AddTransactionScreen extends StatefulWidget {
   TransactionsState createState() => TransactionsState();
 }
 
+class CurrencyInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final text = newValue.text;
+
+    // Überprüfen, ob das Format den Anforderungen entspricht
+    final regExp = RegExp(r'^\d{0,10}(\.\d{0,2})?$');
+    if (!regExp.hasMatch(text)) {
+      return oldValue; // wenn es nicht übereinstimmt, behalte den alten Wert bei
+    }
+
+    return newValue; // falls übereinstimmt, wird der neue Wert akzeptiert
+  }
+}
+
+
 class TransactionsState extends State<AddTransactionScreen> {
   String transactionName = "";
   final nexusColor = NexusColor();
@@ -24,9 +40,22 @@ class TransactionsState extends State<AddTransactionScreen> {
   List<Tag>? selectedTags = [];
   double? amount;
   bool repeat = false; // variable für die checkbox
-  final TextEditingController dateController = TextEditingController(); // für den DatePicker
+  final TextEditingController dateController = TextEditingController();// für den DatePicker
+  final TextEditingController transactionNameController = TextEditingController();
+  final TextEditingController transactionAmountController = TextEditingController();
   Color errorMessageColor = Colors.transparent;
   String errorMessage = "";
+
+  Object? _nameError;
+  Object? _amountError;
+
+  void _validateInputs(){
+    final localizations = AppLocalizations.of(context);
+    setState(() {
+      _nameError = transactionNameController.text.isEmpty ? localizations.translate("noEmptyNameError"): null;
+      _amountError = transactionAmountController.text.isEmpty ? localizations.translate("noEmptyAmountError"): null;
+    });
+  }
 
   Future<void> _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
     DateTime? pickedDate = await showDatePicker(
@@ -61,12 +90,13 @@ class TransactionsState extends State<AddTransactionScreen> {
     transactionDate ??= DateFormat('yyyy-MM-dd').format(DateTime.now());
     final List<Tag> tagList = fileController.listTag;
     final items = tagList.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
+    final localization = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: nexusColor.background,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('transAdd'), style: TextStyle(color: nexusColor.text)),
+        title: Text(localization.translate('transAdd'), style: TextStyle(color: nexusColor.text)),
         backgroundColor: nexusColor.navigation,
         iconTheme: IconThemeData(color: nexusColor.text),
       ),
@@ -76,20 +106,21 @@ class TransactionsState extends State<AddTransactionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(errorMessage, style: TextStyle(color: errorMessageColor)),
               SizedBox(
                 width: NexusSize.inputWidth.normal,
                 height: NexusSize.inputHeight.normal,
                 child: TextFormField(
+                  controller: transactionNameController,
                   maxLength: 20,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).translate('transNameLabel'),
+                    labelText: localization.translate('transNameLabel'),
                     filled: true,
                     fillColor: nexusColor.inputs,
                     labelStyle: TextStyle(color: nexusColor.text),
                     helperStyle: TextStyle(color: nexusColor.subText),
                     hintStyle: TextStyle(color: nexusColor.text),
+                    errorText: _nameError?.toString(),
                   ),
                   onChanged: (value) => transactionName = value,
                 ),
@@ -110,7 +141,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                       style: TextStyle(color: nexusColor.text),
                       controller: TextEditingController(text: transactionDate),
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context).translate('dateSelectLabel'),
+                        labelText: localization.translate('dateSelectLabel'),
                         filled: true,
                         fillColor: nexusColor.inputs,
                         labelStyle: TextStyle(color: nexusColor.text),
@@ -136,7 +167,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                         searchable: true,
                         items: items,
                         backgroundColor: nexusColor.background,
-                        title: Text(AppLocalizations.of(context).translate('tags'), style: TextStyle(color: nexusColor.text),),
+                        title: Text(localization.translate('tags'), style: TextStyle(color: nexusColor.text),),
                         selectedColor: NexusColor.secondary,
                         decoration: BoxDecoration(
                           color: nexusColor.inputs,
@@ -146,7 +177,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                           ),
                         ),
                         buttonText: Text(
-                          AppLocalizations.of(context).translate('selectTagsButton'),
+                          localization.translate('selectTagsButton'),
                           style: TextStyle(
                             color: nexusColor.text,
                             fontSize: 16,
@@ -175,20 +206,24 @@ class TransactionsState extends State<AddTransactionScreen> {
                     child: SizedBox(
                       height: NexusSize.inputHeight.normal,
                       child: TextFormField(
+                        controller: transactionAmountController,
                         maxLength: 15,
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context).translate('enterAmountLabel'),
+                          labelText: localization.translate('enterAmountLabel'),
                           filled: true,
                           fillColor: nexusColor.inputs,
                           labelStyle: TextStyle(color: nexusColor.text),
                           helperStyle: TextStyle(color: nexusColor.subText),
                           hintStyle: TextStyle(color: nexusColor.text),
+                          errorText: _amountError?.toString(),
+                          errorMaxLines: 2,
                         ),
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(
-                            RegExp(r'^-?\d*\.?\d*'),
+                            RegExp(r'^-?\d*\.?\d{0,2}'),
                           ),
+                          CurrencyInputFormatter(),
                         ],
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         onChanged: (value) {
@@ -203,7 +238,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                 children: <Widget> [  
                   Expanded(
                       child: CheckboxListTile(
-                        title: Text(AppLocalizations.of(context).translate('repeat'), style: TextStyle(color: nexusColor.text)),
+                        title: Text(localization.translate('repeat'), style: TextStyle(color: nexusColor.text)),
                         value: repeat,
                         onChanged: (bool? value) {
                           setState(() {
@@ -222,21 +257,12 @@ class TransactionsState extends State<AddTransactionScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        label: Text(AppLocalizations.of(context).translate('transCreate')),
+        label: Text(localization.translate('transCreate')),
         icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
-          if (transactionName.isEmpty) {
-            setState(() {
-              errorMessage = AppLocalizations.of(context).translate('noEmptyNameError');
-              errorMessageColor = NexusColor.negative;
-            });
-          } else if (amount == null) {
-            setState(() {
-              errorMessage = AppLocalizations.of(context).translate('noEmptyAmountError');
-              errorMessageColor = NexusColor.negative;
-            });
-          } else {
+          _validateInputs();
+          if(_nameError == null && _amountError == null) {
             List<int> tagIds = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
             await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, repeat);
             if (repeat == true){

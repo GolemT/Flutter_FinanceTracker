@@ -3,6 +3,7 @@ import 'package:finance_tracker/model/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/components/localisations.dart';
+import 'package:provider/provider.dart';
 
 class TagItem extends StatefulWidget {
   final Tag tag;
@@ -24,6 +25,10 @@ class TagItemState extends State<TagItem> {
   late ValueNotifier<String> tagDescription;
   late TextEditingController tagNameController;
   late TextEditingController tagDescriptionController;
+
+  Object? _nameError;
+  Object? _descriptionError;
+
   bool isExpanded = false;
 
   @override
@@ -53,8 +58,24 @@ class TagItemState extends State<TagItem> {
     tagDescriptionController.text = widget.tag.tagDescription;
   }
 
+  void _validateInputs(){
+    final localizations = AppLocalizations.of(context);
+    final fileController = context.read<FileController>();
+    setState(() {
+      if (tagNameController.text.isEmpty) {
+        _nameError = localizations.translate("noEmptyNameError");
+      } else if(fileController.listTag.any((tag) => tag.tagName == tagName.value)) {
+        _nameError = localizations.translate("duplicateTagError");
+      } else {
+        _nameError = null;
+      }
+      _descriptionError = tagDescriptionController.text.isEmpty ? localizations.translate("noEmptyDescError"): null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: nexusColor.background,
@@ -93,9 +114,10 @@ class TagItemState extends State<TagItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagNameController.text,
-                      helperText: AppLocalizations.of(context).translate('name'),
+                      helperText: localizations.translate('name'),
                       filled: true,
                       fillColor: nexusColor.inputs,
+                      errorText: _nameError?.toString(),
                     ),
                     onChanged: (newValue) {
                       tagName.value = newValue;
@@ -108,9 +130,10 @@ class TagItemState extends State<TagItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagDescriptionController.text,
-                      helperText: AppLocalizations.of(context).translate('description'),
+                      helperText: localizations.translate('description'),
                       filled: true,
                       fillColor: nexusColor.inputs,
+                      errorText: _descriptionError?.toString(),
                     ),
                     onChanged: (newValue) {
                       tagDescription.value = newValue;
@@ -144,17 +167,19 @@ class TagItemState extends State<TagItem> {
                       const SizedBox(width: 240.0),
                       ElevatedButton(
                         onPressed: () async {
-
-                          await widget.fileController.updateTag(
-                            widget.fileController.listTag.indexOf(widget.tag),
-                            tagName.value,
-                            tagDescription.value,
-                          );
-                          if(context.mounted){
-                            Navigator.pushReplacementNamed(
-                              context,
-                              '/tags',
+                          _validateInputs();
+                          if(_nameError == null && _descriptionError == null) {
+                            await widget.fileController.updateTag(
+                              widget.fileController.listTag.indexOf(widget.tag),
+                              tagName.value,
+                              tagDescription.value,
                             );
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/tags',
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

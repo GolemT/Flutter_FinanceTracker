@@ -46,6 +46,7 @@
     "duplicateTagError": "Tag already exists",
     "noEmptyAmountError": "Amount cannot be empty",
     "balanceCalcError": "Error calculating total balance",
+    "noEmptyDescError": "Description cannot be empty",
 
     "transCreate": "Create Transaction",
     "transAdd": "Add Transaction",

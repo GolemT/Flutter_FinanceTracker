@@ -35,6 +35,10 @@ class TransactionItemState extends State<TransactionItem> {
   late TextEditingController transactionNameController;
   late TextEditingController transactionDateController;
   late TextEditingController transactionAmountController;
+
+  Object? _nameError;
+  Object? _amountError;
+
   bool isExpanded = false;
 
   @override
@@ -73,6 +77,14 @@ class TransactionItemState extends State<TransactionItem> {
     transactionAmountController.text = widget.transaction.transactionAmount.toString();
   }
 
+  void _validateInputs(){
+    final localizations = AppLocalizations.of(context);
+    setState(() {
+      _nameError = transactionNameController.text.isEmpty ? localizations.translate("noEmptyNameError"): null;
+      _amountError = transactionAmountController.text.isEmpty ? localizations.translate("noEmptyAmountError"): null;
+    });
+}
+
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -102,6 +114,7 @@ class TransactionItemState extends State<TransactionItem> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: nexusColor.background,
@@ -151,9 +164,10 @@ class TransactionItemState extends State<TransactionItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionNameController.text,
-                      helperText: AppLocalizations.of(context).translate('name'),
+                      helperText: localizations.translate('name'),
                       filled: true,
                       fillColor: nexusColor.inputs,
+                      errorText: _nameError?.toString(),
                     ),
                     onChanged: (newValue) {
                       transactionName.value = newValue;
@@ -185,7 +199,7 @@ class TransactionItemState extends State<TransactionItem> {
                         selectedItemsTextStyle: TextStyle(color: nexusColor.text),
                         items: widget.items,
                         initialValue: value,
-                        title: Text(AppLocalizations.of(context).translate('tags'), style: TextStyle(color: nexusColor.text)),
+                        title: Text(localizations.translate('tags'), style: TextStyle(color: nexusColor.text)),
                         selectedColor: Colors.blue,
                         decoration: BoxDecoration(
                           color: nexusColor.inputs,
@@ -196,7 +210,7 @@ class TransactionItemState extends State<TransactionItem> {
                         ),
                         buttonIcon: Icon(Icons.arrow_drop_down, color: nexusColor.text),
                         buttonText: Text(
-                          AppLocalizations.of(context).translate('selectTagsButton'),
+                          localizations.translate('selectTagsButton'),
                           style: TextStyle(
                             color: nexusColor.text,
                             fontSize: 16,
@@ -224,9 +238,10 @@ class TransactionItemState extends State<TransactionItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionAmountController.text,
-                      helperText: AppLocalizations.of(context).translate('amount'),
+                      helperText: localizations.translate('amount'),
                       filled: true,
                       fillColor: nexusColor.inputs,
+                      errorText: _amountError?.toString(),
                     ),
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(
@@ -266,20 +281,26 @@ class TransactionItemState extends State<TransactionItem> {
                       const SizedBox(width: 240.0),
                       ElevatedButton(
                         onPressed: () async {
-                          List<int> selectedTagIndexes = selectedTags.value.map((tag) => widget.tagList.indexOf(tag)).toList();
+                          _validateInputs();
+                          if(_nameError == null && _amountError == null) {
+                            List<int> selectedTagIndexes = selectedTags.value
+                                .map((tag) => widget.tagList.indexOf(tag))
+                                .toList();
 
-                          await widget.fileController.updateTransaction(
-                            widget.fileController.listTransaction.indexOf(widget.transaction),
-                            transactionName.value,
-                            transactionDate.value,
-                            selectedTagIndexes,
-                            transactionAmount.value,
-                          );
-                          if(context.mounted){
-                            Navigator.pushReplacementNamed(
-                              context,
-                              '/home',
+                            await widget.fileController.updateTransaction(
+                              widget.fileController.listTransaction.indexOf(
+                                  widget.transaction),
+                              transactionName.value,
+                              transactionDate.value,
+                              selectedTagIndexes,
+                              transactionAmount.value,
                             );
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/home',
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

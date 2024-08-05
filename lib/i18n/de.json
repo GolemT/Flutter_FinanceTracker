@@ -47,6 +47,7 @@
     "duplicateTagError": "Tag existiert schon",
     "noEmptyAmountError": "Betrag darf nicht leer sein",
     "balanceCalcError": "Fehler bei der Berechnung des Kontostandes",
+    "noEmptyDescError": "Beschreibung darf nicht leer sein",
 
     "transCreate": "Transaktion erstellen",
     "transAdd": "Transaktion hinzufügen",

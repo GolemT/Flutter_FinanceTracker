@@ -58,7 +58,7 @@ class PieChartComponentState extends State<PieChartComponent> {
             ? Text(AppLocalizations.of(context).translate('noTaggedE'), style: TextStyle(color: nexusColor.text))
             : PieChart(
                 centerTextStyle: TextStyle(color: nexusColor.text),
-                animationDuration: const Duration(milliseconds: 80),
+                animationDuration: const Duration(milliseconds: 0),
                 dataMap: dataMap,
                 colorList: [
                   Colors.red.withOpacity(0.7),

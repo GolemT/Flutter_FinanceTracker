@@ -89,7 +89,6 @@ class TransactionsState extends State<AddTransactionScreen> {
             children: <Widget>[
               SizedBox(
                 width: NexusSize.inputWidth.normal,
-                height: NexusSize.inputHeight.normal,
                 child: TextFormField(
                     controller: transactionNameController,
                     maxLength: 20,
@@ -198,7 +197,6 @@ class TransactionsState extends State<AddTransactionScreen> {
                   const SizedBox(width: 16.0),
                   Expanded(
                     child: SizedBox(
-                      height: NexusSize.inputHeight.normal,
                       child: TextFormField(
                         controller: transactionAmountController,
                         maxLength: 15,

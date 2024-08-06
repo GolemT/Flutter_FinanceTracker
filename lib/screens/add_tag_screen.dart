@@ -1,4 +1,5 @@
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/components/validators.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,32 +25,12 @@ class AddTagScreenState extends State<AddTagScreen> {
   late TextEditingController tagNameController;
   late TextEditingController tagDescriptionController;
 
-  Object? _nameError;
-  Object? _descriptionError;
-
   @override
   void initState() {
     super.initState();
 
     tagNameController = TextEditingController(text: '');
     tagDescriptionController = TextEditingController(text: '');
-  }
-
-  void _validateInputs() {
-    final localizations = AppLocalizations.of(context);
-    final fileController = context.read<FileController>();
-    setState(() {
-      if (tagNameController.text.isEmpty) {
-        _nameError = localizations.translate("noEmptyNameError");
-      } else if (fileController.listTag.any((tag) => tag.tagName == tagName)) {
-        _nameError = localizations.translate("duplicateTagError");
-      } else {
-        _nameError = null;
-      }
-      _descriptionError = tagDescriptionController.text.isEmpty
-          ? localizations.translate("noEmptyDescError")
-          : null;
-    });
   }
 
   @override
@@ -91,9 +72,14 @@ class AddTagScreenState extends State<AddTagScreen> {
                     labelStyle: TextStyle(color: nexusColor.text),
                     helperStyle: TextStyle(color: nexusColor.subText),
                     hintStyle: TextStyle(color: nexusColor.text),
-                    errorText: _nameError?.toString(),
+                    errorText: Validators.validateNameDouble(tagName, context, fileController),
                   ),
-                  onChanged: (value) => tagName = value,
+                  onChanged: (value) {
+                    setState(() {
+                    tagName = value;
+                    Validators.validateNameDouble(tagName, context, fileController);
+                    });
+                  }
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
@@ -115,7 +101,6 @@ class AddTagScreenState extends State<AddTagScreen> {
                     labelStyle: TextStyle(color: nexusColor.text),
                     helperStyle: TextStyle(color: nexusColor.subText),
                     hintStyle: TextStyle(color: nexusColor.text),
-                    errorText: _descriptionError?.toString(),
                   ),
                   onChanged: (value) => tagDescription = value,
                 ),
@@ -132,8 +117,7 @@ class AddTagScreenState extends State<AddTagScreen> {
         icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
-          _validateInputs();
-          if (_nameError == null && _descriptionError == null) {
+          if (Validators.validateNameDouble(tagName, context, fileController) == null) {
             await fileController.createTag(tagName, tagDescription);
             if (context.mounted) {
               await Navigator.push(

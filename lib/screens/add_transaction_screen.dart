@@ -1,5 +1,7 @@
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/assets/size_palette.dart';
+import 'package:finance_tracker/components/currency_formatter.dart';
+import 'package:finance_tracker/components/validators.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
@@ -17,22 +19,6 @@ class AddTransactionScreen extends StatefulWidget {
   TransactionsState createState() => TransactionsState();
 }
 
-class CurrencyInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text;
-
-    // Überprüfen, ob das Format den Anforderungen entspricht
-    final regExp = RegExp(r'^\d{0,10}(\.\d{0,2})?$');
-    if (!regExp.hasMatch(text)) {
-      return oldValue; // wenn es nicht übereinstimmt, behalte den alten Wert bei
-    }
-
-    return newValue; // falls übereinstimmt, wird der neue Wert akzeptiert
-  }
-}
-
-
 class TransactionsState extends State<AddTransactionScreen> {
   String transactionName = "";
   final nexusColor = NexusColor();
@@ -40,24 +26,17 @@ class TransactionsState extends State<AddTransactionScreen> {
   List<Tag>? selectedTags = [];
   double? amount;
   bool repeat = false; // variable für die checkbox
-  final TextEditingController dateController = TextEditingController();// für den DatePicker
-  final TextEditingController transactionNameController = TextEditingController();
-  final TextEditingController transactionAmountController = TextEditingController();
+  final TextEditingController dateController =
+      TextEditingController(); // für den DatePicker
+  final TextEditingController transactionNameController =
+      TextEditingController();
+  final TextEditingController transactionAmountController =
+      TextEditingController();
   Color errorMessageColor = Colors.transparent;
   String errorMessage = "";
 
-  Object? _nameError;
-  Object? _amountError;
-
-  void _validateInputs(){
-    final localizations = AppLocalizations.of(context);
-    setState(() {
-      _nameError = transactionNameController.text.isEmpty ? localizations.translate("noEmptyNameError"): null;
-      _amountError = transactionAmountController.text.isEmpty ? localizations.translate("noEmptyAmountError"): null;
-    });
-  }
-
-  Future<void> _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
+  Future<void> _selectDate(
+      BuildContext context, Function(DateTime) onDateSelected) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       barrierColor: nexusColor.background,
@@ -89,14 +68,16 @@ class TransactionsState extends State<AddTransactionScreen> {
     final fileController = context.watch<FileController>();
     transactionDate ??= DateFormat('yyyy-MM-dd').format(DateTime.now());
     final List<Tag> tagList = fileController.listTag;
-    final items = tagList.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
+    final items =
+        tagList.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
     final localization = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: nexusColor.background,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(localization.translate('transAdd'), style: TextStyle(color: nexusColor.text)),
+        title: Text(localization.translate('transAdd'),
+            style: TextStyle(color: nexusColor.text)),
         backgroundColor: nexusColor.navigation,
         iconTheme: IconThemeData(color: nexusColor.text),
       ),
@@ -110,20 +91,24 @@ class TransactionsState extends State<AddTransactionScreen> {
                 width: NexusSize.inputWidth.normal,
                 height: NexusSize.inputHeight.normal,
                 child: TextFormField(
-                  controller: transactionNameController,
-                  maxLength: 20,
-                  style: TextStyle(color: nexusColor.text),
-                  decoration: InputDecoration(
-                    labelText: localization.translate('transNameLabel'),
-                    filled: true,
-                    fillColor: nexusColor.inputs,
-                    labelStyle: TextStyle(color: nexusColor.text),
-                    helperStyle: TextStyle(color: nexusColor.subText),
-                    hintStyle: TextStyle(color: nexusColor.text),
-                    errorText: _nameError?.toString(),
-                  ),
-                  onChanged: (value) => transactionName = value,
-                ),
+                    controller: transactionNameController,
+                    maxLength: 20,
+                    style: TextStyle(color: nexusColor.text),
+                    decoration: InputDecoration(
+                      labelText: localization.translate('transNameLabel'),
+                      filled: true,
+                      fillColor: nexusColor.inputs,
+                      labelStyle: TextStyle(color: nexusColor.text),
+                      helperStyle: TextStyle(color: nexusColor.subText),
+                      hintStyle: TextStyle(color: nexusColor.text),
+                      errorText:
+                          Validators.validateName(transactionName, context),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        transactionName = value;
+                      });
+                    }),
               ),
               const SizedBox(height: 16.0),
               // Date Picker
@@ -133,7 +118,8 @@ class TransactionsState extends State<AddTransactionScreen> {
                 child: GestureDetector(
                   onTap: () => _selectDate(context, (pickedDate) {
                     setState(() {
-                      transactionDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      transactionDate =
+                          DateFormat('yyyy-MM-dd').format(pickedDate);
                     });
                   }),
                   child: AbsorbPointer(
@@ -160,46 +146,54 @@ class TransactionsState extends State<AddTransactionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                      child: MultiSelectDialogField(
-                        itemsTextStyle: TextStyle(color: nexusColor.text),
-                        selectedItemsTextStyle: TextStyle(color: nexusColor.text),
-                        buttonIcon: Icon(Icons.arrow_drop_down, color: nexusColor.text),
-                        searchable: true,
-                        items: items,
-                        backgroundColor: nexusColor.background,
-                        title: Text(localization.translate('tags'), style: TextStyle(color: nexusColor.text),),
-                        selectedColor: NexusColor.secondary,
-                        decoration: BoxDecoration(
-                          color: nexusColor.inputs,
-                          border: Border.all(
-                            color: nexusColor.divider,
-                            width: 2,
-                          ),
-                        ),
-                        buttonText: Text(
-                          localization.translate('selectTagsButton'),
-                          style: TextStyle(
-                            color: nexusColor.text,
-                            fontSize: 16,
-                          ),
-                        ),
-                        onConfirm: (results) {
-                          setState(() {
-                            selectedTags = results.cast<Tag>();
-                          });
-                        },
-                        chipDisplay: MultiSelectChipDisplay(
-                          alignment: Alignment.bottomCenter,
-                          chipColor: nexusColor.inputs,
-                          textStyle: TextStyle(color: nexusColor.text),
-                          items: selectedTags?.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList() ?? [],
-                          onTap: (value) {
-                            setState(() {
-                              selectedTags?.remove(value);
-                            });
-                          },
+                    child: MultiSelectDialogField(
+                      itemsTextStyle: TextStyle(color: nexusColor.text),
+                      selectedItemsTextStyle: TextStyle(color: nexusColor.text),
+                      buttonIcon:
+                          Icon(Icons.arrow_drop_down, color: nexusColor.text),
+                      searchable: true,
+                      items: items,
+                      backgroundColor: nexusColor.background,
+                      title: Text(
+                        localization.translate('tags'),
+                        style: TextStyle(color: nexusColor.text),
+                      ),
+                      selectedColor: NexusColor.secondary,
+                      decoration: BoxDecoration(
+                        color: nexusColor.inputs,
+                        border: Border.all(
+                          color: nexusColor.divider,
+                          width: 2,
                         ),
                       ),
+                      buttonText: Text(
+                        localization.translate('selectTagsButton'),
+                        style: TextStyle(
+                          color: nexusColor.text,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onConfirm: (results) {
+                        setState(() {
+                          selectedTags = results.cast<Tag>();
+                        });
+                      },
+                      chipDisplay: MultiSelectChipDisplay(
+                        alignment: Alignment.bottomCenter,
+                        chipColor: nexusColor.inputs,
+                        textStyle: TextStyle(color: nexusColor.text),
+                        items: selectedTags
+                                ?.map((tag) =>
+                                    MultiSelectItem<Tag>(tag, tag.tagName))
+                                .toList() ??
+                            [],
+                        onTap: (value) {
+                          setState(() {
+                            selectedTags?.remove(value);
+                          });
+                        },
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 16.0),
                   Expanded(
@@ -216,7 +210,8 @@ class TransactionsState extends State<AddTransactionScreen> {
                           labelStyle: TextStyle(color: nexusColor.text),
                           helperStyle: TextStyle(color: nexusColor.subText),
                           hintStyle: TextStyle(color: nexusColor.text),
-                          errorText: _amountError?.toString(),
+                          errorText: Validators.validateAmount(
+                              amount.toString(), context),
                           errorMaxLines: 2,
                         ),
                         inputFormatters: <TextInputFormatter>[
@@ -225,9 +220,12 @@ class TransactionsState extends State<AddTransactionScreen> {
                           ),
                           CurrencyInputFormatter(),
                         ],
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
                         onChanged: (value) {
-                          amount = double.tryParse(value);
+                          setState(() {
+                            amount = double.tryParse(value);
+                          });
                         },
                       ),
                     ),
@@ -235,20 +233,19 @@ class TransactionsState extends State<AddTransactionScreen> {
                 ],
               ),
               Row(
-                children: <Widget> [  
+                children: <Widget>[
                   Expanded(
                       child: CheckboxListTile(
-                        title: Text(localization.translate('repeat'), style: TextStyle(color: nexusColor.text)),
-                        value: repeat,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            repeat = value ?? false;
-                          });
-                      },
-                      activeColor: NexusColor.accents,
-                    
-                   )
-                  )
+                    title: Text(localization.translate('repeat'),
+                        style: TextStyle(color: nexusColor.text)),
+                    value: repeat,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        repeat = value ?? false;
+                      });
+                    },
+                    activeColor: NexusColor.accents,
+                  ))
                 ],
               )
             ],
@@ -256,24 +253,26 @@ class TransactionsState extends State<AddTransactionScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         label: Text(localization.translate('transCreate')),
         icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
-          _validateInputs();
-          if(_nameError == null && _amountError == null) {
-            List<int> tagIds = selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
-            await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, repeat);
-            if (repeat == true){
-              await fileController.createTransaction(transactionName, transactionDate.toString(), tagIds, amount!, false);
+          if (Validators.validateName(transactionName, context) == null &&
+              Validators.validateAmount(amount.toString(), context) == null) {
+            List<int> tagIds =
+                selectedTags!.map((tag) => tagList.indexOf(tag)).toList();
+            await fileController.createTransaction(transactionName,
+                transactionDate.toString(), tagIds, amount!, repeat);
+            if (repeat == true) {
+              await fileController.createTransaction(transactionName,
+                  transactionDate.toString(), tagIds, amount!, false);
             }
             setState(() => errorMessageColor = Colors.transparent);
-            if(context.mounted) {
-              await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomeScreen())
-            );
+            if (context.mounted) {
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()));
             }
           }
         },

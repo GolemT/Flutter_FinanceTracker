@@ -1,9 +1,9 @@
+import 'package:finance_tracker/components/validators.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/components/localisations.dart';
-import 'package:provider/provider.dart';
 
 class TagItem extends StatefulWidget {
   final Tag tag;
@@ -25,9 +25,6 @@ class TagItemState extends State<TagItem> {
   late ValueNotifier<String> tagDescription;
   late TextEditingController tagNameController;
   late TextEditingController tagDescriptionController;
-
-  Object? _nameError;
-  Object? _descriptionError;
 
   bool isExpanded = false;
 
@@ -56,21 +53,6 @@ class TagItemState extends State<TagItem> {
 
     tagNameController.text = widget.tag.tagName;
     tagDescriptionController.text = widget.tag.tagDescription;
-  }
-
-  void _validateInputs(){
-    final localizations = AppLocalizations.of(context);
-    final fileController = context.read<FileController>();
-    setState(() {
-      if (tagNameController.text.isEmpty) {
-        _nameError = localizations.translate("noEmptyNameError");
-      } else if(fileController.listTag.any((tag) => tag.tagName == tagName.value)) {
-        _nameError = localizations.translate("duplicateTagError");
-      } else {
-        _nameError = null;
-      }
-      _descriptionError = tagDescriptionController.text.isEmpty ? localizations.translate("noEmptyDescError"): null;
-    });
   }
 
   @override
@@ -117,10 +99,13 @@ class TagItemState extends State<TagItem> {
                       helperText: localizations.translate('name'),
                       filled: true,
                       fillColor: nexusColor.inputs,
-                      errorText: _nameError?.toString(),
+                      errorText: Validators.validateNameDouble(tagName.value, context, widget.fileController, name: widget.tag.tagName),
                     ),
                     onChanged: (newValue) {
-                      tagName.value = newValue;
+                      setState(() {
+                        tagName.value = newValue;
+                        Validators.validateNameDouble(tagName.value, context, widget.fileController, name: widget.tag.tagName);
+                      });
                     },
                   ),
                   const SizedBox(height: 8.0),
@@ -133,7 +118,6 @@ class TagItemState extends State<TagItem> {
                       helperText: localizations.translate('description'),
                       filled: true,
                       fillColor: nexusColor.inputs,
-                      errorText: _descriptionError?.toString(),
                     ),
                     onChanged: (newValue) {
                       tagDescription.value = newValue;
@@ -167,8 +151,7 @@ class TagItemState extends State<TagItem> {
                       const SizedBox(width: 240.0),
                       ElevatedButton(
                         onPressed: () async {
-                          _validateInputs();
-                          if(_nameError == null && _descriptionError == null) {
+                          if(Validators.validateNameDouble(tagName.value, context, widget.fileController) == null) {
                             await widget.fileController.updateTag(
                               widget.fileController.listTag.indexOf(widget.tag),
                               tagName.value,

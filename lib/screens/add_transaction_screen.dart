@@ -199,7 +199,7 @@ class TransactionsState extends State<AddTransactionScreen> {
                     child: SizedBox(
                       child: TextFormField(
                         controller: transactionAmountController,
-                        maxLength: 15,
+                        maxLength: 13,
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(
                           labelText: localization.translate('enterAmountLabel'),

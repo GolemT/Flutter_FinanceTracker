@@ -245,7 +245,7 @@ class TransactionItemState extends State<TransactionItem> {
                   const SizedBox(height: 8.0),
                   TextField(
                     controller: transactionAmountController,
-                    maxLength: 15,
+                    maxLength: 13,
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionAmountController.text,

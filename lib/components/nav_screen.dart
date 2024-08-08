@@ -1,4 +1,3 @@
-import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/components/nav_bar.dart';
@@ -20,19 +19,6 @@ class NavScreen extends StatelessWidget {
       backgroundColor: nexusColor.background,
       resizeToAvoidBottomInset: false,
       body: child,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton.large(
-        backgroundColor: NexusColor.secondary,
-        elevation: 0,
-        shape: const CircleBorder(),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddTransactionScreen()));
-        },
-        child: Icon(
-          Icons.add,
-          color: nexusColor.text,
-        ),
-      ),
       bottomNavigationBar: NavBar(
         pageIndex: pageIndex,
       ),

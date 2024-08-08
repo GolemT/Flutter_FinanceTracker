@@ -44,6 +44,7 @@ class TagScreenState extends State<TagsScreen> {
                 heroTag: 'newTagButton', // Add a unique heroTag here
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                 label: Text(AppLocalizations.of(context).translate('newTag')),
+                icon: const Icon(Icons.add),
                 backgroundColor: NexusColor.accents,
                 onPressed: () async {
                   await Navigator.push(
@@ -75,6 +76,7 @@ class TagScreenState extends State<TagsScreen> {
                 heroTag: 'newTagButton',
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                 label: Text(AppLocalizations.of(context).translate('newTag')),
+                icon: const Icon(Icons.add),
                 backgroundColor: NexusColor.accents,
                 onPressed: () async {
                   await Navigator.push(

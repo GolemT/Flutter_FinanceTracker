@@ -27,7 +27,7 @@ class NavBar extends StatelessWidget {
           Navigator.push(context, NoAnimationPageRoute(builder: (context) => const TagsScreen(), settings: const RouteSettings(name: '/tags')));
           break;
         case 2:
-          Navigator.pushReplacementNamed(context, '/addTransaction');
+          Navigator.push(context, NoAnimationPageRoute(builder: (context) => const HomeScreen(), settings: const RouteSettings(name: '/home'))); //TODO: change to monthly as soon as its Implemented
           break;
         case 3:
           Navigator.push(context, NoAnimationPageRoute(builder: (context) => const AnalyticsScreen(), settings: const RouteSettings(name: '/analytics')));
@@ -63,7 +63,13 @@ class NavBar extends StatelessWidget {
                 onTap: () => onTap(1),
               ),
 
-              const SizedBox(width: 80),
+              navItem(
+                  Icons.calendar_month_outlined,
+                  pageIndex == 2,
+                  AppLocalizations.of(context).translate('monthly'),
+                  nexusColor,
+                  onTap: () => onTap(2)
+              ),
               
               navItem(
                 Icons.analytics_outlined,

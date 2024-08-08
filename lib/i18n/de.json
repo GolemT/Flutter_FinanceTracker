@@ -48,6 +48,7 @@
     "noEmptyAmountError": "Betrag darf nicht leer sein",
     "balanceCalcError": "Fehler bei der Berechnung des Kontostandes",
 
+    "transaction": "Transaktion",
     "transCreate": "Transaktion erstellen",
     "transAdd": "Transaktion hinzufügen",
     "transNameLabel": "Name der Transaktion eingeben",
@@ -56,6 +57,7 @@
     "dateSelectLabel": "Datum auswählen",
     "enterAmountLabel": "Betrag auswählen",
     "bankHistory": "Kontoverlauf",
+    "monthly": "Monatlich",
 
     "questionOne": "Frage Eins",
     "answerOne": "Antwort Eins",

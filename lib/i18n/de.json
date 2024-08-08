@@ -43,10 +43,11 @@
     "noTags": "Keine Tags verfügbar",
     "newTag": "Neuer Tag",
 
-    "noEmptyNameError": "Name kann nicht leer sein",
+    "noEmptyNameError": "Name darf nicht leer sein",
     "duplicateTagError": "Tag existiert schon",
     "noEmptyAmountError": "Betrag darf nicht leer sein",
     "balanceCalcError": "Fehler bei der Berechnung des Kontostandes",
+    "noEmptyDescError": "Beschreibung darf nicht leer sein",
 
     "transCreate": "Transaktion erstellen",
     "transAdd": "Transaktion hinzufügen",

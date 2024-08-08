@@ -1,4 +1,5 @@
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/components/validators.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/screens/tags_screen.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:finance_tracker/components/localisations.dart';
 
 class AddTagScreen extends StatefulWidget {
-  const AddTagScreen({super.key});
+
+  const AddTagScreen({
+    super.key,
+  });
 
   @override
   AddTagScreenState createState() => AddTagScreenState();
@@ -18,15 +22,28 @@ class AddTagScreenState extends State<AddTagScreen> {
   Color errorMessageColor = Colors.transparent;
   String errorMessage = "";
 
+  late TextEditingController tagNameController;
+  late TextEditingController tagDescriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    tagNameController = TextEditingController(text: '');
+    tagDescriptionController = TextEditingController(text: '');
+  }
+
   @override
   Widget build(BuildContext context) {
     final fileController = context.read<FileController>();
     final nexusColor = NexusColor();
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: nexusColor.background,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate('addTag'), style: TextStyle(color: nexusColor.text)),
+        title: Text(localizations.translate('addTag'),
+            style: TextStyle(color: nexusColor.text)),
         backgroundColor: nexusColor.navigation,
         iconTheme: IconThemeData(color: nexusColor.text),
       ),
@@ -36,13 +53,13 @@ class AddTagScreenState extends State<AddTagScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text(errorMessage, style: TextStyle(color: errorMessageColor)),
                 TextFormField(
-                  controller: TextEditingController(),
+                  controller: tagNameController,
                   maxLength: 20,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).translate('tagName'),
+                    labelText:
+                        localizations.translate('tagName'),
                     fillColor: nexusColor.inputs,
                     filled: true,
                     border: const OutlineInputBorder(),
@@ -55,16 +72,23 @@ class AddTagScreenState extends State<AddTagScreen> {
                     labelStyle: TextStyle(color: nexusColor.text),
                     helperStyle: TextStyle(color: nexusColor.subText),
                     hintStyle: TextStyle(color: nexusColor.text),
+                    errorText: Validators.validateNameDouble(tagName, context, fileController),
                   ),
-                  onChanged: (value) => tagName = value,
+                  onChanged: (value) {
+                    setState(() {
+                    tagName = value;
+                    Validators.validateNameDouble(tagName, context, fileController);
+                    });
+                  }
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
-                  controller: TextEditingController(),
+                  controller: tagDescriptionController,
                   maxLength: 150,
                   style: TextStyle(color: nexusColor.text),
                   decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).translate('tagDescr'),
+                    labelText:
+                        localizations.translate('tagDescr'),
                     fillColor: nexusColor.inputs,
                     filled: true,
                     border: const OutlineInputBorder(),
@@ -87,33 +111,23 @@ class AddTagScreenState extends State<AddTagScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        label:  Text(AppLocalizations.of(context).translate('tagCreate')),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        label: Text(AppLocalizations.of(context).translate('tagCreate')),
         icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
         onPressed: () async {
-        if (tagName.isEmpty) {
-          setState(() {
-          errorMessage = AppLocalizations.of(context).translate('noEmptyNameError');
-          errorMessageColor = NexusColor.negative;
-          });
-        } else if (fileController.listTag.any((tag) => tag.tagName == tagName)) {
-          setState(() {
-          errorMessage = AppLocalizations.of(context).translate('duplicateTagError');
-          errorMessageColor = NexusColor.negative;
-          });
-        } else {
-          await fileController.createTag(tagName, tagDescription);
-          setState(() => errorMessageColor = Colors.transparent);
-          if(context.mounted){
-            await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TagsScreen()),
-          );
+          if (Validators.validateNameDouble(tagName, context, fileController) == null) {
+            await fileController.createTag(tagName, tagDescription);
+            if (context.mounted) {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TagsScreen()),
+              );
+            }
           }
-        }
         },
-      ),  
+      ),
     );
   }
 }

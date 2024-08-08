@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/validators.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/tag.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class TagItemState extends State<TagItem> {
   late ValueNotifier<String> tagDescription;
   late TextEditingController tagNameController;
   late TextEditingController tagDescriptionController;
+
   bool isExpanded = false;
 
   @override
@@ -55,6 +57,7 @@ class TagItemState extends State<TagItem> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: nexusColor.background,
@@ -93,12 +96,16 @@ class TagItemState extends State<TagItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagNameController.text,
-                      helperText: AppLocalizations.of(context).translate('name'),
+                      helperText: localizations.translate('name'),
                       filled: true,
                       fillColor: nexusColor.inputs,
+                      errorText: Validators.validateNameDouble(tagName.value, context, widget.fileController, name: widget.tag.tagName),
                     ),
                     onChanged: (newValue) {
-                      tagName.value = newValue;
+                      setState(() {
+                        tagName.value = newValue;
+                        Validators.validateNameDouble(tagName.value, context, widget.fileController, name: widget.tag.tagName);
+                      });
                     },
                   ),
                   const SizedBox(height: 8.0),
@@ -108,7 +115,7 @@ class TagItemState extends State<TagItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: tagDescriptionController.text,
-                      helperText: AppLocalizations.of(context).translate('description'),
+                      helperText: localizations.translate('description'),
                       filled: true,
                       fillColor: nexusColor.inputs,
                     ),
@@ -144,17 +151,18 @@ class TagItemState extends State<TagItem> {
                       const SizedBox(width: 240.0),
                       ElevatedButton(
                         onPressed: () async {
-
-                          await widget.fileController.updateTag(
-                            widget.fileController.listTag.indexOf(widget.tag),
-                            tagName.value,
-                            tagDescription.value,
-                          );
-                          if(context.mounted){
-                            Navigator.pushReplacementNamed(
-                              context,
-                              '/tags',
+                          if(Validators.validateNameDouble(tagName.value, context, widget.fileController) == null) {
+                            await widget.fileController.updateTag(
+                              widget.fileController.listTag.indexOf(widget.tag),
+                              tagName.value,
+                              tagDescription.value,
                             );
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/tags',
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

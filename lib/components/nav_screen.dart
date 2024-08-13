@@ -17,7 +17,6 @@ class NavScreen extends StatelessWidget {
     final nexusColor = NexusColor();
     return Scaffold(
       backgroundColor: nexusColor.background,
-      resizeToAvoidBottomInset: false,
       body: child,
       bottomNavigationBar: NavBar(
         pageIndex: pageIndex,

@@ -33,12 +33,13 @@ class MonthlyScreenState extends State<MonthlyScreen> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      label: Text(AppLocalizations.of(context).translate('newTag')),
+      label: Text(AppLocalizations.of(context).translate('newMonthly')),
+      icon: const Icon(Icons.add),
       backgroundColor: NexusColor.accents,
       onPressed: () async {
         await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const AddTransactionScreen()),
+          MaterialPageRoute(builder: (context) => const AddTransactionScreen(isMonthly: true,)),
         );
         await context.read<FileController>().readRepTransaction();
         setState(() {});

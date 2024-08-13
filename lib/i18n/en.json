@@ -60,6 +60,7 @@
     "repeat": "Monthly transaction?",
     "monthly": "monthly",
     "noMonthly": "No monthly transaktions",
+    "newMonthly": "Add monthly",
 
     "questionOne": "Question One",
     "answerOne": "Answer One",

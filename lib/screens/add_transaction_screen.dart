@@ -4,7 +4,6 @@ import 'package:finance_tracker/components/currency_formatter.dart';
 import 'package:finance_tracker/components/validators.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/tag.dart';
-import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,9 @@ import 'package:intl/intl.dart';
 import 'package:finance_tracker/components/localisations.dart';
 
 class AddTransactionScreen extends StatefulWidget {
-  const AddTransactionScreen({super.key});
+  final bool isMonthly;
+
+  const AddTransactionScreen({super.key, this.isMonthly = false});
 
   @override
   TransactionsState createState() => TransactionsState();
@@ -34,6 +35,12 @@ class TransactionsState extends State<AddTransactionScreen> {
       TextEditingController();
   Color errorMessageColor = Colors.transparent;
   String errorMessage = "";
+
+  @override
+  void initState() {
+    super.initState();
+    repeat = widget.isMonthly; // Setze den initialen Wert der Checkbox
+  }
 
   Future<void> _selectDate(
       BuildContext context, Function(DateTime) onDateSelected) async {
@@ -237,11 +244,13 @@ class TransactionsState extends State<AddTransactionScreen> {
                     title: Text(localization.translate('repeat'),
                         style: TextStyle(color: nexusColor.text)),
                     value: repeat,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        repeat = value ?? false;
-                      });
-                    },
+                    onChanged: widget.isMonthly
+                        ? null
+                        : (bool? value) {
+                            setState(() {
+                              repeat = value ?? false;
+                            });
+                          },
                     activeColor: NexusColor.accents,
                   ))
                 ],
@@ -269,8 +278,7 @@ class TransactionsState extends State<AddTransactionScreen> {
             }
             setState(() => errorMessageColor = Colors.transparent);
             if (context.mounted) {
-              await Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.pop(context);
             }
           }
         },

@@ -182,7 +182,7 @@ class FileManager {
     final Transaction newTransaction = Transaction(transactionName, transactionDate, tag, transactionAmount, []); 
     File fileRepTransaction = await getFileRepTransaction;
 
-    List<dynamic> jsonListRepTransaction = await listTransactionManager(fileRepTransaction);
+    List<dynamic> jsonListRepTransaction = await listRepTransactionManager(fileRepTransaction);
 
     jsonListRepTransaction[transactionIndex] = newTransaction.toJson();
 

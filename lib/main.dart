@@ -1,5 +1,6 @@
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/screens/monthly_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/assets/color_theme.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
@@ -110,6 +111,7 @@ class MyApp extends StatelessWidget {
                   '/analytics': (context) => const AnalyticsScreen(),
                   '/settings': (context) => const SettingsScreen(),
                   '/setup': (context) => const SetupScreen(),
+                  '/monthly': (context) => const MonthlyScreen(),
                 },
               );
             },

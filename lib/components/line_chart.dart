@@ -84,40 +84,8 @@ class LineChartComponentState extends State<LineChartComponent> {
                       minY: minY,
                       maxY: maxY,
                       titlesData: FlTitlesData(
-                        bottomTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 22,
-                          interval: (lineChartData.length / 4).ceilToDouble(),
-                          getTitles: (value) {
-                            int index = value.toInt();
-                            if (index >= 0 && index < xLabels.length) {
-                              return xLabels[index];
-                            } else {
-                              return '';
-                            }
-                          },
-                          getTextStyles: (context, value) => TextStyle(
-                            color: nexusColor.text,
-                            fontSize: 12,
-                          ),
-                          margin: 8,
-                        ),
-                        leftTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 32,
-                          interval: 1,
-                          getTitles: (value) {
-                            if (value == minY || value == maxY || value == 0) {
-                              return value.toStringAsFixed(2);
-                            }
-                            return '';
-                          },
-                          getTextStyles: (context, value) => TextStyle(
-                            color: nexusColor.text,
-                            fontSize: 12,
-                          ),
-                          margin: 8,
-                        ),
+                        bottomTitles: SideTitles(showTitles: false),
+                        leftTitles: SideTitles(showTitles: false),
                         topTitles: SideTitles(showTitles: false),
                         rightTitles: SideTitles(showTitles: false),
                       ),

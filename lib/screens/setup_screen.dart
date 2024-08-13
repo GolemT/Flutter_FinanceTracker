@@ -5,6 +5,7 @@ import 'package:finance_tracker/components/setup_screens/budget_step.dart';
 import 'package:finance_tracker/components/setup_screens/finish_step.dart';
 import 'package:finance_tracker/components/setup_screens/theme_step.dart';
 import 'package:finance_tracker/components/localisations.dart';
+import 'package:finance_tracker/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:provider/provider.dart';

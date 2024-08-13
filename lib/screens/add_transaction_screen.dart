@@ -2,6 +2,7 @@ import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/assets/size_palette.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/tag.dart';
+import 'package:finance_tracker/notification_service.dart';
 import 'package:finance_tracker/screens/home_screen.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ class TransactionsState extends State<AddTransactionScreen> {
   @override
   Widget build(BuildContext context) {
     final fileController = context.watch<FileController>();
+    final notificationService = NotificationService();
     transactionDate ??= DateFormat('yyyy-MM-dd').format(DateTime.now());
     final List<Tag> tagList = fileController.listTag;
     final items = tagList.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
@@ -225,7 +227,7 @@ class TransactionsState extends State<AddTransactionScreen> {
         label: Text(AppLocalizations.of(context).translate('transCreate')),
         icon: const Icon(Icons.add),
         backgroundColor: NexusColor.accents,
-        onPressed: () async {
+        onPressed: () async {;
           if (transactionName.isEmpty) {
             setState(() {
               errorMessage = AppLocalizations.of(context).translate('noEmptyNameError');

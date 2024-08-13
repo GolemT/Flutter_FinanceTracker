@@ -1,4 +1,5 @@
 import 'package:easy_url_launcher/easy_url_launcher.dart';
+import 'package:finance_tracker/notification_service.dart';
 import 'package:finance_tracker/screens/settings_subscreens/support.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/screens/settings_subscreens/license.dart';
@@ -16,7 +17,9 @@ class SettingsScreen extends StatefulWidget {
 
   @override
   SettingsScreenState createState() => SettingsScreenState();
+
 }
+
 
 class SettingsScreenState extends State<SettingsScreen> {
   final String patreon = 'https://www.patreon.com/NexusCode';
@@ -26,6 +29,17 @@ class SettingsScreenState extends State<SettingsScreen> {
   bool? _themeGroupValue;
   String? _selectedLanguage;
 
+  final notificationService = NotificationService();
+
+  bool _isNotificationEnabled = false;
+
+  void _toggleNotification(bool value) async {
+    setState(() {
+      _isNotificationEnabled = value;
+    });
+    await notificationService.toggleNotification(value);
+  }
+  
   @override
   void initState() {
     super.initState();
@@ -37,6 +51,8 @@ class SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _themeGroupValue = prefs.getBool('theme') ?? true;
       _selectedLanguage = prefs.getString('lang') == 'en' ? 'English' : 'Deutsch';
+      _isNotificationEnabled = prefs.getBool('daily_notification') ?? false;
+
     });
   }
 
@@ -63,6 +79,7 @@ class SettingsScreenState extends State<SettingsScreen> {
       prefs.setString('lang', value!);
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -180,11 +197,23 @@ class SettingsScreenState extends State<SettingsScreen> {
               leading: Icon(Icons.notifications, color: nexusColor.text,),
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('notifSelect'), style: TextStyle(color: nexusColor.text, fontSize: 16.0)),
+                  padding: const EdgeInsets.only(left: 70.0, right: 50, top: 16, bottom: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Platzieren Sie den Text und den Schalter mit Abstand
+                    children: [
+                      Text(
+                          AppLocalizations.of(context).translate('notifDeac'),
+                          style: TextStyle(color: nexusColor.text),
+                        ),
+            
+                      Switch(
+                        value: _isNotificationEnabled,
+                        onChanged: (value) => _toggleNotification(value),
+                      ),
+                      Text(
+  	                    AppLocalizations.of(context).translate('notifAc'),
+                        style: TextStyle(color: nexusColor.text),
+                      ),
                     ],
                   ),
                 ),

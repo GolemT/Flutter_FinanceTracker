@@ -10,13 +10,13 @@ import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:finance_tracker/components/localisations.dart';
 
-class TransactionItem extends StatefulWidget {
+class MonthlyItem extends StatefulWidget {
   final Transaction transaction;
   final List<Tag> tagList;
   final List<MultiSelectItem<Tag>> items;
   final FileController fileController;
 
-  const TransactionItem({
+  const MonthlyItem({
     super.key,
     required this.transaction,
     required this.tagList,
@@ -25,10 +25,10 @@ class TransactionItem extends StatefulWidget {
   });
 
   @override
-  TransactionItemState createState() => TransactionItemState();
+  MonthlyItemState createState() => MonthlyItemState();
 }
 
-class TransactionItemState extends State<TransactionItem> {
+class MonthlyItemState extends State<MonthlyItem> {
   final NexusColor nexusColor = NexusColor();
   late ValueNotifier<String> transactionName;
   late ValueNotifier<String> transactionDate;
@@ -129,19 +129,6 @@ class TransactionItemState extends State<TransactionItem> {
         title: Text(
           widget.transaction.transactionName,
           style: TextStyle(color: nexusColor.text, fontSize: 20),
-        ),
-        subtitle: Text(
-          widget.transaction.transactionDate,
-          style: TextStyle(color: nexusColor.subText, fontSize: 16),
-        ),
-        trailing: Text(
-          widget.transaction.transactionAmount.toString(),
-          style: TextStyle(
-            color: widget.transaction.transactionAmount > 0.0
-                ? NexusColor.positive
-                : NexusColor.negative,
-            fontSize: 18,
-          ),
         ),
         onExpansionChanged: (bool expanded) {
           setState(() {
@@ -245,7 +232,7 @@ class TransactionItemState extends State<TransactionItem> {
                   const SizedBox(height: 8.0),
                   TextField(
                     controller: transactionAmountController,
-                    maxLength: 14,
+                    maxLength: 13,
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionAmountController.text,
@@ -278,12 +265,12 @@ class TransactionItemState extends State<TransactionItem> {
                     children: <Widget>[
                       ElevatedButton(
                         onPressed: () {
-                          widget.fileController.deleteTransaction(widget
-                              .fileController.listTransaction
+                          widget.fileController.deleteRepTransaction(widget
+                              .fileController.listRepTransaction
                               .indexOf(widget.transaction));
                           Navigator.pushReplacementNamed(
-                            context,
-                            '/home',
+                              context,
+                              '/monthly',
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -302,19 +289,16 @@ class TransactionItemState extends State<TransactionItem> {
                       const SizedBox(width: 240.0),
                       ElevatedButton(
                         onPressed: () async {
-                          if (Validators.validateName(
-                                      transactionName.value, context) ==
-                                  null &&
-                              Validators.validateAmount(
-                                      transactionAmount.value.toString(),
-                                      context) ==
-                                  null) {
+                          if (Validators.validateName(transactionName.value, context) == null &&
+                              Validators.validateAmount(transactionAmount.value.toString(), context) == null) {
                             List<int> selectedTagIndexes = selectedTags.value
                                 .map((tag) => widget.tagList.indexOf(tag))
                                 .toList();
 
-                            await widget.fileController.updateTransaction(
-                              widget.fileController.listTransaction
+
+
+                            await widget.fileController.updateRepTransaction(
+                              widget.fileController.listRepTransaction
                                   .indexOf(widget.transaction),
                               transactionName.value,
                               transactionDate.value,
@@ -324,7 +308,7 @@ class TransactionItemState extends State<TransactionItem> {
                             if (context.mounted) {
                               Navigator.pushReplacementNamed(
                                 context,
-                                '/home',
+                                '/monthly',
                               );
                             }
                           }

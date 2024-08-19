@@ -8,6 +8,9 @@ class FileController extends ChangeNotifier {
   List<Transaction> listTransaction = [];
   Transaction? transaction;
 
+  List<Transaction> listRepTransaction = [];
+  Transaction? repTransaction;
+
   List<Tag> listTag = [];
   Tag? tag;
 
@@ -57,16 +60,31 @@ class FileController extends ChangeNotifier {
 
   //------------------------------------------------------ REPEATING TRANSACTIONS ------------------------------------------------------//
 
+  Future<void> readRepTransaction() async {
+
+    final jsonDataRepTransaction = await FileManager().readFileRepTransactionManager();
+    // If transactions exist and a transaction has tags, add the names of the tags to the Transaction class
+
+    if (jsonDataRepTransaction != null) {
+      listRepTransaction = (jsonDataRepTransaction as List).map((item) => Transaction.fromJson(item as Map<String, dynamic>)).toList();
+      for (var transaction in listRepTransaction) {
+        transaction.transactionTagName.clear();
+        transaction.transactionTagName = transaction.transactionTag.map((index) => listTag[index].tagName).toList();
+      }
+      notifyListeners();
+    }
+  }
 
   updateRepTransaction(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async {
     await FileManager().updateRepTransactionManager(transactionIndex, transactionName, transactionDate, tag, transactionAmount);
     await refreshTagsAndTransactions();
-  }
+      }
 
   deleteRepTransaction(int transactionIndex) async {
     await FileManager().deleteRepTransactionManager(transactionIndex);
     await refreshTagsAndTransactions();
   }
+
 
   //--------------------------------------------------------------- TAGS ---------------------------------------------------------------//
 
@@ -106,14 +124,10 @@ class FileController extends ChangeNotifier {
     await refreshTagsAndTransactions();
   }
 
-  Future readRepTransaction() async {
-    final jsonDataRepTransaction = await FileManager().readFileRepTransactionManager();
-    return jsonDataRepTransaction;
-  }
-
   Future<void> refreshTagsAndTransactions() async {
     await readTag();
     await readTransaction();
+    await readRepTransaction();
   }
 
 

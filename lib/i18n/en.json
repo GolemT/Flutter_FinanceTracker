@@ -59,6 +59,8 @@
     "bankHistory": "Banking History",
     "repeat": "Monthly transaction?",
     "monthly": "monthly",
+    "noMonthly": "No monthly transactions",
+    "newMonthly": "Add monthly",
 
     "questionOne": "Question One",
     "answerOne": "Answer One",

@@ -59,6 +59,8 @@
     "enterAmountLabel": "Betrag auswählen",
     "bankHistory": "Kontoverlauf",
     "monthly": "Monatlich",
+    "noMonthly": "Keine Monatlichen Transaktionen",
+    "newMonthly": "Neuer Dauerauftrag",
 
     "questionOne": "Frage Eins",
     "answerOne": "Antwort Eins",

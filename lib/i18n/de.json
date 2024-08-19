@@ -43,11 +43,13 @@
     "noTags": "Keine Tags verfügbar",
     "newTag": "Neuer Tag",
 
-    "noEmptyNameError": "Name kann nicht leer sein",
+    "noEmptyNameError": "Name darf nicht leer sein",
     "duplicateTagError": "Tag existiert schon",
     "noEmptyAmountError": "Betrag darf nicht leer sein",
     "balanceCalcError": "Fehler bei der Berechnung des Kontostandes",
+    "noEmptyDescError": "Beschreibung darf nicht leer sein",
 
+    "transaction": "Transaktion",
     "transCreate": "Transaktion erstellen",
     "transAdd": "Transaktion hinzufügen",
     "transNameLabel": "Name der Transaktion eingeben",
@@ -56,6 +58,7 @@
     "dateSelectLabel": "Datum auswählen",
     "enterAmountLabel": "Betrag auswählen",
     "bankHistory": "Kontoverlauf",
+    "monthly": "Monatlich",
 
     "usingApp":"Nutzung der App",
     "questionOne": "Startseite",

@@ -1,4 +1,5 @@
 import 'package:finance_tracker/file_controller.dart';
+import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/components/nav_screen.dart';
 import 'package:provider/provider.dart';
@@ -49,127 +50,167 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fileController = context.watch<FileController>();
-    final items = fileController.listTag.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList();
+    final items = fileController.listTag
+        .map((tag) => MultiSelectItem<Tag>(tag, tag.tagName))
+        .toList();
     final nexusColor = NexusColor();
 
     return NavScreen(
       pageIndex: 0,
       child: SafeArea(
-        child: SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder<double>(
-              future: _calculateTotalBalance(fileController),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text(AppLocalizations.of(context).translate('balanceCalcError'), style: TextStyle(color: nexusColor.text, fontSize: 20));
-                } else {
-                  double totalBalance = snapshot.data ?? 0.0;
-                  double totalIncome = _calculateTotalIncome(fileController);
-                  double totalExpenses = _calculateTotalExpenses(fileController);
+        child: Scaffold(
+        body: SingleChildScrollView(
+            child: Column(
+              children: [
+                FutureBuilder<double>(
+                  future: _calculateTotalBalance(fileController),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text(
+                          AppLocalizations.of(context)
+                              .translate('balanceCalcError'),
+                          style:
+                              TextStyle(color: nexusColor.text, fontSize: 20));
+                    } else {
+                      double totalBalance = snapshot.data ?? 0.0;
+                      double totalIncome =
+                          _calculateTotalIncome(fileController);
+                      double totalExpenses =
+                          _calculateTotalExpenses(fileController);
 
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildCircle(
-                          amount: totalBalance,
-                          color: NexusColor.accents,
-                          big: true,
-                          context: context,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _buildCircle(
-                              amount: totalExpenses,
-                              color: NexusColor.negative,
-                              big: false,
+                              amount: totalBalance,
+                              color: NexusColor.accents,
+                              big: true,
                               context: context,
                             ),
-                            _buildCircle(
-                              amount: totalIncome,
-                              color: NexusColor.positive,
-                              big: false,
-                              context: context,
-                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _buildCircle(
+                                  amount: totalExpenses,
+                                  color: NexusColor.negative,
+                                  big: false,
+                                  context: context,
+                                ),
+                                _buildCircle(
+                                  amount: totalIncome,
+                                  color: NexusColor.positive,
+                                  big: false,
+                                  context: context,
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                  );
-                }
-              },
-            ),
-            Wrap(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: nexusColor.text, // Divider color
-                        width: 1.0, // Divider width
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context).translate('transList'),
-                        style: TextStyle(
-                          color: nexusColor.text,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w100,
                         ),
-                      ),
-                      Wrap(
-                        children: [
-                          Icon(Icons.filter_alt, color: nexusColor.inputs,),
-                          Icon(Icons.search, color: nexusColor.inputs,)
-                        ]
-                      )
-                    ],
-                  ),
+                      );
+                    }
+                  },
                 ),
-                fileController.listTransaction.isEmpty
-                    ? Center(
-                        child: Text(
-                          AppLocalizations.of(context).translate('noTransAvailable'),
-                          style: TextStyle(color: nexusColor.text, fontSize: 20),
+                Wrap(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 0),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: nexusColor.text, // Divider color
+                            width: 1.0, // Divider width
+                          ),
                         ),
-                      )
-                    : ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        itemCount: fileController.listTransaction.length,
-                        itemBuilder: (context, index) {
-                          List<Transaction> list = List.from(fileController.listTransaction);
-                          list.sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
-                          final transaction = list[index];
-                          return TransactionItem(
-                            transaction: transaction,
-                            tagList: fileController.listTag,
-                            items: items,
-                            fileController: fileController,
-                          );
-                        },
                       ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context).translate('transList'),
+                            style: TextStyle(
+                              color: nexusColor.text,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w100,
+                            ),
+                          ),
+                          Wrap(children: [
+                            Icon(
+                              Icons.filter_alt,
+                              color: nexusColor.inputs,
+                            ),
+                            Icon(
+                              Icons.search,
+                              color: nexusColor.inputs,
+                            )
+                          ])
+                        ],
+                      ),
+                    ),
+                    fileController.listTransaction.isEmpty
+                        ? Center(
+                            child: Text(
+                              AppLocalizations.of(context)
+                                  .translate('noTransAvailable'),
+                              style: TextStyle(
+                                  color: nexusColor.text, fontSize: 20),
+                            ),
+                          )
+                        : ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(0),
+                            shrinkWrap: true,
+                            itemCount: fileController.listTransaction.length,
+                            itemBuilder: (context, index) {
+                              List<Transaction> list =
+                                  List.from(fileController.listTransaction);
+                              list.sort((a, b) => b.transactionDate
+                                  .compareTo(a.transactionDate));
+                              final transaction = list[index];
+                              return TransactionItem(
+                                transaction: transaction,
+                                tagList: fileController.listTag,
+                                items: items,
+                                fileController: fileController,
+                              );
+                            },
+                          ),
+                  ],
+                ),
               ],
-            )
-          ],
+            ),
+            ),
+          floatingActionButton: FloatingActionButton.extended(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
+            label:
+            Text(AppLocalizations.of(context).translate('transaction')),
+            icon: const Icon(Icons.add),
+            backgroundColor: NexusColor.accents,
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddTransactionScreen()),
+              );
+              fileController
+                  .readTag(); // Update tags after returning from AddTagScreen
+            },
+          ),
         ),
       ),
-      ), 
     );
   }
 
-  Widget _buildCircle({required double amount, required Color color, required bool big, required BuildContext context}) {
+  Widget _buildCircle(
+      {required double amount,
+      required Color color,
+      required bool big,
+      required BuildContext context}) {
     return Container(
       width: big ? 160 : 100,
       height: big ? 160 : 100,

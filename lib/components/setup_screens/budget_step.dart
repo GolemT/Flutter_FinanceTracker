@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/Currency_formatter.dart';
 import 'package:finance_tracker/components/localisations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
@@ -64,12 +65,13 @@ class BudgetStepState extends State<BudgetStep> {
                     children: <Widget>[
                       TextField(
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        maxLength: 15,
+                        maxLength: 13,
                         controller: _budgetController,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(
                             RegExp(r'^-?\d*\.?\d*'),
                           ),
+                          CurrencyInputFormatter(),
                         ],
                         style: TextStyle(color: nexusColor.text),
                         decoration: InputDecoration(

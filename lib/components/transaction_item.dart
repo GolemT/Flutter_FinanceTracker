@@ -1,3 +1,5 @@
+import 'package:finance_tracker/components/Currency_formatter.dart';
+import 'package:finance_tracker/components/validators.dart';
 import 'package:finance_tracker/file_controller.dart';
 import 'package:finance_tracker/model/transaction.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,7 @@ class TransactionItemState extends State<TransactionItem> {
   late TextEditingController transactionNameController;
   late TextEditingController transactionDateController;
   late TextEditingController transactionAmountController;
+
   bool isExpanded = false;
 
   @override
@@ -42,12 +45,17 @@ class TransactionItemState extends State<TransactionItem> {
     super.initState();
     transactionName = ValueNotifier(widget.transaction.transactionName);
     transactionDate = ValueNotifier(widget.transaction.transactionDate);
-    selectedTags = ValueNotifier(widget.transaction.transactionTag.map((index) => widget.tagList[index]).toList());
+    selectedTags = ValueNotifier(widget.transaction.transactionTag
+        .map((index) => widget.tagList[index])
+        .toList());
     transactionAmount = ValueNotifier(widget.transaction.transactionAmount);
 
-    transactionNameController = TextEditingController(text: widget.transaction.transactionName);
-    transactionDateController = TextEditingController(text: widget.transaction.transactionDate);
-    transactionAmountController = TextEditingController(text: widget.transaction.transactionAmount.toString());
+    transactionNameController =
+        TextEditingController(text: widget.transaction.transactionName);
+    transactionDateController =
+        TextEditingController(text: widget.transaction.transactionDate);
+    transactionAmountController = TextEditingController(
+        text: widget.transaction.transactionAmount.toString());
   }
 
   @override
@@ -65,12 +73,15 @@ class TransactionItemState extends State<TransactionItem> {
   void _resetValues() {
     transactionName.value = widget.transaction.transactionName;
     transactionDate.value = widget.transaction.transactionDate;
-    selectedTags.value = widget.transaction.transactionTag.map((index) => widget.tagList[index]).toList();
+    selectedTags.value = widget.transaction.transactionTag
+        .map((index) => widget.tagList[index])
+        .toList();
     transactionAmount.value = widget.transaction.transactionAmount;
 
     transactionNameController.text = widget.transaction.transactionName;
     transactionDateController.text = widget.transaction.transactionDate;
-    transactionAmountController.text = widget.transaction.transactionAmount.toString();
+    transactionAmountController.text =
+        widget.transaction.transactionAmount.toString();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -102,6 +113,7 @@ class TransactionItemState extends State<TransactionItem> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: nexusColor.background,
@@ -125,7 +137,9 @@ class TransactionItemState extends State<TransactionItem> {
         trailing: Text(
           widget.transaction.transactionAmount.toString(),
           style: TextStyle(
-            color: widget.transaction.transactionAmount > 0.0 ? NexusColor.positive : NexusColor.negative,
+            color: widget.transaction.transactionAmount > 0.0
+                ? NexusColor.positive
+                : NexusColor.negative,
             fontSize: 18,
           ),
         ),
@@ -151,12 +165,17 @@ class TransactionItemState extends State<TransactionItem> {
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionNameController.text,
-                      helperText: AppLocalizations.of(context).translate('name'),
+                      helperText: localizations.translate('name'),
                       filled: true,
                       fillColor: nexusColor.inputs,
+                      errorText: Validators.validateName(
+                          transactionName.value, context),
                     ),
                     onChanged: (newValue) {
-                      transactionName.value = newValue;
+                      setState(() {
+                        transactionName.value = newValue;
+                        Validators.validateName(transactionName.value, context);
+                      });
                     },
                   ),
                   const SizedBox(height: 8.0),
@@ -182,10 +201,12 @@ class TransactionItemState extends State<TransactionItem> {
                         backgroundColor: nexusColor.background,
                         searchable: true,
                         itemsTextStyle: TextStyle(color: nexusColor.text),
-                        selectedItemsTextStyle: TextStyle(color: nexusColor.text),
+                        selectedItemsTextStyle:
+                            TextStyle(color: nexusColor.text),
                         items: widget.items,
                         initialValue: value,
-                        title: Text(AppLocalizations.of(context).translate('tags'), style: TextStyle(color: nexusColor.text)),
+                        title: Text(localizations.translate('tags'),
+                            style: TextStyle(color: nexusColor.text)),
                         selectedColor: Colors.blue,
                         decoration: BoxDecoration(
                           color: nexusColor.inputs,
@@ -194,9 +215,10 @@ class TransactionItemState extends State<TransactionItem> {
                             width: 2,
                           ),
                         ),
-                        buttonIcon: Icon(Icons.arrow_drop_down, color: nexusColor.text),
+                        buttonIcon:
+                            Icon(Icons.arrow_drop_down, color: nexusColor.text),
                         buttonText: Text(
-                          AppLocalizations.of(context).translate('selectTagsButton'),
+                          localizations.translate('selectTagsButton'),
                           style: TextStyle(
                             color: nexusColor.text,
                             fontSize: 16,
@@ -208,7 +230,10 @@ class TransactionItemState extends State<TransactionItem> {
                         chipDisplay: MultiSelectChipDisplay(
                           chipColor: nexusColor.inputs,
                           textStyle: TextStyle(color: nexusColor.text),
-                          items: value.map((tag) => MultiSelectItem<Tag>(tag, tag.tagName)).toList(),
+                          items: value
+                              .map((tag) =>
+                                  MultiSelectItem<Tag>(tag, tag.tagName))
+                              .toList(),
                           onTap: (tag) {
                             value.remove(tag);
                             selectedTags.value = List<Tag>.from(value);
@@ -220,22 +245,31 @@ class TransactionItemState extends State<TransactionItem> {
                   const SizedBox(height: 8.0),
                   TextField(
                     controller: transactionAmountController,
-                    maxLength: 15,
+                    maxLength: 13,
                     style: TextStyle(color: nexusColor.text),
                     decoration: InputDecoration(
                       hintText: transactionAmountController.text,
-                      helperText: AppLocalizations.of(context).translate('amount'),
+                      helperText: localizations.translate('amount'),
                       filled: true,
                       fillColor: nexusColor.inputs,
+                      errorText: Validators.validateAmount(
+                          transactionAmount.value.toString(), context),
                     ),
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(
                         RegExp(r'^-?\d*\.?\d*'),
                       ),
+                      CurrencyInputFormatter(),
                     ],
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
                     onChanged: (newValue) {
-                      transactionAmount.value = double.tryParse(newValue) ?? 0.0;
+                      setState(() {
+                        transactionAmount.value =
+                            double.tryParse(newValue) ?? 0.0;
+                        Validators.validateAmount(
+                            transactionAmount.value.toString(), context);
+                      });
                     },
                   ),
                   const SizedBox(height: 16.0),
@@ -244,7 +278,9 @@ class TransactionItemState extends State<TransactionItem> {
                     children: <Widget>[
                       ElevatedButton(
                         onPressed: () {
-                          widget.fileController.deleteTransaction(widget.fileController.listTransaction.indexOf(widget.transaction));
+                          widget.fileController.deleteTransaction(widget
+                              .fileController.listTransaction
+                              .indexOf(widget.transaction));
                           Navigator.pushReplacementNamed(
                             context,
                             '/home',
@@ -266,20 +302,31 @@ class TransactionItemState extends State<TransactionItem> {
                       const SizedBox(width: 240.0),
                       ElevatedButton(
                         onPressed: () async {
-                          List<int> selectedTagIndexes = selectedTags.value.map((tag) => widget.tagList.indexOf(tag)).toList();
+                          if (Validators.validateName(
+                                      transactionName.value, context) ==
+                                  null &&
+                              Validators.validateAmount(
+                                      transactionAmount.value.toString(),
+                                      context) ==
+                                  null) {
+                            List<int> selectedTagIndexes = selectedTags.value
+                                .map((tag) => widget.tagList.indexOf(tag))
+                                .toList();
 
-                          await widget.fileController.updateTransaction(
-                            widget.fileController.listTransaction.indexOf(widget.transaction),
-                            transactionName.value,
-                            transactionDate.value,
-                            selectedTagIndexes,
-                            transactionAmount.value,
-                          );
-                          if(context.mounted){
-                            Navigator.pushReplacementNamed(
-                              context,
-                              '/home',
+                            await widget.fileController.updateTransaction(
+                              widget.fileController.listTransaction
+                                  .indexOf(widget.transaction),
+                              transactionName.value,
+                              transactionDate.value,
+                              selectedTagIndexes,
+                              transactionAmount.value,
                             );
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                '/home',
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

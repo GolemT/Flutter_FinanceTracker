@@ -1,15 +1,15 @@
-import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:finance_tracker/screens/settings_subscreens/support.dart';
-import 'package:flutter/material.dart';
 import 'package:finance_tracker/screens/settings_subscreens/license.dart';
-import 'package:finance_tracker/components/nav_screen.dart';
-import 'package:finance_tracker/assets/color_palette.dart';
-import 'package:finance_tracker/file_controller.dart';
-import 'package:finance_tracker/screens/setup_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/components/locale_notifier.dart';
 import 'package:finance_tracker/components/localisations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:finance_tracker/components/nav_screen.dart';
+import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/screens/setup_screen.dart';
+import 'package:easy_url_launcher/easy_url_launcher.dart';
+import 'package:finance_tracker/file_controller.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -273,6 +273,67 @@ class SettingsScreenState extends State<SettingsScreen> {
               );
             },
           ),
+          // THIS IS A TEST BUTTON TO ADD TEST DATA
+          //
+          // ListTile(
+          //   title: Text("Test Data", style: TextStyle(color: nexusColor.text)),
+          //   leading: Icon(Icons.data_array, color: nexusColor.text,),
+          //   onTap: () async {
+          //     List<Map<String, String>> testTags = [
+          //       {"tagName": "Essen", "tagDescription": "Ausgaben für Lebensmittel"},
+          //       {"tagName": "Transport", "tagDescription": "Kosten für öffentliche Verkehrsmittel und Benzin"},
+          //       {"tagName": "Miete", "tagDescription": "Monatliche Miete"},
+          //       {"tagName": "Gehalt", "tagDescription": "Monatliches Gehalt"},
+          //       {"tagName": "Freizeit", "tagDescription": "Ausgaben für Freizeitaktivitäten"},
+          //       {"tagName": "Sparen", "tagDescription": "Monatliches Sparen"},
+          //       {"tagName": "Geschenke", "tagDescription": "Ausgaben für Geschenke"},
+          //       {"tagName": "Bildung", "tagDescription": "Ausgaben für Bildung und Bücher"},
+          //       {"tagName": "Reisen", "tagDescription": "Kosten für Reisen und Urlaube"},
+          //       {"tagName": "Sonstiges", "tagDescription": "Sonstige Ausgaben"}
+          //     ];
+
+          //     for (var tag in testTags) {
+          //       await fileController.createTag(tag['tagName']!, tag['tagDescription']!);
+          //     }
+
+          //     List<Map<String, dynamic>> testTransactions = [
+          //       {"transactionName": "Einkauf", "transactionDate": "2022-01-01", "transactionTag": [0], "transactionAmount": -50.0},
+          //       {"transactionName": "Gehalt", "transactionDate": "2022-01-01", "transactionTag": [3], "transactionAmount": 2000.0},
+          //       {"transactionName": "Kino", "transactionDate": "2022-01-01", "transactionTag": [4], "transactionAmount": -10.0},
+          //       {"transactionName": "Sparen", "transactionDate": "2022-01-01", "transactionTag": [5], "transactionAmount": -200.0},
+          //       {"transactionName": "Geschenk", "transactionDate": "2022-01-01", "transactionTag": [6], "transactionAmount": -30.0},
+          //       {"transactionName": "Buch", "transactionDate": "2022-01-01", "transactionTag": [7], "transactionAmount": -20.0},
+          //       {"transactionName": "Flug", "transactionDate": "2022-01-01", "transactionTag": [8], "transactionAmount": -300.0},
+          //       {"transactionName": "Sonstiges", "transactionDate": "2022-01-01", "transactionTag": [9], "transactionAmount": -40.0},
+          //       {"transactionName": "Einkauf", "transactionDate": "2022-02-01", "transactionTag": [0], "transactionAmount": -50.0},
+          //       {"transactionName": "Gehalt", "transactionDate": "2022-02-01", "transactionTag": [3], "transactionAmount": 2000.0},
+          //       {"transactionName": "Kino", "transactionDate": "2022-02-01", "transactionTag": [4], "transactionAmount": -10.0},
+          //       {"transactionName": "Sparen", "transactionDate": "2022-02-01", "transactionTag": [5], "transactionAmount": -200.0},
+          //       {"transactionName": "Geschenk", "transactionDate": "2022-02-01", "transactionTag": [6], "transactionAmount": -30.0},
+          //       {"transactionName": "Buch", "transactionDate": "2022-02-01", "transactionTag": [7], "transactionAmount": -20.0},
+          //       {"transactionName": "Flug", "transactionDate": "2022-02-01", "transactionTag": [8], "transactionAmount": -300.0},
+          //       {"transactionName": "Sonstiges", "transactionDate": "2022-02-01", "transactionTag": [9], "transactionAmount": -40.0},
+          //       {"transactionName": "Einkauf", "transactionDate": "2022-03-01", "transactionTag": [0], "transactionAmount": -50.0},
+          //       {"transactionName": "Gehalt", "transactionDate": "2022-03-01", "transactionTag": [3], "transactionAmount": 2000.0},
+          //       {"transactionName": "Kino", "transactionDate": "2022-03-01", "transactionTag": [4], "transactionAmount": -10.0},
+          //       {"transactionName": "Sparen", "transactionDate": "2022-03-01", "transactionTag": [5], "transactionAmount": -200.0},
+          //       {"transactionName": "Geschenk", "transactionDate": "2022-03-01", "transactionTag": [6], "transactionAmount": -30.0},
+          //       {"transactionName": "Buch", "transactionDate": "2022-03-01", "transactionTag": [7], "transactionAmount": -20.0},
+          //       {"transactionName": "Flug", "transactionDate": "2022-03-01", "transactionTag": [8], "transactionAmount": -300.0},
+          //       {"transactionName": "Sonstiges", "transactionDate": "2022-03-01", "transactionTag": [9], "transactionAmount": -40.0}
+          //     ];
+
+          //     for (var transaction in testTransactions) {
+          //       await fileController.createTransaction(
+          //         transaction['transactionName'],
+          //         transaction['transactionDate'],
+          //         transaction['transactionTag'],
+          //         transaction['transactionAmount'],
+          //         false  // `repeat` parameter set to false for simplicity
+          //       );
+          //     }
+          //   },
+          // ),
         ],
       ),
     );

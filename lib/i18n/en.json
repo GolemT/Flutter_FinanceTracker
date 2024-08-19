@@ -46,7 +46,9 @@
     "duplicateTagError": "Tag already exists",
     "noEmptyAmountError": "Amount cannot be empty",
     "balanceCalcError": "Error calculating total balance",
+    "noEmptyDescError": "Description cannot be empty",
 
+    "transaction": "Transaction",
     "transCreate": "Create Transaction",
     "transAdd": "Add Transaction",
     "transNameLabel": "Enter a name for the transaction",
@@ -56,6 +58,7 @@
     "enterAmountLabel": "Enter the amount",
     "bankHistory": "Banking History",
     "repeat": "Monthly transaction?",
+    "monthly": "monthly",
 
     "usingApp": "Using the App",
     "questionOne": "Home Screen",

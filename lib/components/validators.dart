@@ -23,9 +23,9 @@ class Validators {
 
   static String? validateAmount(String value, BuildContext context) {
     final double? amount = double.tryParse(value);
-    if (amount == null || amount <= 0) {
+    if (amount == 0.0) {
       return AppLocalizations.of(context).translate("noEmptyAmountError");
-    } else if (value.contains(RegExp(r'^\d{11,}$'))) {
+    } else if (value.contains(RegExp(r'^-?\d{11,}$'))) {
       return "Max 10 digits before the decimal.";
     } else if (value.contains(RegExp(r'\.\d{3,}$'))) {
       return "Max 2 digits after the decimal.";

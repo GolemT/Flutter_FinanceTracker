@@ -76,13 +76,13 @@ class FileController extends ChangeNotifier {
   }
 
   updateRepTransaction(int transactionIndex, String transactionName, String transactionDate, List<int> tag, double transactionAmount) async {
-        await FileManager().updateRepTransactionManager(transactionIndex, transactionName, transactionDate, tag, transactionAmount);
-        await refreshTagsAndTransactions();
+    await FileManager().updateRepTransactionManager(transactionIndex, transactionName, transactionDate, tag, transactionAmount);
+    await refreshTagsAndTransactions();
       }
 
   deleteRepTransaction(int transactionIndex) async {
-        await FileManager().deleteRepTransactionManager(transactionIndex);
-        await refreshTagsAndTransactions();
+    await FileManager().deleteRepTransactionManager(transactionIndex);
+    await refreshTagsAndTransactions();
   }
 
 

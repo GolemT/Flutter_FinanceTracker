@@ -119,8 +119,7 @@ class NavBar extends StatelessWidget {
   }
 }
 
-Widget navItem(IconData icon, bool selected, String text, NexusColor nexusColor,
-    {Function()? onTap}) {
+Widget navItem(IconData icon, bool selected, String text, NexusColor nexusColor, {Function()? onTap}) {
   return Expanded(
     child: InkWell(
       onTap: onTap,

@@ -289,13 +289,8 @@ class MonthlyItemState extends State<MonthlyItem> {
                       const SizedBox(width: 240.0),
                       ElevatedButton(
                         onPressed: () async {
-                          if (Validators.validateName(
-                                      transactionName.value, context) ==
-                                  null &&
-                              Validators.validateAmount(
-                                      transactionAmount.value.toString(),
-                                      context) ==
-                                  null) {
+                          if (Validators.validateName(transactionName.value, context) == null &&
+                              Validators.validateAmount(transactionAmount.value.toString(), context) == null) {
                             List<int> selectedTagIndexes = selectedTags.value
                                 .map((tag) => widget.tagList.indexOf(tag))
                                 .toList();

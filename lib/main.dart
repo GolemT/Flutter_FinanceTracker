@@ -1,9 +1,9 @@
 import 'package:finance_tracker/notification_service.dart';
 import 'package:finance_tracker/screens/add_transaction_screen.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
+import 'package:finance_tracker/screens/monthly_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:finance_tracker/screens/monthly_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:finance_tracker/assets/color_theme.dart';
 import 'package:finance_tracker/screens/analytics_screen.dart';
@@ -33,18 +33,7 @@ void callbackDispatcher() {
 }
 
 void main() async {
-void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await Permission.notification.isDenied.then((value) {
-      if (value) {
-        Permission.notification.request();
-      }
-    });
-  
-  final notificationService = NotificationService();
-
-  await notificationService.init();
-
     await Permission.notification.isDenied.then((value) {
       if (value) {
         Permission.notification.request();

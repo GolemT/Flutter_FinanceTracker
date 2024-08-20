@@ -51,6 +51,9 @@ dependencies:
   shared_preferences: ^2.2.3
   easy_url_launcher: ^0.0.7
   workmanager: ^0.5.2
+  flutter_local_notifications: ^17.2.1
+  flutter_datetime_picker: ^1.5.1
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

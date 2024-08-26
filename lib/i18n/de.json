@@ -75,6 +75,8 @@
     "themeSelect": "Wähle ein Farbschema",
     "accSetup": "Bitte gebe deinen aktuellen Kontostand ein",
     "budgetExplain": "Dieser wird benutzt um einen Überblick über deinen Kontostand auf der Startseite zu geben",
+    "repeatSetup": "Füge wiederholende Transaktionen hinzu",
+    "later": "Du kannst immernoch später Transaktionen hinzufügen",
     "notifSetup": "Möchtest du Benachrichtigungen aktivieren?",
     "finish": "Fertig!",
     "next": "Weiter",

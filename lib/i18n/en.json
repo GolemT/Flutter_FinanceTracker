@@ -14,6 +14,8 @@
     "langEn": "English",
     "langDe": "German",
     "notif": "Notification",
+    "notifDeac": "Deactivate",
+    "notifAc": "Activate",
     "notifSelect": "Notification Selector",
     "support": "Support/FAQ",
     "license": "License",

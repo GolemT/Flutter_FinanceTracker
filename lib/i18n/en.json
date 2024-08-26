@@ -75,6 +75,8 @@
     "themeSelect": "Select a theme",
     "accSetup": "Please enter your current account balance",
     "budgetExplain": "This will be used to display your account balance on the home screen",
+    "repeatSetup": "Setup repeating transactions",
+    "later": "This can also be done at a later time",
     "notifSetup": "Do you wish to enable notifications?",
     "finish": "Finish",
     "next": "Next",

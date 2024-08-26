@@ -200,7 +200,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 70.0, right: 50, top: 16, bottom: 16),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Platzieren Sie den Text und den Schalter mit Abstand
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                     children: [
                       Text(
                           AppLocalizations.of(context).translate('notifDeac'),

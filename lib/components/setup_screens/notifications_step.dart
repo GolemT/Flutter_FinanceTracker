@@ -8,37 +8,34 @@ class NotificationsStep extends StatefulWidget {
   const NotificationsStep({super.key});
 
   @override
-  _NotificationsStepState createState() => _NotificationsStepState();
+  NotificationsStepState createState() => NotificationsStepState();
 }
 
-class _NotificationsStepState extends State<NotificationsStep> {
+class NotificationsStepState extends State<NotificationsStep> {
   
-  late SharedPreferences prefs;
+  bool _isNotificationEnabled = false;
 
+  @override
+  void initState() {
+    super.initState();
+    loadPreferences();
+  }
+
+  Future<void> loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('daily_notification', false);
+    setState(() {
+      _isNotificationEnabled = prefs.getBool('daily_notification') ?? false;
+    });
+  }
 
   final notificationService = NotificationService();
-
-  bool _isNotificationEnabled = false;
 
   void _toggleNotification(bool value) async {
     setState(() {
       _isNotificationEnabled = value;
     });
     await notificationService.toggleNotification(value);
-  }
-  
-  @override
-  void initState() {
-    super.initState();
-    _loadPreferences();
-  }
-
-  Future<void> _loadPreferences() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.setBool('daily_notification', false);
-    setState(() {
-      _isNotificationEnabled = prefs.getBool('daily_notification') ?? false;
-    });
   }
 
   @override

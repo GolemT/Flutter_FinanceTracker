@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:finance_tracker/assets/color_palette.dart';
 import 'package:finance_tracker/components/localisations.dart';
 
-// TODO: Add support/FAQ questions and answers
-
 class SupportScreen extends StatelessWidget {
   const SupportScreen({super.key});
 
@@ -42,14 +40,18 @@ class SupportScreen extends StatelessWidget {
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                  color: nexusColor.background,
+                  color: nexusColor.listBackground,
                   border: Border(
-                    bottom: BorderSide(
-                      color: nexusColor.inputs,
-                      style: BorderStyle.solid,
-                      strokeAlign: BorderSide.strokeAlignInside,
-                    ),
-                  ),
+                      bottom: BorderSide(
+                        color: nexusColor.inputs,
+                        style: BorderStyle.solid,
+                        strokeAlign: BorderSide.strokeAlignInside,
+                      ),
+                      top: BorderSide(
+                        color: nexusColor.inputs,
+                        style: BorderStyle.solid,
+                        strokeAlign: BorderSide.strokeAlignInside,
+                      )),
                 ),
                 child: ExpansionTile(
                   iconColor: nexusColor.text,
@@ -60,7 +62,7 @@ class SupportScreen extends StatelessWidget {
                   ),
                   children: <Widget>[
                     Container(
-                      color: nexusColor.background,
+                      color: nexusColor.listBackground,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -78,38 +80,181 @@ class SupportScreen extends StatelessWidget {
                   ],
                 ),
               ),
-          Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('questionTwo'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
               Container(
-                color: nexusColor.background,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerTwo'),
-                              style: TextStyle(color: nexusColor.text))
-                        ])),
-              )
+                decoration: BoxDecoration(
+                  color: nexusColor.listBackground,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: nexusColor.inputs,
+                      style: BorderStyle.solid,
+                      strokeAlign: BorderSide.strokeAlignInside,
+                    ),
+                  ),
+                ),
+                child: ExpansionTile(
+                  iconColor: nexusColor.text,
+                  collapsedIconColor: nexusColor.text,
+                  title: Text(
+                    AppLocalizations.of(context).translate('questionTwo'),
+                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                  ),
+                  children: <Widget>[
+                    Container(
+                      color: nexusColor.listBackground,
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    AppLocalizations.of(context)
+                                        .translate('answerTwo'),
+                                    style: TextStyle(color: nexusColor.text))
+                              ])),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: nexusColor.listBackground,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: nexusColor.inputs,
+                      style: BorderStyle.solid,
+                      strokeAlign: BorderSide.strokeAlignInside,
+                    ),
+                  ),
+                ),
+                child: ExpansionTile(
+                  iconColor: nexusColor.text,
+                  collapsedIconColor: nexusColor.text,
+                  title: Text(
+                    AppLocalizations.of(context).translate('questionThree'),
+                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                  ),
+                  children: <Widget>[
+                    Container(
+                      color: nexusColor.listBackground,
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    AppLocalizations.of(context)
+                                        .translate('answerThree'),
+                                    style: TextStyle(color: nexusColor.text))
+                              ])),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: nexusColor.listBackground,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: nexusColor.inputs,
+                      style: BorderStyle.solid,
+                      strokeAlign: BorderSide.strokeAlignInside,
+                    ),
+                  ),
+                ),
+                child: ExpansionTile(
+                  iconColor: nexusColor.text,
+                  collapsedIconColor: nexusColor.text,
+                  title: Text(
+                    AppLocalizations.of(context).translate('questionFour'),
+                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                  ),
+                  children: <Widget>[
+                    Container(
+                      color: nexusColor.listBackground,
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    AppLocalizations.of(context)
+                                        .translate('answerFour'),
+                                    style: TextStyle(color: nexusColor.text))
+                              ])),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: nexusColor.listBackground,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: nexusColor.inputs,
+                      style: BorderStyle.solid,
+                      strokeAlign: BorderSide.strokeAlignInside,
+                    ),
+                  ),
+                ),
+                child: ExpansionTile(
+                  iconColor: nexusColor.text,
+                  collapsedIconColor: nexusColor.text,
+                  title: Text(
+                    AppLocalizations.of(context).translate('questionFive'),
+                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                  ),
+                  children: <Widget>[
+                    Container(
+                      color: nexusColor.listBackground,
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    AppLocalizations.of(context)
+                                        .translate('answerFive'),
+                                    style: TextStyle(color: nexusColor.text))
+                              ])),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: nexusColor.listBackground,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: nexusColor.inputs,
+                      style: BorderStyle.solid,
+                      strokeAlign: BorderSide.strokeAlignInside,
+                    ),
+                  ),
+                ),
+                child: ExpansionTile(
+                  iconColor: nexusColor.text,
+                  collapsedIconColor: nexusColor.text,
+                  title: Text(
+                    AppLocalizations.of(context).translate('questionSix'),
+                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                  ),
+                  children: <Widget>[
+                    Container(
+                      color: nexusColor.listBackground,
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    AppLocalizations.of(context)
+                                        .translate('answerSix'),
+                                    style: TextStyle(color: nexusColor.text))
+                              ])),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -128,23 +273,25 @@ class SupportScreen extends StatelessWidget {
             iconColor: nexusColor.text,
             collapsedIconColor: nexusColor.text,
             title: Text(
-              AppLocalizations.of(context).translate('questionThree'),
+              AppLocalizations.of(context).translate('questionSeven'),
               style: TextStyle(color: nexusColor.text, fontSize: 18.0),
             ),
             children: <Widget>[
               Container(
                 color: nexusColor.background,
                 child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerThree'),
-                              style: TextStyle(color: nexusColor.text))
-                        ])),
-              )
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).translate('answerSeven'),
+                        style: TextStyle(color: nexusColor.text),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -160,28 +307,91 @@ class SupportScreen extends StatelessWidget {
             ),
           ),
           child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('questionFour'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                color: nexusColor.background,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerFour'),
-                              style: TextStyle(color: nexusColor.text))
-                        ])),
-              )
-            ],
-          ),
+              iconColor: nexusColor.text,
+              collapsedIconColor: nexusColor.text,
+              title: Text(
+                AppLocalizations.of(context).translate('dataStorage'),
+                style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+              ),
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: nexusColor.listBackground,
+                    border: Border(
+                        bottom: BorderSide(
+                          color: nexusColor.inputs,
+                          style: BorderStyle.solid,
+                          strokeAlign: BorderSide.strokeAlignInside,
+                        ),
+                        top: BorderSide(
+                          color: nexusColor.inputs,
+                          style: BorderStyle.solid,
+                          strokeAlign: BorderSide.strokeAlignInside,
+                        )),
+                  ),
+                  child: ExpansionTile(
+                    iconColor: nexusColor.text,
+                    collapsedIconColor: nexusColor.text,
+                    title: Text(
+                      AppLocalizations.of(context).translate('questionEight'),
+                      style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                    ),
+                    children: <Widget>[
+                      Container(
+                        color: nexusColor.listBackground,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('answerEight'),
+                                style: TextStyle(color: nexusColor.text),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: nexusColor.listBackground,
+                    border: Border(
+                      bottom: BorderSide(
+                        color: nexusColor.inputs,
+                        style: BorderStyle.solid,
+                        strokeAlign: BorderSide.strokeAlignInside,
+                      ),
+                    ),
+                  ),
+                  child: ExpansionTile(
+                    iconColor: nexusColor.text,
+                    collapsedIconColor: nexusColor.text,
+                    title: Text(
+                      AppLocalizations.of(context).translate('questionNine'),
+                      style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                    ),
+                    children: <Widget>[
+                      Container(
+                        color: nexusColor.listBackground,
+                        child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                      AppLocalizations.of(context)
+                                          .translate('answerNine'),
+                                      style: TextStyle(color: nexusColor.text))
+                                ])),
+                      )
+                    ],
+                  ),
+                ),
+              ]),
         ),
         Container(
           decoration: BoxDecoration(
@@ -195,373 +405,129 @@ class SupportScreen extends StatelessWidget {
             ),
           ),
           child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('questionFive'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                color: nexusColor.background,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerFive'),
-                              style: TextStyle(color: nexusColor.text))
-                        ])),
-              )
-            ],
-          ),
+              iconColor: nexusColor.text,
+              collapsedIconColor: nexusColor.text,
+              title: Text(
+                AppLocalizations.of(context).translate('dataDeletion'),
+                style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+              ),
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: nexusColor.listBackground,
+                    border: Border(
+                      bottom: BorderSide(
+                        color: nexusColor.inputs,
+                        style: BorderStyle.solid,
+                        strokeAlign: BorderSide.strokeAlignInside,
+                      ),
+                      top: BorderSide(
+                      color: nexusColor.inputs,
+                      style: BorderStyle.solid,
+                      strokeAlign: BorderSide.strokeAlignInside,
+                    )
+                    ),
+                  ),
+                  child: ExpansionTile(
+                    iconColor: nexusColor.text,
+                    collapsedIconColor: nexusColor.text,
+                    title: Text(
+                      AppLocalizations.of(context).translate('questionTen'),
+                      style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                    ),
+                    children: <Widget>[
+                      Container(
+                        color: nexusColor.listBackground,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('answerTen'),
+                                style: TextStyle(color: nexusColor.text),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: nexusColor.listBackground,
+                    border: Border(
+                      bottom: BorderSide(
+                        color: nexusColor.inputs,
+                        style: BorderStyle.solid,
+                        strokeAlign: BorderSide.strokeAlignInside,
+                      ),
+                    ),
+                  ),
+                  child: ExpansionTile(
+                    iconColor: nexusColor.text,
+                    collapsedIconColor: nexusColor.text,
+                    title: Text(
+                      AppLocalizations.of(context).translate('questionEleven'),
+                      style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                    ),
+                    children: <Widget>[
+                      Container(
+                        color: nexusColor.listBackground,
+                        child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                      AppLocalizations.of(context)
+                                          .translate('answerEleven'),
+                                      style: TextStyle(color: nexusColor.text))
+                                ])),
+                      )
+                    ],
+                  ),
+                ),
+              ]),
         ),
         Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
+            decoration: BoxDecoration(
+              color: nexusColor.background,
+              border: Border(
+                bottom: BorderSide(
+                  color: nexusColor.inputs,
+                  style: BorderStyle.solid,
+                  strokeAlign: BorderSide.strokeAlignInside,
+                ),
               ),
             ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('questionSix'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                color: nexusColor.background,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+            child: ExpansionTile(
+                iconColor: nexusColor.text,
+                collapsedIconColor: nexusColor.text,
+                title: Text(
+                  AppLocalizations.of(context).translate('questionTwelve'),
+                  style: TextStyle(color: nexusColor.text, fontSize: 18.0),
+                ),
+                children: <Widget>[
+                  Container(
+                    color: nexusColor.background,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerSix'),
-                              style: TextStyle(color: nexusColor.text))
-                        ])),
-              )
-            ],
-          ),
-        ),
-        ],
-        ),
-        ),
-         Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('editingTransaction'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: nexusColor.background,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: nexusColor.inputs,
-                      style: BorderStyle.solid,
-                      strokeAlign: BorderSide.strokeAlignInside,
-                    ),
-                  ),
-                ),
-                child: ExpansionTile(
-                  iconColor: nexusColor.text,
-                  collapsedIconColor: nexusColor.text,
-                  title: Text(
-                    AppLocalizations.of(context).translate('questionSeven'),
-                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      color: nexusColor.background,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerSeven'),
-                              style: TextStyle(color: nexusColor.text),
-                            ),
-                          ],
-                        ),
+                            AppLocalizations.of(context)
+                                .translate('answerTwelve'),
+                            style: TextStyle(color: nexusColor.text),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-          ]),
-      ),
-      Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('dataStorage'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: nexusColor.background,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: nexusColor.inputs,
-                      style: BorderStyle.solid,
-                      strokeAlign: BorderSide.strokeAlignInside,
-                    ),
                   ),
-                ),
-                child: ExpansionTile(
-                  iconColor: nexusColor.text,
-                  collapsedIconColor: nexusColor.text,
-                  title: Text(
-                    AppLocalizations.of(context).translate('questionEight'),
-                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      color: nexusColor.background,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerEight'),
-                              style: TextStyle(color: nexusColor.text),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('questionNine'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                color: nexusColor.background,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerNine'),
-                              style: TextStyle(color: nexusColor.text))
-                        ])),
-              )
-            ],
-          ),
-        ),    
-      ]),
-      ),
-      Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('dataDeletion'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: nexusColor.background,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: nexusColor.inputs,
-                      style: BorderStyle.solid,
-                      strokeAlign: BorderSide.strokeAlignInside,
-                    ),
-                  ),
-                ),
-                child: ExpansionTile(
-                  iconColor: nexusColor.text,
-                  collapsedIconColor: nexusColor.text,
-                  title: Text(
-                    AppLocalizations.of(context).translate('questionTen'),
-                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      color: nexusColor.background,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerTen'),
-                              style: TextStyle(color: nexusColor.text),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('questionEleven'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                color: nexusColor.background,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerEleven'),
-                              style: TextStyle(color: nexusColor.text))
-                        ])),
-              )
-            ],
-          ),
-        ),
-      ]),
-      ),
-      Container(
-          decoration: BoxDecoration(
-            color: nexusColor.background,
-            border: Border(
-              bottom: BorderSide(
-                color: nexusColor.inputs,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-          ),
-          child: ExpansionTile(
-            iconColor: nexusColor.text,
-            collapsedIconColor: nexusColor.text,
-            title: Text(
-              AppLocalizations.of(context).translate('accountBalance'),
-              style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-            ),
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: nexusColor.background,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: nexusColor.inputs,
-                      style: BorderStyle.solid,
-                      strokeAlign: BorderSide.strokeAlignInside,
-                    ),
-                  ),
-                ),
-                child: ExpansionTile(
-                  iconColor: nexusColor.text,
-                  collapsedIconColor: nexusColor.text,
-                  title: Text(
-                    AppLocalizations.of(context).translate('questionTwelve'),
-                    style: TextStyle(color: nexusColor.text, fontSize: 18.0),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      color: nexusColor.background,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              AppLocalizations.of(context)
-                                  .translate('answerTwelve'),
-                              style: TextStyle(color: nexusColor.text),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-      ])
-      ),
+                ])),
       ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(

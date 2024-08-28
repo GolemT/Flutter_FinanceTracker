@@ -82,7 +82,7 @@ class RepeatStepState extends State<RepeatStep> {
                 const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.only(bottom: 80.0),
                     itemCount: fileController.listRepTransaction.length,
                     itemBuilder: (context, index) {
                       List<Transaction> list =

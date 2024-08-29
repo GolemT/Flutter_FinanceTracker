@@ -1,5 +1,6 @@
 import 'package:finance_tracker/components/setup_screens/notifications_step.dart';
 import 'package:finance_tracker/components/setup_screens/language_step.dart';
+import 'package:finance_tracker/components/setup_screens/repeating_trans_step.dart';
 import 'package:finance_tracker/components/setup_screens/welcome_step.dart';
 import 'package:finance_tracker/components/setup_screens/budget_step.dart';
 import 'package:finance_tracker/components/setup_screens/finish_step.dart';
@@ -35,7 +36,7 @@ class SetupScreenState extends State<SetupScreen> {
   }
 
   void _onNext() {
-    if (_currentPage < 5) {
+    if (_currentPage < 6) {
       pageController.animateToPage(_currentPage + 1,
           duration: const Duration(milliseconds: 300), curve: Curves.ease);
     }
@@ -104,6 +105,7 @@ class SetupScreenState extends State<SetupScreen> {
                 LanguageStep(),
                 ThemeStep(),
                 BudgetStep(),
+                RepeatStep(),
                 NotificationsStep(),
                 FinishStep(),
               ],
